@@ -1,0 +1,829 @@
+{
+  "note": "Facts for every workflow and skill in the kit, except the four change-only ones. Each fact is taken from the item's own SKILL.md. gate and evidence are always lists. A line number points to that item's own SKILL.md.",
+  "workflows": [
+    {
+      "name": "requirements-workflow",
+      "kind": "workflow",
+      "what": "The first workflow. It takes one product from its requirement files to an accepted PRD. It runs three skills in order, and stops at each one's gate. It writes nothing and decides nothing itself.",
+      "takesIn": [
+        "your requirement files, in `Output/{project}/sources/`",
+        "in a change: section 15 of the Change impact report, for the steps to run"
+      ],
+      "givesOut": [
+        "Discovery brief, through `discovery-author`",
+        "BRD, through `brd-author`",
+        "PRD, through `prd-author`",
+        "Question log, through each of its skills"
+      ],
+      "inFlow": [
+        "It is the first workflow. Nothing comes before it.",
+        "It runs `scaffold-project.cjs` first.",
+        "Step 1: `discovery-author`, which runs `list-sources.cjs` first.",
+        "Step 2: `brd-author`.",
+        "Step 3: `prd-author`.",
+        "Next: `glossary-author`. In a change, the next row of the change's path.",
+        "It picks up at the first step whose document is not accepted yet. On a new project, that is step 1.",
+        "You can start it at a named step, such as \"from prd-author\".",
+        "In a change, it runs only the steps the change's path names: step 2 or step 3.",
+        "It adds nothing between the steps. Each skill runs `probing-questions-author` and `grade-questions.cjs` inside itself.",
+        "It is also the way to start the project again from nothing. This happens only when you ask for it in words, such as \"start the project again from nothing\".",
+        "When you start again from nothing, every file and folder in `Output/{project}/` except `sources/` moves to `_archive/Output-{date}/{project}/`. No program does this move yet: the workflow does it by hand. Then every step runs fresh."
+      ],
+      "gate": [
+        "the skills' own: 3",
+        "Only when you ask to start again from nothing, it asks for your yes before step 1, as multiple choice.",
+        "Answer: Move them, and start again from nothing.",
+        "Answer: Keep the project as it is.",
+        "Answer: I don't know yet."
+      ],
+      "changeMode": "It runs only the steps the change's path names, for the items it names, and gives each skill the change's number.",
+      "evidence": [
+        "SKILL.md lines 40 to 42",
+        "SKILL.md lines 68 to 71"
+      ]
+    },
+    {
+      "name": "data-model-workflow",
+      "kind": "workflow",
+      "what": "The workflow that turns the Glossary into the data model. It lists the things first, then writes one data model file for each Glossary family. Then it sends every Glossary change the data model found to the Glossary in one batch, and brings the data model in step with the answers.",
+      "takesIn": [
+        "Glossary",
+        "BRD",
+        "PRD",
+        "in a change: section 15 of the Change impact report, for the steps to run"
+      ],
+      "givesOut": [
+        "things file, through `things-author`",
+        "data model file, one for each family, through `data-model-author`",
+        "the data model's decisions file, through both skills",
+        "Glossary, through `glossary-disposition`",
+        "the Glossary's gate log, through `glossary-disposition`",
+        "a ripple list of the documents that use each term, through `glossary-disposition`",
+        "the status mark of each Glossary change, in the data model's decisions file: the only thing the workflow writes itself"
+      ],
+      "inFlow": [
+        "It comes after `glossary-author`.",
+        "Step 1: `things-author`.",
+        "Step 2: `data-model-author`, once for each family the things file names.",
+        "Step 3: `glossary-disposition`, once, with every Glossary change as one batch. It runs only once every data model file is accepted.",
+        "Step 4: `things-author`, then `data-model-author`, each in a change, for the Glossary changes settled at step 3.",
+        "Next: `features-and-epics-workflow`. In a change, the next row of the change's path.",
+        "It says its mode first, in one sentence.",
+        "Mode: a change.",
+        "Mode: a new build.",
+        "Mode: picking up where it stopped.",
+        "Mode: nothing to do.",
+        "At every step, the skill first asks again each decision answered \"I don't know yet\", and each Glossary change left open, that it owns.",
+        "You can start it at a named step, for named files, such as \"data-model-author, lending.md only\".",
+        "In a change, it runs only the steps the change's path names: step 1 or step 2.",
+        "It marks each Glossary change as it goes, in this order.",
+        "Mark 1: \"To raise\".",
+        "Mark 2: \"Raised\".",
+        "Mark 3: \"Settled in the Glossary on {date}\". For \"I don't know yet\", it is \"Left open on {date}\" instead.",
+        "Mark 4: \"Brought into the data model on {date}\".",
+        "After each mark it writes, it runs `check-simple-writing.cjs` on the data model's decisions file.",
+        "A Glossary change is not a requirement change, so it never uses `requirement-update-workflow`.",
+        "It never sends anything back to the BRD or the PRD. Two requirements that disagree become a data model decision."
+      ],
+      "gate": [
+        "the skills' own: 3",
+        "Step 4 holds the gates of `things-author` and `data-model-author` again, for what changed only.",
+        "When the batch at step 3 adds new words, `glossary-author` holds its own two gates for those words."
+      ],
+      "changeMode": "It runs only the steps the change's path names, for the things and files it names, and gives each skill the change's number.",
+      "evidence": [
+        "SKILL.md lines 42 to 45"
+      ]
+    },
+    {
+      "name": "features-and-epics-workflow",
+      "kind": "workflow",
+      "what": "The workflow after the data model. It takes the product from its PRD and its data model to its EPICs. It runs three skills and one program in order, and stops at each skill's gate.",
+      "takesIn": [
+        "PRD",
+        "data model files",
+        "Glossary, by ID",
+        "BRD, by ID",
+        "in a change: section 15 of the Change impact report, for the steps to run"
+      ],
+      "givesOut": [
+        "Feature catalog, through `feature-author`",
+        "EPIC grouping, through `epic-grouping-author`",
+        "EPIC register, through `epic-author`",
+        "EPIC sequencing, through `build-sequencing-mapping.cjs`",
+        "EPIC mapping, through `build-sequencing-mapping.cjs`",
+        "Question log, through its skills"
+      ],
+      "inFlow": [
+        "It comes after `data-model-workflow`, once every data model file is accepted.",
+        "It runs `scaffold-project.cjs` first.",
+        "Step 1: `feature-author`.",
+        "Step 2: `epic-grouping-author`.",
+        "Step 3: `epic-author`, in register mode, with its copy check, `check-register.cjs`. On a fail, back to step 3.",
+        "Step 4: `build-sequencing-mapping.cjs`, a program.",
+        "Next: `frd-workflow`. In a change, the next row of the change's path.",
+        "By default it starts at step 1. You can start it at a named step, for named items, such as \"epic-grouping-author, place F-06 only\".",
+        "In a change, it runs only the steps the change's path names: step 1, 2 or 3.",
+        "At step 1, when you pick \"a new requirement first\" for a row, `feature-author` runs only step 1 of `requirement-update-workflow`, at its gate.",
+        "A loop in the EPICs' dependencies, found at step 4, stops the run and goes back to step 2."
+      ],
+      "gate": [
+        "the skills' own: 2",
+        "Step 3 has no gate: a pass of `check-register.cjs` is the acceptance.",
+        "Step 4 has no gate."
+      ],
+      "changeMode": "It runs only the steps the change's path names, for the items it names, and gives each skill the change's number.",
+      "evidence": [
+        "SKILL.md lines 38 to 41"
+      ]
+    },
+    {
+      "name": "frd-workflow",
+      "kind": "workflow",
+      "what": "The workflow that writes the FRDs, one FRD per run, in the order the EPICs are built. A program names the next capability. Then `frd-author` writes its FRD and holds its gate.",
+      "takesIn": [
+        "EPIC register",
+        "Feature catalog",
+        "the FRDs' status lines",
+        "PRD, by ID",
+        "Glossary, by ID",
+        "data model files, by ID",
+        "in a change: section 15 of the Change impact report, for the FRDs to write"
+      ],
+      "givesOut": [
+        "FRD, through `frd-author`",
+        "Question log, through `frd-author`"
+      ],
+      "inFlow": [
+        "It comes after `features-and-epics-workflow`, once the EPIC register is written.",
+        "It runs `scaffold-project.cjs` first.",
+        "Step 1: `route-next-capability.cjs`, a program. It names the next capability, in EPIC register order. A capability waiting on a Must answer question comes last, and a parked one after it.",
+        "Step 2: `frd-author`.",
+        "Next: run it again for the next capability.",
+        "`stories-workflow` can start on an EPIC once the FRDs of that EPIC's own features are accepted, even while other FRDs are open.",
+        "When every FRD is accepted, it prints \"Every FRD accepted: next, run stories-workflow.\" and stops.",
+        "You can name a capability, such as \"the FRD for Claim approval\". Then it skips the routing.",
+        "In a change, it skips the routing and calls `frd-author` for each FRD the change's path names.",
+        "For an accepted FRD that waits on a data model answer now settled, it skips the routing and calls `frd-author` for that FRD.",
+        "A parked FRD ends the run. The next run routes to other work first."
+      ],
+      "gate": [
+        "the skills' own: 1"
+      ],
+      "changeMode": "It skips the routing and calls `frd-author` for each FRD the change's path names, with the change's number.",
+      "evidence": [
+        "SKILL.md line 38"
+      ]
+    },
+    {
+      "name": "stories-workflow",
+      "kind": "workflow",
+      "what": "The workflow that takes one EPIC from its EPIC brief, if it has one, to stories ready to build. Two programs pick the EPIC and check whether it gets an EPIC brief. Then four skills run in order, each stopping at its gate.",
+      "takesIn": [
+        "EPIC register",
+        "every Story list",
+        "EPIC grouping",
+        "FRDs",
+        "design files, if any",
+        "BRD, by ID",
+        "PRD, by ID",
+        "Feature catalog, by ID",
+        "EPIC brief, by ID",
+        "Glossary, by ID",
+        "in a change: section 15 of the Change impact report, for the steps and stories to run"
+      ],
+      "givesOut": [
+        "EPIC brief, only for an EPIC that gets one, through `epic-author`",
+        "Story list, through `story-drafter`",
+        "Stories",
+        "Question log, through its skills"
+      ],
+      "inFlow": [
+        "It comes after `frd-workflow`, once the FRDs of the EPIC's own features are accepted. Another FRD may still be waiting or parked.",
+        "Step 1: `route-next-epic.cjs`, a program. It names the next EPIC that is not waiting on a parked one or on a Must answer question.",
+        "Then it runs `scaffold-project.cjs` for the EPIC's folder.",
+        "Step 2: `route-brief-list.cjs`, a program. It says yes or no: does this EPIC get an EPIC brief?",
+        "Step 3: `epic-author`, in brief mode, only on yes.",
+        "Step 4: `story-drafter`.",
+        "Step 5: `story-groomer`.",
+        "Step 6: `ac-author`.",
+        "Next: run it again for the next EPIC. When every EPIC is ready, it prints \"Every EPIC ready.\" and stops.",
+        "You can name an EPIC, or start at a named step for named stories.",
+        "In a change, it runs only the steps the change's path names: step 3, 4, 5 or 6.",
+        "The ready guard: the stories can't be marked ready while a Must answer question raised in them is open. If one can't be answered yet, you can park the EPIC.",
+        "To put a ready story into a tracker, such as a GitHub issue, use `reader-copy.cjs`. It leaves out the citations. The Story file stays the agreed copy."
+      ],
+      "gate": [
+        "the skills' own: 4",
+        "Step 3's gate runs only for an EPIC that gets an EPIC brief."
+      ],
+      "changeMode": "It runs only the steps the change's path names, for the EPIC and stories it names. A story already marked ready is never changed: the difference becomes a new story, through `story-drafter`.",
+      "evidence": [
+        "SKILL.md lines 39 to 42"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "name": "probing-questions-author",
+      "kind": "skill",
+      "what": "The skill that turns every gap in a document into a question for you. It rates each question's impact and severity, and writes it into the Question log. It never asks the questions or decides them.",
+      "takesIn": [
+        "the document the calling skill just drafted",
+        "Question log, so a question is never asked twice",
+        "the requirement files the document cites",
+        "its question bank, `references/probe-dimensions.md`"
+      ],
+      "givesOut": [
+        "Question log: new questions, and changes to open ones"
+      ],
+      "inFlow": [
+        "It runs inside every author skill, after the skill drafts and before its check program.",
+        "It never runs inside `things-author` or `data-model-author`. Their decisions stay in the data model's decisions file, never in the Question log.",
+        "It is never a workflow step of its own.",
+        "After it, `grade-questions.cjs` places each question in its group and sets the order. Inside a calling skill, the calling skill runs it.",
+        "Then it runs `check-simple-writing.cjs` on the Question log.",
+        "Inside a calling skill, it hands back each gap's place and its question's number. The calling skill writes them in.",
+        "It can run on its own, with a project and a document. Then it writes the numbers into a drafted document itself. For an accepted document, it lists each gap and its question for you instead.",
+        "When the project starts again from nothing, it raises every question fresh. It never asks an earlier question again."
+      ],
+      "gate": [
+        "none: its questions are asked at the calling skill's gate"
+      ],
+      "changeMode": "",
+      "evidence": [
+        "SKILL.md line 34"
+      ]
+    },
+    {
+      "name": "discovery-author",
+      "kind": "skill",
+      "what": "The skill that takes the first look at your requirement files and writes the Discovery brief. It lists every file, proposes which kind of file wins when two disagree, and compares what the files say topic by topic. Every clash, silence and assumption becomes a question.",
+      "takesIn": [
+        "your requirement files, every file in `Output/{project}/sources/`"
+      ],
+      "givesOut": [
+        "Discovery brief",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 1 of `requirements-workflow`, always the first step.",
+        "It runs `scaffold-project.cjs`, then `list-sources.cjs`.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-discovery-brief.cjs`.",
+        "When you accept, it runs `accept.cjs`, then `status.cjs`.",
+        "Next: `brd-author`, then `prd-author`. Only the files it marks Used are read after this step.",
+        "It runs once for each start of a project, and never in a change.",
+        "It can run on its own, with the project's name.",
+        "After a third \"no\", you can't park it, as it covers the whole product."
+      ],
+      "gate": [
+        "Accept the Discovery brief?",
+        "Before it: the questions the brief raised, one at a time.",
+        "Before it: the order of authority.",
+        "Before it: each file proposed as out of scope."
+      ],
+      "changeMode": "It never runs in a change: a gap found later comes in as a change, through `requirement-update-workflow`.",
+      "evidence": [
+        "SKILL.md line 91"
+      ]
+    },
+    {
+      "name": "brd-author",
+      "kind": "skill",
+      "what": "The skill that writes the BRD: why the product is needed, what it must achieve, and how success is measured. It numbers the business requirements BR-01 onward. Everything after it traces to them.",
+      "takesIn": [
+        "Discovery brief",
+        "the requirement files the Discovery brief marks Used, and only those",
+        "in a change: the Change impact report"
+      ],
+      "givesOut": [
+        "BRD",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 2 of `requirements-workflow`.",
+        "It comes after `discovery-author`. It stops if the Discovery brief is missing or not accepted.",
+        "It works through its checklist, `references/brd-checklist.md`.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-brd.cjs`.",
+        "When you accept, it runs `accept.cjs`, then `status.cjs`.",
+        "Next: `prd-author`.",
+        "It can run on its own, with the project's name.",
+        "After a third \"no\", you can't park it, as it covers the whole product."
+      ],
+      "gate": [
+        "Accept the BRD?",
+        "Before it: the questions the BRD raised or builds on, one at a time.",
+        "Before it: each objective and business requirement marked Proposed."
+      ],
+      "changeMode": "It reads the Change impact report too, changes only what it names, then holds its check and its gate again.",
+      "evidence": [
+        "SKILL.md line 81"
+      ]
+    },
+    {
+      "name": "prd-author",
+      "kind": "skill",
+      "what": "The skill that records what the client asked for, one requirement per row, in simple words. Next to each row it keeps the part of the client's words it comes from, and its source. It also writes the personas, the end-to-end journey, the NFRs and the transition requirements.",
+      "takesIn": [
+        "BRD",
+        "Discovery brief, for the order of authority and how each clash was settled",
+        "the requirement files the Discovery brief marks Used, and only those",
+        "Glossary, only when the project has one, for its agreed words",
+        "in a change: the Change impact report",
+        "in a change: the files you brought"
+      ],
+      "givesOut": [
+        "PRD",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 3 of `requirements-workflow`.",
+        "It comes after `brd-author`. It stops if the BRD is missing or not accepted.",
+        "It works through its checklist, `references/prd-checklist.md`.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-prd.cjs`.",
+        "When you accept, it runs `accept.cjs`, then `status.cjs`.",
+        "Next: `glossary-author`, then `data-model-workflow`, then `feature-author`.",
+        "It can run on its own, with the project's name.",
+        "After a third \"no\", you can't park it, as it covers the whole product."
+      ],
+      "gate": [
+        "Do the simple words say the same as the client's words?",
+        "Are these rows not requirements? Asked only when a row's kind is not Requirement.",
+        "Accept the PRD?",
+        "Before them: the questions the PRD raised or builds on, one at a time.",
+        "Before them: each recommended NFR, one at a time."
+      ],
+      "changeMode": "It reads the Change impact report and the files you brought, changes only what the recommendation names, then holds its check and its gate again.",
+      "evidence": [
+        "SKILL.md line 102",
+        "SKILL.md line 107",
+        "SKILL.md line 111"
+      ]
+    },
+    {
+      "name": "glossary-author",
+      "kind": "skill",
+      "what": "The skill that builds the Glossary: the one word the product uses for each meaning, its definition, and how the words relate. It holds two gates. Gate 1 settles the words, and Gate 2 settles the definitions.",
+      "takesIn": [
+        "BRD",
+        "PRD",
+        "the existing Glossary, if any, with its working files in `glossary/deep-dives/`",
+        "the Glossary method, in `.claude/skills/_shared/glossary/`",
+        "in a change: the Change impact report, and only the requirements it names",
+        "when adding words from a request: each word, with its evidence"
+      ],
+      "givesOut": [
+        "Glossary: its seven pages",
+        "its working files, in `glossary/deep-dives/`",
+        "its gate log, the only place a Glossary decision is written",
+        "Question log, for a gate row answered \"I don't know yet\", through `probing-questions-author`"
+      ],
+      "inFlow": [
+        "It runs on its own, between `requirements-workflow` and `data-model-workflow`. It is a skill, not a workflow.",
+        "It runs once the PRD is accepted. It stops if the PRD is not accepted.",
+        "It says its mode first, in one sentence.",
+        "Mode: a new build.",
+        "Mode: picking up where it stopped.",
+        "Mode: a re-run.",
+        "Mode: adding words from a request.",
+        "It runs `scaffold-project.cjs`, then shows where it will write, as a tree.",
+        "Before each gate, it runs `check-simple-writing.cjs`.",
+        "Before Gate 2, it runs `fill-also-written-as.cjs`.",
+        "After both gates, it runs `build-glossary-records.cjs`, then `build-retired-words-tables.cjs`.",
+        "It runs the method's character sweep and link check.",
+        "Last, it runs `accept.cjs` on the gate log.",
+        "`glossary-disposition` calls it, in its mode \"add words from a request\", with a batch of new words. It runs the whole batch in one run.",
+        "Next: `data-model-workflow`."
+      ],
+      "gate": [
+        "Gate 1: one word for each meaning. Each gate row is one decision, asked on its own, such as: Do \"cart\" and \"basket\" mean the same thing? If so, which word does the glossary use?",
+        "Gate 2: each definition, one gate row at a time.",
+        "Neither gate passes while any row is open."
+      ],
+      "changeMode": "It reads the Change impact report too, and only the requirements it names.",
+      "evidence": [
+        "SKILL.md line 51",
+        "SKILL.md line 53",
+        "SKILL.md line 86"
+      ]
+    },
+    {
+      "name": "glossary-check",
+      "kind": "skill",
+      "what": "The skill that finds where a document or story has drifted from the Glossary. It reports each place, with a recommended fix. It changes nothing.",
+      "takesIn": [
+        "the document or story you share",
+        "Glossary: its seven pages only"
+      ],
+      "givesOut": [
+        "inside a change: the change's Check findings, `changes/{change}/check-findings.md`",
+        "on its own: a findings list, shown in the conversation"
+      ],
+      "inFlow": [
+        "It looks for four kinds of drift.",
+        "Drift 1: a retired word in use.",
+        "Drift 2: a term used against its definition.",
+        "Drift 3: a product word with no entry.",
+        "Drift 4: two words for one meaning.",
+        "Inside a change, it runs at step 3 of `requirement-update-workflow`. `glossary-disposition` runs next, when its findings hold a mismatch.",
+        "It hands its findings to `glossary-disposition`.",
+        "It stops if the Glossary's seven pages are missing. Then you run `glossary-author` first.",
+        "It can run on its own, with the project and the document."
+      ],
+      "gate": [
+        "none"
+      ],
+      "changeMode": "Inside a change, it saves its findings as the change's Check findings.",
+      "evidence": [
+        "SKILL.md line 29"
+      ]
+    },
+    {
+      "name": "glossary-disposition",
+      "kind": "skill",
+      "what": "The skill that settles a mismatch between a document and the Glossary, or changes an agreed word. It settles one word at a time, at its gate. It edits the Glossary, never the documents that use a term: it lists them in a ripple list instead.",
+      "takesIn": [
+        "Check findings, or your request to change a term",
+        "Glossary: its seven pages",
+        "the Glossary method, in `.claude/skills/_shared/glossary/`",
+        "for a batch from the data model: every Glossary change the data model's decisions file marks \"Raised\""
+      ],
+      "givesOut": [
+        "Glossary",
+        "its gate log: a new Change part, rows CH-01 onward",
+        "a ripple list of the documents that use each term",
+        "Question log, for a word answered \"I don't know yet\", through `probing-questions-author`. Never for a batch from the data model."
+      ],
+      "inFlow": [
+        "Inside a change, it runs at step 4 of `requirement-update-workflow`, after `glossary-check` and before `change-impact-author`.",
+        "It runs first in the Extend and Update paths of a change that renames an agreed word.",
+        "It runs at step 3 of `data-model-workflow`, once, with every Glossary change the data model raised, as one batch.",
+        "It sends each new word to `glossary-author`, in its mode \"add words from a request\". For a batch from the data model, every new word goes together, in one run.",
+        "It runs `build-glossary-records.cjs`, then `build-retired-words-tables.cjs`.",
+        "It runs `check-simple-writing.cjs`, and the method's character sweep and link check.",
+        "Last, it runs `accept.cjs` on the gate log.",
+        "For a batch from the data model, it reports each change's outcome to `data-model-workflow`.",
+        "It can run on its own, with a word to change, such as \"rename claim to expense claim\"."
+      ],
+      "gate": [
+        "How should each mismatched word be settled? Asked one word at a time.",
+        "For a batch from the data model: How should the Glossary settle this change? Asked for each change on its own. It never offers \"fix the document\"."
+      ],
+      "changeMode": "Inside a change, it runs before `change-impact-author`, so the change is weighed in agreed words.",
+      "evidence": [
+        "SKILL.md line 46",
+        "SKILL.md line 68"
+      ]
+    },
+    {
+      "name": "things-author",
+      "kind": "skill",
+      "what": "The skill that lists the things the product keeps information about, straight from the Glossary. It says which data model file each thing goes in. It also settles the product-wide decisions that every family shares.",
+      "takesIn": [
+        "Glossary: its four term pages",
+        "Glossary: `terms-and-relationships.md`",
+        "BRD, for what the first release covers and who acts in it",
+        "PRD, only to see whether a word has details of its own",
+        "Question log, only for the recommended answer to a question the PRD left open"
+      ],
+      "givesOut": [
+        "things file",
+        "the data model's decisions file: the product-wide decisions and their Glossary changes"
+      ],
+      "inFlow": [
+        "It is step 1 of `data-model-workflow`. It also runs at step 4, in a change.",
+        "It comes after `glossary-author`.",
+        "It says its mode first, in one sentence.",
+        "Mode: a change.",
+        "Mode: a new build.",
+        "Mode: picking up where it stopped.",
+        "Mode: nothing to do.",
+        "It runs `status.cjs` first, and asks again each entry still open that it owns.",
+        "It never runs `probing-questions-author`. Its decisions stay in the data model's decisions file, never in the Question log.",
+        "Its check is `check-data-model.cjs`.",
+        "When you accept, it runs `accept.cjs`, then `status.cjs`.",
+        "Next: `data-model-author`, once for each family.",
+        "It can run on its own, with the project's name."
+      ],
+      "gate": [
+        "First, the product-wide decisions, one per message, as multiple choice.",
+        "Accept the things?"
+      ],
+      "changeMode": "When a Glossary term is added, renamed or withdrawn, it changes only the rows for that term, then holds its gate again.",
+      "evidence": [
+        "SKILL.md line 104",
+        "SKILL.md line 105"
+      ]
+    },
+    {
+      "name": "data-model-author",
+      "kind": "skill",
+      "what": "The skill that writes one family's data model file. For each thing, it writes what people do with it, the rules for every field, and how the thing moves. Nothing is invented, and every gap goes where its kind goes, most often to a decision.",
+      "takesIn": [
+        "things file",
+        "the data model's decisions file, for the product-wide decisions already settled",
+        "Glossary, with `terms-and-relationships.md`",
+        "BRD, taking only what touches this family's things",
+        "PRD: this family's part, and only what other parts add",
+        "Question log, only for the recommended answer to a question the PRD left open"
+      ],
+      "givesOut": [
+        "data model file, one for this family, such as `lending.md`",
+        "the data model's decisions file: this file's decisions and Glossary changes"
+      ],
+      "inFlow": [
+        "It is step 2 of `data-model-workflow`, once for each family. It also runs at step 4, in a change.",
+        "It comes after `things-author`.",
+        "It stops if the things file is not accepted.",
+        "It stops if the things file does not name this family's file.",
+        "It says its mode first, in one sentence.",
+        "Mode: a change.",
+        "Mode: a new build.",
+        "Mode: picking up where it stopped.",
+        "Mode: nothing to do.",
+        "It runs `status.cjs` first, and asks again each entry still open that it owns.",
+        "It never runs `probing-questions-author`. Its decisions stay in the data model's decisions file, never in the Question log.",
+        "Its check is `check-data-model.cjs --family`.",
+        "When you accept, it runs `accept.cjs`, then `status.cjs`.",
+        "Next: the next family. After the last family, `glossary-disposition`, at step 3 of `data-model-workflow`.",
+        "Later, `feature-author` and `frd-author` read its file.",
+        "It can run on its own, with the project's name and the family."
+      ],
+      "gate": [
+        "First, the file's decisions, as multiple choice: the \"one at a time\" ones, then the \"settled together\" ones, as one list.",
+        "Accept the {family name} data model?"
+      ],
+      "changeMode": "It changes only what the change names, opens a decision that starts \"Replaces DM-{n}:\" when an answer changes, and holds its gate again for what changed only.",
+      "evidence": [
+        "SKILL.md line 102",
+        "SKILL.md line 107"
+      ]
+    },
+    {
+      "name": "feature-author",
+      "kind": "skill",
+      "what": "The skill that turns the PRD's requirements into features: something a user can recognise and use. Each feature has a \"Done when\", cut into numbered pieces, and names the FRD that will hold its rules. Every requirement lands in a feature, and every action and move of the data model goes to a feature.",
+      "takesIn": [
+        "PRD",
+        "data model files, every one the things file names",
+        "Glossary, by ID, for the agreed words",
+        "BRD, by ID",
+        "in a change: the Change impact report"
+      ],
+      "givesOut": [
+        "Feature catalog",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 1 of `features-and-epics-workflow`.",
+        "It comes after `data-model-workflow`.",
+        "It stops if the PRD is not accepted.",
+        "It stops if there is no Glossary.",
+        "It stops if a data model file is not accepted.",
+        "It works through its checklist, in `references/feature-catalog.md`.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-features.cjs`.",
+        "When you pick \"a new requirement first\" for a row, it runs only step 1 of `requirement-update-workflow`, at its gate.",
+        "When you accept, it runs `accept.cjs`, then `status.cjs`.",
+        "Next: `epic-grouping-author`. Later, `frd-author` reads the catalog.",
+        "It can run on its own, with the project's name.",
+        "After a third \"no\", you can't park it, as it covers the whole product.",
+        "After a third \"no\", you can accept it as it is only when no row shows \"?\"."
+      ],
+      "gate": [
+        "Accept the Feature catalog?",
+        "Asked only once every \"?\" row in section 5 is settled.",
+        "Before it: the questions the catalog raised or builds on, one at a time.",
+        "Before it: where a feature could go in another FRD, or its \"Done when\" could be cut another way."
+      ],
+      "changeMode": "It changes only the features and pieces the Change impact report names. A row that waits on this change gets its new feature.",
+      "evidence": [
+        "SKILL.md line 104",
+        "SKILL.md line 106"
+      ]
+    },
+    {
+      "name": "epic-grouping-author",
+      "kind": "skill",
+      "what": "The skill that groups the features into EPICs. It offers two or three really different groupings, compared honestly, with one recommended. It writes out the one you pick in full, and proposes which EPICs get an EPIC brief.",
+      "takesIn": [
+        "Feature catalog",
+        "in a change: the Change impact report"
+      ],
+      "givesOut": [
+        "EPIC grouping. It only ever adds to it.",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 2 of `features-and-epics-workflow`.",
+        "It comes after `feature-author`. It stops if the Feature catalog is not accepted.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-epic-grouping.cjs`.",
+        "When every decision is made, it runs `accept.cjs`, then `status.cjs`.",
+        "Next: `epic-author`, in register mode.",
+        "It can run on its own, with the project's name.",
+        "After a third \"no\", you can't park it, as it covers the whole product."
+      ],
+      "gate": [
+        "Pick a grouping, settle its clashes, confirm the EPIC brief list.",
+        "In a change that places one feature: Where does {feature} go?",
+        "In a change that places one feature: Confirm the placement?"
+      ],
+      "changeMode": "For a new feature a change brings, it proposes where the feature goes, writes it into section 4, \"Placements from changes\", and holds its own gate, \"Confirm the placement?\".",
+      "evidence": [
+        "SKILL.md line 77",
+        "SKILL.md line 88",
+        "SKILL.md line 89"
+      ]
+    },
+    {
+      "name": "epic-author",
+      "kind": "skill",
+      "what": "The skill that writes EPIC documents, in one of two modes. Register mode copies the chosen grouping, field for field, into the EPIC register. Brief mode writes one EPIC brief, for an EPIC the EPIC brief list says gets one.",
+      "takesIn": [
+        "register mode: EPIC grouping",
+        "register mode: Feature catalog, by ID",
+        "brief mode: EPIC register",
+        "brief mode: BRD, by ID",
+        "brief mode: PRD, by ID",
+        "brief mode: Feature catalog, by ID"
+      ],
+      "givesOut": [
+        "register mode: EPIC register",
+        "brief mode: EPIC brief",
+        "brief mode: Question log"
+      ],
+      "inFlow": [
+        "Register mode is step 3 of `features-and-epics-workflow`, after `epic-grouping-author`. It stops if the EPIC grouping is not accepted.",
+        "Register mode runs `check-register.cjs`. A pass is the acceptance, and it then runs `accept.cjs`.",
+        "Register mode only copies, so it raises no questions.",
+        "After register mode: `build-sequencing-mapping.cjs`, then `frd-workflow`.",
+        "Brief mode is step 3 of `stories-workflow`, only for an EPIC the EPIC grouping's brief list marks \"yes\".",
+        "Brief mode runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-epic-brief.cjs`. When you accept, it runs `accept.cjs`.",
+        "After brief mode: `story-drafter`.",
+        "It can run on its own, with the project's name and the mode, and the EPIC for a brief.",
+        "In brief mode, after a third \"no\", you may park the EPIC."
+      ],
+      "gate": [
+        "Register mode: none. A pass of `check-register.cjs` is the acceptance.",
+        "Brief mode: Accept the EPIC brief?",
+        "Brief mode, before it: the questions the brief raised or builds on.",
+        "Brief mode, before it: each AI-RECOMMENDED measure."
+      ],
+      "changeMode": "",
+      "evidence": [
+        "SKILL.md line 29",
+        "SKILL.md line 52"
+      ]
+    },
+    {
+      "name": "frd-author",
+      "kind": "skill",
+      "what": "The skill that writes one capability's FRD: the rules the system must always obey, each starting \"The system shall\". Each rule is traced to a \"Done when\" piece, the data model, the requirement's own text, or your decision. Its Data is copied word for word from the data model.",
+      "takesIn": [
+        "Feature catalog",
+        "PRD, by ID",
+        "Glossary, by ID",
+        "data model files, by ID",
+        "in a change: the Change impact report"
+      ],
+      "givesOut": [
+        "FRD",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 2 of `frd-workflow`, once for each capability, after `route-next-capability.cjs`.",
+        "It stops if the capability is not in the Feature catalog.",
+        "It stops if a data model file is missing.",
+        "It runs `scaffold-project.cjs`, then drafts the FRD.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-frd.cjs`.",
+        "When you accept, it runs `accept.cjs`, then `status.cjs`.",
+        "A decision at its gate may change a data model answer. Then the FRD says the new answer, with a note. The data model file stays as it is.",
+        "It runs again for an accepted FRD when a data model answer it waits on is settled.",
+        "Next: the next FRD. `stories-workflow` can start on an EPIC once the FRDs of its own features are accepted.",
+        "It can run on its own, with the project's name and a capability.",
+        "After a third \"no\", you may park the FRD, with `park.cjs`."
+      ],
+      "gate": [
+        "Accept the FRD?",
+        "First, the Must answer questions it builds on, one at a time. While one is open, the FRD can't be accepted: you answer it, or park the FRD.",
+        "Before it: the other questions, in order.",
+        "Before it: each suggested rule, as keep or drop, one at a time."
+      ],
+      "changeMode": "It reads the Change impact report too and changes only what it names. Rule IDs already accepted never change.",
+      "evidence": [
+        "SKILL.md line 116",
+        "SKILL.md line 102"
+      ]
+    },
+    {
+      "name": "story-drafter",
+      "kind": "skill",
+      "what": "The skill that splits one EPIC into user stories, in the order they are worked. Each story is a title and an \"As a / I want / So that\" statement, one capability each. The Story files are made only after you approve the split.",
+      "takesIn": [
+        "EPIC register: the EPIC's row",
+        "FRDs of the EPIC's features",
+        "EPIC brief, if the EPIC has one",
+        "design files, if any",
+        "Glossary, by ID",
+        "BRD, by ID",
+        "PRD, by ID",
+        "in a change: the Change impact report"
+      ],
+      "givesOut": [
+        "Story list",
+        "Stories: one Story file for each story, made only after you approve the split",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 4 of `stories-workflow`, after step 2 or step 3.",
+        "It runs `scaffold-project.cjs` for the EPIC. It stops if an FRD the EPIC's features need is not accepted.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-stories.cjs`.",
+        "When you approve, it makes the Story files, runs the check again, then runs `accept.cjs` and `status.cjs`.",
+        "Next: `story-groomer`.",
+        "It can run on its own, with the project's name and the EPIC.",
+        "After a third \"no\", you may park the EPIC."
+      ],
+      "gate": [
+        "Approve the split? One gate for all the EPIC's stories together, with their order.",
+        "Before it: the questions, in order."
+      ],
+      "changeMode": "It changes only what the Change impact report names. Each story keeps its title and place, and a new story goes at the end of the list. A story already ready is never changed.",
+      "evidence": [
+        "SKILL.md line 47"
+      ]
+    },
+    {
+      "name": "story-groomer",
+      "kind": "skill",
+      "what": "The skill that grooms every story of one EPIC, only from documents already decided. For each story it writes its dependencies, its scope in and out, and the FRD rules it delivers, quoted by ID. It decides no rules: a gap becomes a question.",
+      "takesIn": [
+        "Story list",
+        "Stories",
+        "FRDs, by ID",
+        "Feature catalog, by ID",
+        "BRD, by ID",
+        "EPIC brief, by ID",
+        "Glossary, by ID",
+        "in a change: the Change impact report"
+      ],
+      "givesOut": [
+        "Stories: each one's grooming sections, from Dependencies to Design links",
+        "Stories and Story list: each story's status, groomed",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 5 of `stories-workflow`, after `story-drafter`.",
+        "It stops if the EPIC's split is not approved.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`, then its check, `check-stories.cjs`.",
+        "When you accept, it runs the check again, then `accept.cjs`, then `status.cjs`.",
+        "Next: `ac-author`.",
+        "It can run on its own, with the project's name and the EPIC.",
+        "After a third \"no\", you may park the EPIC."
+      ],
+      "gate": [
+        "Accept the grooming? One gate for all the EPIC's stories together.",
+        "Before it: the questions, in order."
+      ],
+      "changeMode": "It changes only the grooming the Change impact report names. A story already ready is never groomed again: the difference comes as a new story, through `story-drafter`.",
+      "evidence": [
+        "SKILL.md line 47"
+      ]
+    },
+    {
+      "name": "ac-author",
+      "kind": "skill",
+      "what": "The skill that writes the acceptance criteria for every story of one EPIC: three to seven Given, When, Then scenarios each. Every scenario names the FRD rules it proves, and every rule of the EPIC's features must be proved. On acceptance, it marks the stories ready.",
+      "takesIn": [
+        "Stories",
+        "FRDs, by ID",
+        "Glossary, by ID",
+        "Question log, by ID",
+        "in a change: the Change impact report"
+      ],
+      "givesOut": [
+        "Stories: each one's Acceptance criteria section",
+        "Stories and Story list: each story's status, ready",
+        "Question log"
+      ],
+      "inFlow": [
+        "It is step 6 of `stories-workflow`, the last step, after `story-groomer`.",
+        "It stops if the EPIC's grooming is not accepted.",
+        "It runs `probing-questions-author`, then `grade-questions.cjs`.",
+        "Its checks are `check-stories.cjs`, then `coverage-check.cjs`.",
+        "When you accept, it runs `accept.cjs`, then `status.cjs`.",
+        "Next: `stories-workflow` routes to the next EPIC.",
+        "It can run on its own, with the project's name and the EPIC.",
+        "After a third \"no\", you may park the EPIC."
+      ],
+      "gate": [
+        "Accept the criteria? This marks the stories ready.",
+        "First, the ready guard: each Must answer question raised in these stories, one at a time. While one is open, the stories can't be marked ready.",
+        "Before it: the other questions, in order."
+      ],
+      "changeMode": "It changes only the scenarios the Change impact report names, and adds one for each rule the change adds or changes. Every other scenario stays word for word.",
+      "evidence": [
+        "SKILL.md line 45",
+        "SKILL.md line 43"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+<div class="wrap">
+  <h1>Specifier v3 Workflows</h1>
+  <p class="lede">How the specifier takes a client's requirement files to stories ready to build. Start with the workflows at a glance, then open the deep dive for each one. Who reads what, and the documents table, follow.</p>
+  <p class="note">Updated 2026-11-03. Drawn from the skills as they are in the kit. Handling a change is being redesigned, so this page shows where it joins the flow, and no more.</p>
+  <nav class="toc" aria-label="On this page">
+    <a href="#glance">At a glance</a>
+    <a href="#deep">Deep dive</a>
+    <a href="#matrix">Who reads what</a>
+    <a href="#docs">Documents</a>
+  </nav>
+
+  <h2 id="glance"><span class="ph">1</span>The workflows at a glance</h2>
+  <p class="note">Five workflows run one after another, with the Glossary skill between the first two. Each run covers one piece, then stops: the whole product, one capability or one EPIC. Handling a change runs whenever a change arrives.</p>
+  <div class="chartbox">
+    <svg class="glance" viewBox="0 0 1340 450" role="img" aria-label="The client's requirement files feed the Requirements workflow, then the Glossary skill, then the Data model workflow, then Features and EPICs, then FRD once per capability, then Stories once per EPIC, ending in ready stories. The data model sends its Glossary changes back to the Glossary as one batch. Below all of them, handling a change re-runs the steps a change names; it is being redesigned.">
+      <defs>
+        <marker id="g-mf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-flow"/></marker>
+        <marker id="g-mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-gl"/></marker>
+        <marker id="g-mu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-upd"/></marker>
+      </defs>
+
+      <rect x="6" y="134" width="104" height="60" rx="30" class="g-pill"/>
+      <text x="58" y="160" text-anchor="middle" class="g-out">Requirement</text>
+      <text x="58" y="176" text-anchor="middle" class="g-out">files</text>
+      <path d="M110 164 H126" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="128" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="140" y="94" class="g-title">Requirements</text>
+      <text x="140" y="112" class="g-runs">once per product</text>
+      <text x="140" y="134" class="g-skill">discovery-author</text>
+      <text x="140" y="151" class="g-skill">brd-author</text>
+      <text x="140" y="168" class="g-skill">prd-author</text>
+      <text x="140" y="228" class="g-stop">3 gates</text>
+      <text x="140" y="248" class="g-out">Ends with: the PRD</text>
+      <path d="M292 164 H314" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="316" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="328" y="94" class="g-title">Glossary</text>
+      <text x="328" y="112" class="g-runs">a skill, once per product</text>
+      <text x="328" y="134" class="g-skill">glossary-author</text>
+      <text x="328" y="228" class="g-stop">2 gates</text>
+      <text x="328" y="248" class="g-out">Ends with: the Glossary</text>
+      <path d="M480 164 H502" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="504" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="516" y="94" class="g-title">Data model</text>
+      <text x="516" y="112" class="g-runs">once per product</text>
+      <text x="516" y="134" class="g-skill">things-author</text>
+      <text x="516" y="151" class="g-skill">data-model-author</text>
+      <text x="516" y="168" class="g-skill">glossary-disposition</text>
+      <text x="516" y="212" class="g-stop">1 gate, +1 per family,</text>
+      <text x="516" y="228" class="g-stop">+1 for Glossary changes</text>
+      <text x="516" y="248" class="g-out">Ends with: the data model</text>
+      <path d="M668 164 H690" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="692" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="704" y="94" class="g-title">Features and EPICs</text>
+      <text x="704" y="112" class="g-runs">once per product</text>
+      <text x="704" y="134" class="g-skill">feature-author</text>
+      <text x="704" y="151" class="g-skill">epic-grouping-author</text>
+      <text x="704" y="168" class="g-skill">epic-author</text>
+      <text x="704" y="228" class="g-stop">2 gates</text>
+      <text x="704" y="248" class="g-out">Ends with: EPIC register</text>
+      <path d="M856 164 H878" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="880" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="892" y="94" class="g-title">FRD</text>
+      <text x="892" y="112" class="g-runs">once per capability</text>
+      <text x="892" y="134" class="g-skill">frd-author</text>
+      <text x="892" y="228" class="g-stop">1 gate per FRD</text>
+      <text x="892" y="248" class="g-out">Ends with: every FRD</text>
+      <path d="M1044 164 H1066" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="1068" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="1080" y="94" class="g-title">Stories</text>
+      <text x="1080" y="112" class="g-runs">once per EPIC</text>
+      <text x="1080" y="134" class="g-skill">epic-author</text>
+      <text x="1080" y="151" class="g-skill">story-drafter</text>
+      <text x="1080" y="168" class="g-skill">story-groomer</text>
+      <text x="1080" y="185" class="g-skill">ac-author</text>
+      <text x="1080" y="228" class="g-stop">3 gates, +1 with a brief</text>
+      <text x="1080" y="248" class="g-out">Ends with: stories ready</text>
+      <path d="M1232 164 H1248" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="1250" y="140" width="84" height="48" rx="24" class="g-pill"/>
+      <text x="1292" y="160" text-anchor="middle" class="g-out">Ready</text>
+      <text x="1292" y="176" text-anchor="middle" class="g-out">stories</text>
+
+      <!-- the data model's Glossary changes go back as one batch -->
+      <path d="M586 66 V34 H398 V62" class="a-gl" marker-end="url(#g-mg)"/>
+      <text x="408" y="26" class="g-lbl">Glossary changes, sent as one batch once every data model file is accepted</text>
+
+      <!-- handling a change: being redesigned -->
+      <rect x="128" y="322" width="1104" height="112" rx="10" class="g-upd"/>
+      <path d="M210 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M398 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M586 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M774 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M962 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M1150 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <text x="220" y="300" class="g-lbl">re-runs the steps a change names</text>
+      <text x="148" y="352" class="g-title">Handling a change: being redesigned</text>
+      <text x="148" y="372" class="g-runs">Runs whenever a change arrives: the client changes a requirement, you find a mistake in an accepted document, or a late answer comes in.</text>
+      <text x="148" y="390" class="g-runs">Today this is requirement-update-workflow. Its new design is being joined to the kit; this page will show it once it is in.</text>
+      <text x="148" y="414" class="g-lbl">A Glossary change from the data model is not a change: it goes to the Glossary as above.</text>
+    </svg>
+  </div>
+
+  <h2 id="deep"><span class="ph">2</span>Deep dive, workflow by workflow</h2>
+{{LEGEND}}
+  <p class="note">Who reads what is in the table after the diagrams, so the diagrams show only the flow, the gates and what each step writes. Every skill that writes a document also writes its gaps to the Question log, as rated questions. The data model's two skills are the exception: their decisions stay in the data model's decisions file.</p>
+
+  <h3><span class="ph">Workflow 1, once per product</span>Requirements</h3>
+  <div class="chartbox"><svg class="deep" id="wf-req" role="img" aria-label="Requirements workflow: list-sources.cjs, then discovery-author, brd-author and prd-author, each followed by your gate."></svg></div>
+
+  <h3><span class="ph">A skill, once per product</span>Glossary</h3>
+  <div class="chartbox"><svg class="deep" id="wf-gl" role="img" aria-label="glossary-author: Gate 1 for the words, then the definitions and Gate 2, then two programs rebuild what is filled from the gate log."></svg></div>
+
+  <h3><span class="ph">Workflow 2, once per product</span>Data model</h3>
+  <div class="chartbox"><svg class="deep" id="wf-dm" role="img" aria-label="Data model workflow: things-author and its gate, then data-model-author once per family with its gate, then every Glossary change goes to glossary-disposition as one batch, then the data model is brought in step."></svg></div>
+
+  <h3><span class="ph">Workflow 3, once per product</span>Features and EPICs</h3>
+  <div class="chartbox"><svg class="deep" id="wf-fe" role="img" aria-label="Features and EPICs workflow: feature-author, epic-grouping-author, epic-author in register mode, the register's copy check, then the sequencing and mapping."></svg></div>
+
+  <h3><span class="ph">Workflow 4, once per capability</span>FRD</h3>
+  <div class="chartbox"><svg class="deep" id="wf-frd" role="img" aria-label="FRD workflow: route-next-capability.cjs names the next capability, frd-author writes its FRD, and you accept it. Then the next capability."></svg></div>
+
+  <h3><span class="ph">Workflow 5, once per EPIC</span>Stories</h3>
+  <div class="chartbox"><svg class="deep" id="wf-st" role="img" aria-label="Stories workflow: the next EPIC, its EPIC brief if listed, story-drafter, story-groomer and ac-author, each with your gate. Then the next EPIC."></svg></div>
+
+  <h3><span class="ph">Whenever a change arrives</span>Handling a change</h3>
+  <p class="note">Being redesigned. Today, <code>requirement-update-workflow</code> takes one change to your decision in a Change impact report, and the workflows it names apply it. Its new design is being joined to the kit. This page will draw it once it is in.</p>
+
+  <h2 id="matrix"><span class="ph">3</span>Who reads what</h2>
+  <p class="note">Each row is a document. Each column is a step, grouped by workflow; programs are in italics. Read a row left to right to see where a document is written, then read.</p>
+  <div class="legend">
+    <span><span class="mk w">W</span> writes it</span>
+    <span><span class="mk r">R</span> reads it</span>
+    <span><span class="mk l">L</span> looks up items in it by ID</span>
+  </div>
+  <div class="tbl-wrap"><table class="matrix" id="mx"></table></div>
+
+  <h2 id="docs"><span class="ph">4</span>Documents: who writes them, who reads them, what they hold</h2>
+  <p class="note">Built from the same data as the table above, so the two always agree. <span class="kind living">living</span> changes only as a new version, made by its own skill. <span class="kind record">record</span> is written once, and later entries are added. <span class="kind generated">generated</span> is rebuilt by a program. <span class="kind external">external</span> comes from outside.</p>
+  <div class="tbl-wrap"><table class="docs" id="doctable"></table></div>
+</div>

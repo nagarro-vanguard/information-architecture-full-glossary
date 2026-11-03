@@ -1,0 +1,955 @@
+<title>Specifier v3 Workflows</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: one reading column. The workflows at a glance first, then one swimlane per workflow,
+   then the who-reads-what matrix and the documents table. Same palette and type as the earlier swimlane pages. */
+:root{
+  --bg:#F1F4F5; --surface:#FFFFFF; --ink:#16202A; --muted:#566370; --line:#C6CFD5; --soft:#DDE4E8;
+  --accent:#1C5A85; --feedback:#C2560A; --input:#6150A3; --dec:#E1ECF5; --ext:#D9E4EB; --art:#FAFBFC; --rec:#EEE9DD;
+  --gl:#E4EEE2; --upd:#F3EADF; --lane-a:#F7F9FA; --lane-b:#EEF2F4;
+  --f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F151A; --surface:#162029; --ink:#E2E8ED; --muted:#93A1AD; --line:#2D3944; --soft:#22303B;
+    --accent:#74B3E2; --feedback:#F0A157; --input:#AE9EEB; --dec:#1B2C3A; --ext:#1D2A35; --art:#121A21; --rec:#2A2720;
+    --gl:#1C2A1E; --upd:#2E2419; --lane-a:#131B22; --lane-b:#17212A;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F151A; --surface:#162029; --ink:#E2E8ED; --muted:#93A1AD; --line:#2D3944; --soft:#22303B;
+  --accent:#74B3E2; --feedback:#F0A157; --input:#AE9EEB; --dec:#1B2C3A; --ext:#1D2A35; --art:#121A21; --rec:#2A2720;
+  --gl:#1C2A1E; --upd:#2E2419; --lane-a:#131B22; --lane-b:#17212A;
+  color-scheme:dark;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55}
+.wrap{max-width:1380px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 64px;display:grid;gap:18px}
+.wrap > *{min-width:0}
+h1{font-family:var(--f-display);font-size:clamp(28px,4vw,38px);font-weight:700;margin:0;line-height:1.15;text-wrap:balance}
+h2{font-family:var(--f-display);font-size:24px;font-weight:600;margin:22px 0 0;text-wrap:balance}
+h3{font-family:var(--f-display);font-size:19px;font-weight:600;margin:14px 0 0}
+h2 .ph,h3 .ph{font-family:var(--f-mono);font-size:12px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:2px}
+p{margin:0;max-width:80ch}
+.lede{color:var(--muted);font-size:16px}
+.note{font-size:13.5px;color:var(--muted)}
+a{color:var(--accent)}
+ul{margin:0;padding-left:20px;display:grid;gap:3px}
+.toc{display:flex;flex-wrap:wrap;gap:8px 10px}
+.toc a{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:5px 11px;text-decoration:none;color:var(--ink);font-size:14px}
+.toc a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 18px;display:grid;gap:8px;max-width:95ch}
+.box b{font-family:var(--f-display);font-weight:600;font-size:16px}
+.chartbox{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow-x:auto}
+.chartbox svg{display:block;width:100%;height:auto}
+.chartbox .glance{min-width:900px}
+.chartbox .deep{min-width:940px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted);align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+.legend span{display:inline-flex;gap:8px;align-items:center}
+.legend svg{display:block;flex:none}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;vertical-align:top;padding:9px 12px;border-bottom:1px solid var(--soft)}
+th{font-family:var(--f-display);font-weight:600;font-size:14.5px;background:var(--art)}
+tr:last-child td{border-bottom:0}
+td ul{padding-left:18px;gap:2px}
+td ul ul{margin-top:2px}
+.docs{min-width:1440px}
+.docs td:first-child{font-family:var(--f-display);font-weight:600;font-size:15px}
+.kind{display:inline-block;font-family:var(--f-mono);font-size:11.5px;border-radius:4px;padding:0 7px;border:1px solid var(--line);white-space:nowrap}
+.kind.living{background:var(--art)}
+.kind.record{background:var(--rec)}
+.kind.generated{border-style:dashed}
+.kind.external{background:var(--ext)}
+code{font-family:var(--f-mono);font-size:.9em}
+
+/* the at-a-glance figure */
+.glance .g-band{fill:var(--gl);stroke:var(--line)}
+.glance .g-upd{fill:var(--upd);stroke:var(--line)}
+.glance .g-box{fill:var(--surface);stroke:var(--ink);stroke-width:1.4}
+.glance .g-pill{fill:var(--ext);stroke:var(--muted)}
+.glance .g-doc{fill:var(--ext);stroke:var(--muted)}
+.glance .g-title{font-family:var(--f-display);font-size:17px;font-weight:700;fill:var(--ink)}
+.glance .g-runs{font-family:var(--f-body);font-size:11.5px;fill:var(--muted)}
+.glance .g-skill{font-family:var(--f-mono);font-size:12px;fill:var(--ink)}
+.glance .g-stop{font-family:var(--f-body);font-size:12px;font-weight:600;fill:var(--feedback)}
+.glance .g-out{font-family:var(--f-body);font-size:12px;fill:var(--ink)}
+.glance .g-lbl{font-family:var(--f-body);font-size:11px;font-weight:500;fill:var(--muted)}
+.glance .a-flow{stroke:var(--ink);stroke-width:1.6;fill:none}
+.glance .a-gl{stroke:var(--muted);stroke-width:1.3;fill:none;stroke-dasharray:4 3}
+.glance .a-upd{stroke:var(--accent);stroke-width:1.6;fill:none;stroke-dasharray:8 4}
+.glance .mk-flow{fill:var(--ink)} .glance .mk-gl{fill:var(--muted)} .glance .mk-upd{fill:var(--accent)}
+
+/* the deep-dive swimlanes */
+.deep .lane-bg.a{fill:var(--lane-a)} .deep .lane-bg.b{fill:var(--lane-b)}
+.deep .lane-sep{stroke:var(--line);stroke-width:1}
+.deep .lane-title{font-family:var(--f-display);font-size:15px;font-weight:700;fill:var(--ink)}
+.deep .lane-sub{font-family:var(--f-body);font-size:11px;fill:var(--muted)}
+.deep .n-skill{fill:var(--surface);stroke:var(--ink);stroke-width:1.4}
+.deep .n-prog{fill:var(--surface);stroke:var(--muted);stroke-width:1.3}
+.deep .n-action{fill:var(--dec);stroke:var(--accent);stroke-width:1.4}
+.deep .n-pill{fill:var(--ext);stroke:var(--muted);stroke-width:1}
+.deep .n-router{fill:var(--surface);stroke:var(--muted);stroke-width:1.4}
+.deep .n-stop{fill:var(--dec);stroke:var(--accent);stroke-width:1.4}
+.deep .d-living{fill:var(--art);stroke:var(--muted)}
+.deep .d-record{fill:var(--rec);stroke:var(--muted)}
+.deep .d-generated{fill:var(--art);stroke:var(--muted);stroke-dasharray:4 3}
+.deep .d-external{fill:var(--ext);stroke:var(--muted)}
+.deep .t-name{font-family:var(--f-mono);font-size:13.5px;font-weight:500;fill:var(--ink)}
+.deep .t-body{font-family:var(--f-body);font-size:12.5px;font-weight:600;fill:var(--ink)}
+.deep .t-tag{font-family:var(--f-body);font-size:10.5px;font-style:italic;fill:var(--muted)}
+.deep .t-dec{font-family:var(--f-body);font-size:11.5px;font-weight:500;fill:var(--ink)}
+.deep .t-doc{font-family:var(--f-display);font-size:13.5px;font-weight:600;fill:var(--ink)}
+.deep .t-dsub{font-family:var(--f-body);font-size:10.5px;fill:var(--muted)}
+.deep .e{fill:none;stroke-linejoin:round}
+.deep .e.flow{stroke:var(--ink);stroke-width:1.5}
+.deep .e.back{stroke:var(--feedback);stroke-width:1.5}
+.deep .e.loop{stroke:var(--accent);stroke-width:1.7}
+.deep .e.write{stroke:var(--muted);stroke-width:1.1;stroke-dasharray:2 3}
+.deep .m-flow{fill:var(--ink)} .deep .m-back{fill:var(--feedback)} .deep .m-loop{fill:var(--accent)} .deep .m-write{fill:var(--muted)}
+.deep .elabel{font-family:var(--f-body);font-size:11px;font-weight:500;fill:var(--ink);paint-order:stroke;stroke:var(--surface);stroke-width:4px;stroke-linejoin:round}
+.deep .elabel.back{fill:var(--feedback)}
+.deep .elabel.loop{fill:var(--accent)}
+.deep .t-path{font-family:var(--f-body);font-size:10.5px;fill:var(--ink)}
+.deep .t-stops{font-family:var(--f-body);font-size:11px;font-weight:600;fill:var(--feedback)}
+.glance .g-chip{fill:var(--surface);stroke:var(--ink);stroke-width:1.2}
+.glance .g-chip.k{stroke:var(--accent)}
+.glance .g-ctitle{font-family:var(--f-display);font-size:14px;font-weight:600;fill:var(--ink)}
+.matrix{min-width:1200px}
+.matrix th,.matrix td{text-align:center;padding:5px 4px;font-variant-numeric:tabular-nums}
+.matrix th.rowh,.matrix td.rowh{text-align:left;position:sticky;left:0;background:var(--surface);white-space:nowrap;z-index:1;padding-inline:10px;font-family:var(--f-display);font-weight:600;font-size:14px}
+.matrix th.rowh{background:var(--art);z-index:2;vertical-align:bottom}
+.matrix th.grp{font-family:var(--f-display);font-size:13px;border-left:1px solid var(--line)}
+.matrix th.col{font-family:var(--f-mono);font-size:11px;font-weight:500;vertical-align:bottom;padding:8px 2px}
+.matrix th.col span{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;display:inline-block}
+.matrix th.col.prog span{font-style:italic;color:var(--muted)}
+.matrix td.gstart,.matrix th.gstart{border-left:1px solid var(--line)}
+.mk{display:inline-block;min-width:18px;font-family:var(--f-mono);font-size:11px;font-weight:500;border-radius:4px;padding:0 3px;line-height:1.6}
+.mk.w{background:var(--ink);color:var(--bg)}
+.mk.r{border:1px solid var(--input);color:var(--input)}
+.mk.l{border:1px dotted var(--input);color:var(--input)}
+.mk.x{color:var(--muted);text-decoration:line-through;opacity:.7}
+.mk.c{border:1px dashed var(--accent);color:var(--accent)}
+</style>
+<div class="wrap">
+  <h1>Specifier v3 Workflows</h1>
+  <p class="lede">How the specifier takes a client's requirement files to stories ready to build. Start with the workflows at a glance, then open the deep dive for each one. Who reads what, and the documents table, follow.</p>
+  <p class="note">Updated 2026-11-03. Drawn from the skills as they are in the kit. Handling a change is being redesigned, so this page shows where it joins the flow, and no more.</p>
+  <nav class="toc" aria-label="On this page">
+    <a href="#glance">At a glance</a>
+    <a href="#deep">Deep dive</a>
+    <a href="#matrix">Who reads what</a>
+    <a href="#docs">Documents</a>
+  </nav>
+
+  <h2 id="glance"><span class="ph">1</span>The workflows at a glance</h2>
+  <p class="note">Five workflows run one after another, with the Glossary skill between the first two. Each run covers one piece, then stops: the whole product, one capability or one EPIC. Handling a change runs whenever a change arrives.</p>
+  <div class="chartbox">
+    <svg class="glance" viewBox="0 0 1340 450" role="img" aria-label="The client's requirement files feed the Requirements workflow, then the Glossary skill, then the Data model workflow, then Features and EPICs, then FRD once per capability, then Stories once per EPIC, ending in ready stories. The data model sends its Glossary changes back to the Glossary as one batch. Below all of them, handling a change re-runs the steps a change names; it is being redesigned.">
+      <defs>
+        <marker id="g-mf" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-flow"/></marker>
+        <marker id="g-mg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-gl"/></marker>
+        <marker id="g-mu" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="mk-upd"/></marker>
+      </defs>
+
+      <rect x="6" y="134" width="104" height="60" rx="30" class="g-pill"/>
+      <text x="58" y="160" text-anchor="middle" class="g-out">Requirement</text>
+      <text x="58" y="176" text-anchor="middle" class="g-out">files</text>
+      <path d="M110 164 H126" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="128" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="140" y="94" class="g-title">Requirements</text>
+      <text x="140" y="112" class="g-runs">once per product</text>
+      <text x="140" y="134" class="g-skill">discovery-author</text>
+      <text x="140" y="151" class="g-skill">brd-author</text>
+      <text x="140" y="168" class="g-skill">prd-author</text>
+      <text x="140" y="228" class="g-stop">3 gates</text>
+      <text x="140" y="248" class="g-out">Ends with: the PRD</text>
+      <path d="M292 164 H314" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="316" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="328" y="94" class="g-title">Glossary</text>
+      <text x="328" y="112" class="g-runs">a skill, once per product</text>
+      <text x="328" y="134" class="g-skill">glossary-author</text>
+      <text x="328" y="228" class="g-stop">2 gates</text>
+      <text x="328" y="248" class="g-out">Ends with: the Glossary</text>
+      <path d="M480 164 H502" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="504" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="516" y="94" class="g-title">Data model</text>
+      <text x="516" y="112" class="g-runs">once per product</text>
+      <text x="516" y="134" class="g-skill">things-author</text>
+      <text x="516" y="151" class="g-skill">data-model-author</text>
+      <text x="516" y="168" class="g-skill">glossary-disposition</text>
+      <text x="516" y="212" class="g-stop">1 gate, +1 per family,</text>
+      <text x="516" y="228" class="g-stop">+1 for Glossary changes</text>
+      <text x="516" y="248" class="g-out">Ends with: the data model</text>
+      <path d="M668 164 H690" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="692" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="704" y="94" class="g-title">Features and EPICs</text>
+      <text x="704" y="112" class="g-runs">once per product</text>
+      <text x="704" y="134" class="g-skill">feature-author</text>
+      <text x="704" y="151" class="g-skill">epic-grouping-author</text>
+      <text x="704" y="168" class="g-skill">epic-author</text>
+      <text x="704" y="228" class="g-stop">2 gates</text>
+      <text x="704" y="248" class="g-out">Ends with: EPIC register</text>
+      <path d="M856 164 H878" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="880" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="892" y="94" class="g-title">FRD</text>
+      <text x="892" y="112" class="g-runs">once per capability</text>
+      <text x="892" y="134" class="g-skill">frd-author</text>
+      <text x="892" y="228" class="g-stop">1 gate per FRD</text>
+      <text x="892" y="248" class="g-out">Ends with: every FRD</text>
+      <path d="M1044 164 H1066" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="1068" y="66" width="164" height="196" rx="8" class="g-box"/>
+      <text x="1080" y="94" class="g-title">Stories</text>
+      <text x="1080" y="112" class="g-runs">once per EPIC</text>
+      <text x="1080" y="134" class="g-skill">epic-author</text>
+      <text x="1080" y="151" class="g-skill">story-drafter</text>
+      <text x="1080" y="168" class="g-skill">story-groomer</text>
+      <text x="1080" y="185" class="g-skill">ac-author</text>
+      <text x="1080" y="228" class="g-stop">3 gates, +1 with a brief</text>
+      <text x="1080" y="248" class="g-out">Ends with: stories ready</text>
+      <path d="M1232 164 H1248" class="a-flow" marker-end="url(#g-mf)"/>
+
+      <rect x="1250" y="140" width="84" height="48" rx="24" class="g-pill"/>
+      <text x="1292" y="160" text-anchor="middle" class="g-out">Ready</text>
+      <text x="1292" y="176" text-anchor="middle" class="g-out">stories</text>
+
+      <!-- the data model's Glossary changes go back as one batch -->
+      <path d="M586 66 V34 H398 V62" class="a-gl" marker-end="url(#g-mg)"/>
+      <text x="408" y="26" class="g-lbl">Glossary changes, sent as one batch once every data model file is accepted</text>
+
+      <!-- handling a change: being redesigned -->
+      <rect x="128" y="322" width="1104" height="112" rx="10" class="g-upd"/>
+      <path d="M210 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M398 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M586 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M774 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M962 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <path d="M1150 320 V266" class="a-upd" marker-end="url(#g-mu)"/>
+      <text x="220" y="300" class="g-lbl">re-runs the steps a change names</text>
+      <text x="148" y="352" class="g-title">Handling a change: being redesigned</text>
+      <text x="148" y="372" class="g-runs">Runs whenever a change arrives: the client changes a requirement, you find a mistake in an accepted document, or a late answer comes in.</text>
+      <text x="148" y="390" class="g-runs">Today this is requirement-update-workflow. Its new design is being joined to the kit; this page will show it once it is in.</text>
+      <text x="148" y="414" class="g-lbl">A Glossary change from the data model is not a change: it goes to the Glossary as above.</text>
+    </svg>
+  </div>
+
+  <h2 id="deep"><span class="ph">2</span>Deep dive, workflow by workflow</h2>
+  <div class="legend" aria-label="Legend">
+    <span><svg width="40" height="22" aria-hidden="true"><rect x="1" y="1" width="38" height="20" rx="4" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.4"/></svg>a skill</span>
+    <span><svg width="40" height="22" aria-hidden="true"><rect x="1" y="1" width="38" height="20" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.3"/><line x1="6" y1="1" x2="6" y2="21" stroke="var(--muted)" stroke-width="1.3"/><line x1="34" y1="1" x2="34" y2="21" stroke="var(--muted)" stroke-width="1.3"/></svg>a program</span>
+    <span><svg width="34" height="24" aria-hidden="true"><polygon points="17,1 33,12 17,23 1,12" fill="var(--dec)" stroke="var(--accent)" stroke-width="1.4"/></svg>your gate</span>
+    <span><svg width="34" height="24" aria-hidden="true"><polygon points="17,1 33,12 17,23 1,12" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.4"/></svg>a program route, no gate</span>
+    <span><svg width="40" height="24" aria-hidden="true"><path d="M1 1 H39 V18 Q29 26 20 20 T1 18 Z" fill="var(--art)" stroke="var(--muted)"/></svg>living document</span>
+    <span><svg width="40" height="24" aria-hidden="true"><path d="M1 1 H39 V18 Q29 26 20 20 T1 18 Z" fill="var(--rec)" stroke="var(--muted)"/></svg>record</span>
+    <span><svg width="40" height="24" aria-hidden="true"><path d="M1 1 H39 V18 Q29 26 20 20 T1 18 Z" fill="var(--art)" stroke="var(--muted)" stroke-dasharray="4 3"/></svg>generated</span>
+    <span><svg width="40" height="24" aria-hidden="true"><path d="M1 1 H39 V18 Q29 26 20 20 T1 18 Z" fill="var(--ext)" stroke="var(--muted)"/></svg>from outside</span>
+    <span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" stroke="var(--ink)" stroke-width="1.6"/></svg>next</span>
+    <span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" stroke="var(--feedback)" stroke-width="1.6"/></svg>no: back for another pass</span>
+    <span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" stroke="var(--accent)" stroke-width="1.8"/></svg>repeat for the next one</span>
+    <span><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="2 3"/></svg>writes</span>
+  </div>
+  <p class="note">Who reads what is in the table after the diagrams, so the diagrams show only the flow, the gates and what each step writes. Every skill that writes a document also writes its gaps to the Question log, as rated questions. The data model's two skills are the exception: their decisions stay in the data model's decisions file.</p>
+
+  <h3><span class="ph">Workflow 1, once per product</span>Requirements</h3>
+  <div class="chartbox"><svg class="deep" id="wf-req" role="img" aria-label="Requirements workflow: list-sources.cjs, then discovery-author, brd-author and prd-author, each followed by your gate."></svg></div>
+
+  <h3><span class="ph">A skill, once per product</span>Glossary</h3>
+  <div class="chartbox"><svg class="deep" id="wf-gl" role="img" aria-label="glossary-author: Gate 1 for the words, then the definitions and Gate 2, then two programs rebuild what is filled from the gate log."></svg></div>
+
+  <h3><span class="ph">Workflow 2, once per product</span>Data model</h3>
+  <div class="chartbox"><svg class="deep" id="wf-dm" role="img" aria-label="Data model workflow: things-author and its gate, then data-model-author once per family with its gate, then every Glossary change goes to glossary-disposition as one batch, then the data model is brought in step."></svg></div>
+
+  <h3><span class="ph">Workflow 3, once per product</span>Features and EPICs</h3>
+  <div class="chartbox"><svg class="deep" id="wf-fe" role="img" aria-label="Features and EPICs workflow: feature-author, epic-grouping-author, epic-author in register mode, the register's copy check, then the sequencing and mapping."></svg></div>
+
+  <h3><span class="ph">Workflow 4, once per capability</span>FRD</h3>
+  <div class="chartbox"><svg class="deep" id="wf-frd" role="img" aria-label="FRD workflow: route-next-capability.cjs names the next capability, frd-author writes its FRD, and you accept it. Then the next capability."></svg></div>
+
+  <h3><span class="ph">Workflow 5, once per EPIC</span>Stories</h3>
+  <div class="chartbox"><svg class="deep" id="wf-st" role="img" aria-label="Stories workflow: the next EPIC, its EPIC brief if listed, story-drafter, story-groomer and ac-author, each with your gate. Then the next EPIC."></svg></div>
+
+  <h3><span class="ph">Whenever a change arrives</span>Handling a change</h3>
+  <p class="note">Being redesigned. Today, <code>requirement-update-workflow</code> takes one change to your decision in a Change impact report, and the workflows it names apply it. Its new design is being joined to the kit. This page will draw it once it is in.</p>
+
+  <h2 id="matrix"><span class="ph">3</span>Who reads what</h2>
+  <p class="note">Each row is a document. Each column is a step, grouped by workflow; programs are in italics. Read a row left to right to see where a document is written, then read.</p>
+  <div class="legend">
+    <span><span class="mk w">W</span> writes it</span>
+    <span><span class="mk r">R</span> reads it</span>
+    <span><span class="mk l">L</span> looks up items in it by ID</span>
+  </div>
+  <div class="tbl-wrap"><table class="matrix" id="mx"></table></div>
+
+  <h2 id="docs"><span class="ph">4</span>Documents: who writes them, who reads them, what they hold</h2>
+  <p class="note">Built from the same data as the table above, so the two always agree. <span class="kind living">living</span> changes only as a new version, made by its own skill. <span class="kind record">record</span> is written once, and later entries are added. <span class="kind generated">generated</span> is rebuilt by a program. <span class="kind external">external</span> comes from outside.</p>
+  <div class="tbl-wrap"><table class="docs" id="doctable"></table></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+var NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent, text){
+  var x = document.createElementNS(NS, tag);
+  for (var k in attrs) x.setAttribute(k, attrs[k]);
+  if (text != null) x.textContent = text;
+  if (parent) parent.appendChild(x);
+  return x;
+}
+function wrap(str, max){
+  if (!str) return [];
+  var words = str.split(" "), lines = [], cur = "";
+  words.forEach(function(w){
+    var t = cur ? cur + " " + w : w;
+    if (t.length > max && cur){ lines.push(cur); cur = w; } else cur = t;
+  });
+  if (cur) lines.push(cur);
+  return lines;
+}
+var W = 1120, LOOPX = 1098, SKIPX = 806, ELBX = 830;
+var LANES = [
+  {id:"spec",  x0:16,  x1:266,  t:"The specifiers", s:"BA and PO: every decision"},
+  {id:"skill", x0:266, x1:556,  t:"Skills",         s:"read, draft and record"},
+  {id:"prog",  x0:556, x1:816,  t:"Programs",       s:"checks, routes, generated files"},
+  {id:"doc",   x0:816, x1:1076, t:"Documents",      s:"what each step writes"}
+];
+var CX = {}; LANES.forEach(function(l){ CX[l.id] = (l.x0 + l.x1) / 2; });
+var H = 132, TOP = 64, FIRST = TOP + 64;
+var STW = 208, STH = 80, DW = 206, DH = 46;
+
+function path(g, pts, cls, P, marker){
+  var d = "M" + pts.map(function(p){ return p[0] + " " + p[1]; }).join(" L");
+  var a = {d:d, "class":"e " + cls};
+  if (marker) a["marker-end"] = "url(#" + P + marker + ")";
+  return el("path", a, g);
+}
+function label(g, x, y, text, cls, anchor, rot){
+  var a = {x:x, y:y, "class":"elabel " + (cls || ""), "text-anchor":anchor || "start"};
+  if (rot) a.transform = "rotate(" + rot + " " + x + " " + y + ")";
+  return el("text", a, g, text);
+}
+
+function render(id, rows){
+  var svg = document.getElementById(id), P = id + "-";
+  var n = rows.length, yy = FIRST;
+  rows.forEach(function(r){ r.y = yy; yy += (r.space || H); });
+  var HT = rows[n - 1].y + (rows[n - 1].tail || 96);
+  svg.setAttribute("viewBox", "0 0 " + W + " " + HT);
+  var defs = el("defs", {}, svg);
+  [["flow","m-flow"],["back","m-back"],["loop","m-loop"],["write","m-write"]].forEach(function(m){
+    var mk = el("marker", {id:P + m[0], viewBox:"0 0 10 10", refX:9, refY:5, markerWidth:7, markerHeight:7, orient:"auto-start-reverse"}, defs);
+    el("path", {d:"M0 0 L10 5 L0 10 Z", "class":m[1]}, mk);
+  });
+  LANES.forEach(function(l, i){
+    el("rect", {x:l.x0, y:0, width:l.x1 - l.x0, height:HT, "class":"lane-bg " + (i % 2 ? "b" : "a")}, svg);
+    el("text", {x:(l.x0 + l.x1) / 2, y:26, "text-anchor":"middle", "class":"lane-title"}, svg, l.t);
+    el("text", {x:(l.x0 + l.x1) / 2, y:44, "text-anchor":"middle", "class":"lane-sub"}, svg, l.s);
+    if (i) el("line", {x1:l.x0, y1:0, x2:l.x0, y2:HT, "class":"lane-sep"}, svg);
+  });
+  el("line", {x1:16, y1:TOP - 6, x2:1076, y2:TOP - 6, "class":"lane-sep"}, svg);
+  var gE = el("g", {}, svg), gN = el("g", {}, svg), gL = el("g", {}, svg);
+
+  var N = {};
+  rows.forEach(function(r, i){
+    r.x = CX[r.lane];
+    if (r.shape === "skill"){ r.tagL = wrap(r.tag, 40); r.w = 240; r.h = Math.max(58, 30 + r.tagL.length * 13 + 8); }
+    else if (r.shape === "prog"){ r.subL = wrap(r.sub, 38); r.w = r.pw || 226; r.h = Math.max(52, 20 + r.lines.length * 15 + r.subL.length * 13); }
+    else if (r.shape === "action"){ r.w = 236; r.h = Math.max(50, 18 + r.lines.length * 15); }
+    else if (r.shape === "pill"){ r.w = 228; r.h = Math.max(44, 16 + r.lines.length * 15); }
+    else if (r.shape === "router"){ r.w = 196; r.h = 74; }
+    else if (r.shape === "fan"){ r.w = 210; r.h = 74; }
+    N[r.id] = r;
+  });
+
+  /* nodes */
+  rows.forEach(function(r){
+    var x = r.x, y = r.y, w = r.w, h = r.h, g = el("g", {}, gN);
+    if (r.shape === "skill"){
+      el("rect", {x:x - w/2, y:y - h/2, width:w, height:h, rx:6, "class":"n-skill"}, g);
+      var blk = 16 + r.tagL.length * 13, ty = y - blk/2 + 12;
+      el("text", {x:x, y:ty, "text-anchor":"middle", "class":"t-name"}, g, r.name);
+      r.tagL.forEach(function(t, k){ el("text", {x:x, y:ty + 16 + k * 13, "text-anchor":"middle", "class":"t-tag"}, g, t); });
+    } else if (r.shape === "prog"){
+      el("rect", {x:x - w/2, y:y - h/2, width:w, height:h, "class":"n-prog"}, g);
+      el("line", {x1:x - w/2 + 7, y1:y - h/2, x2:x - w/2 + 7, y2:y + h/2, "class":"n-prog"}, g);
+      el("line", {x1:x + w/2 - 7, y1:y - h/2, x2:x + w/2 - 7, y2:y + h/2, "class":"n-prog"}, g);
+      var blk2 = r.lines.length * 15 + r.subL.length * 13, ty2 = y - blk2/2 + 11;
+      r.lines.forEach(function(t, k){ el("text", {x:x, y:ty2 + k * 15, "text-anchor":"middle", "class":"t-body"}, g, t); });
+      r.subL.forEach(function(t, k){ el("text", {x:x, y:ty2 + r.lines.length * 15 + k * 13, "text-anchor":"middle", "class":"t-tag"}, g, t); });
+    } else if (r.shape === "action" || r.shape === "pill"){
+      el("rect", {x:x - w/2, y:y - h/2, width:w, height:h, rx:r.shape === "pill" ? h/2 : 3, "class":r.shape === "pill" ? "n-pill" : "n-action"}, g);
+      r.lines.forEach(function(t, k){ el("text", {x:x, y:y - (r.lines.length - 1) * 7.5 + 4 + k * 15, "text-anchor":"middle", "class":r.shape === "pill" ? "t-dec" : "t-body"}, g, t); });
+    } else if (r.shape === "router" || r.shape === "fan"){
+      el("polygon", {points:[x, y - h/2, x + w/2, y, x, y + h/2, x - w/2, y].join(" "), "class":"n-router"}, g);
+      r.lines.forEach(function(t, k){ el("text", {x:x, y:y - (r.lines.length - 1) * 7 + 4 + k * 14, "text-anchor":"middle", "class":"t-dec"}, g, t); });
+    }
+    if (r.shape === "fan"){
+      var np = r.paths.length, s0 = 290, s1 = 1070, bw = 184, gap = ((s1 - s0) - np * bw) / (np - 1), maxL = 0;
+      r.paths.forEach(function(p){ maxL = Math.max(maxL, p.lines.length); });
+      r.bh = 46 + maxL * 14; r.by = y + 124 + r.bh / 2 - 40;
+      r.bx = r.paths.map(function(p, k){ return s0 + bw/2 + k * (bw + gap); });
+      r.paths.forEach(function(p, k){
+        var bx = r.bx[k], top = r.by - r.bh/2;
+        el("rect", {x:bx - bw/2, y:top, width:bw, height:r.bh, rx:6, "class":"n-skill"}, g);
+        el("text", {x:bx - bw/2 + 10, y:top + 19, "class":"t-body"}, g, p.title);
+        p.lines.forEach(function(t, j){ el("text", {x:bx - bw/2 + 10, y:top + 37 + j * 14, "class":"t-path"}, g, t); });
+        el("text", {x:bx - bw/2 + 10, y:top + r.bh - 10, "class":"t-stops"}, g, p.stops);
+      });
+    }
+    if (r.stop){
+      var sx = CX.spec;
+      el("polygon", {points:[sx, y - STH/2, sx + STW/2, y, sx, y + STH/2, sx - STW/2, y].join(" "), "class":"n-stop"}, g);
+      r.stop.forEach(function(t, k){ el("text", {x:sx, y:y - (r.stop.length - 1) * 7 + 4 + k * 14, "text-anchor":"middle", "class":"t-dec"}, g, t); });
+    }
+    if (r.noEnd){
+      var px = CX.doc, ph = 16 + r.noEnd.length * 15;
+      el("rect", {x:px - 114, y:y - ph/2, width:228, height:ph, rx:ph/2, "class":"n-pill"}, g);
+      r.noEnd.forEach(function(t, k){ el("text", {x:px, y:y - (r.noEnd.length - 1) * 7.5 + 4 + k * 15, "text-anchor":"middle", "class":"t-dec"}, g, t); });
+    }
+    (r.docs || []).forEach(function(d, k, arr){
+      var dy = (k - (arr.length - 1) / 2) * 54, cy = y + dy, cx = CX.doc;
+      var x0 = cx - DW/2, x1 = cx + DW/2, y0 = cy - DH/2, yb = cy + DH/2 - 8;
+      el("path", {d:"M" + x0 + " " + y0 + " H" + x1 + " V" + yb + " Q" + (x0 + DW * 0.75) + " " + (yb + 10) + " " + cx + " " + (yb + 3) + " T" + x0 + " " + yb + " Z", "class":"d-" + (d.kind || "living")}, g);
+      el("text", {x:cx, y:d.sub ? cy - 3 : cy + 3, "text-anchor":"middle", "class":"t-doc"}, g, d.name);
+      if (d.sub) el("text", {x:cx, y:cy + 11, "text-anchor":"middle", "class":"t-dsub"}, g, d.sub);
+      if (!r.nowrite){
+        var sxr = x + w/2, end = [cx - DW/2 - 2, cy];
+        if (dy === 0) path(gE, [[sxr, y], end], "write", P, "write");
+        else path(gE, [[sxr, y], [ELBX, y], [ELBX, cy], end], "write", P, "write");
+      }
+    });
+  });
+
+  /* edges */
+  function exitOf(r){
+    if (r.stop) return {x:CX.spec, y:r.y + STH/2, dia:true};
+    return {x:r.x, y:r.y + r.h/2, dia:r.shape === "router"};
+  }
+  rows.forEach(function(r, i){
+    var ex = exitOf(r);
+    if (r.stop){
+      var hw = (STW/2) * (1 - 10 / (STH/2));
+      path(gE, [[r.x - r.w/2, r.y - 10], [CX.spec + hw, r.y - 10]], "flow", P, "flow");
+      if (r.back){
+        var t = N[r.back];
+        path(gE, [[CX.spec - STW/2, r.y], [30, r.y], [30, t.y + 12], [t.x - t.w/2, t.y + 12]], "back", P, "back");
+        label(gL, 38, (r.y + t.y) / 2 + 4, r.backLabel || "no: redo", "back");
+      } else {
+        path(gE, [[CX.spec + hw, r.y + 10], [r.x - r.w/2, r.y + 10]], "back", P, "back");
+        label(gL, (CX.spec + hw + r.x - r.w/2) / 2, r.y + 26, r.backLabel || "no: redo", "back", "middle");
+      }
+    }
+    if (r.shape === "router"){
+      if (r.noEnd){
+        path(gE, [[r.x + r.w/2, r.y], [CX.doc - 116, r.y]], "flow", P, "flow");
+        label(gL, r.x + r.w/2 + 8, r.y - 8, "no");
+      } else if (r.no){
+        var tg = N[r.no];
+        var ay = (tg.shape === "router" || tg.shape === "fan") ? tg.y : tg.y - 12;
+        path(gE, [[r.x + r.w/2, r.y], [SKIPX, r.y], [SKIPX, ay], [tg.x + tg.w/2 + 2, ay]], "flow", P, "flow");
+        label(gL, r.x + r.w/2 + 8, r.y - 8, r.noLabel || "no");
+      }
+    }
+    if (r.shape === "fan"){
+      var fy = r.y + r.h/2, jy1 = r.by - r.bh/2 - 22, minX = Math.min.apply(null, r.bx), maxX = Math.max.apply(null, r.bx), my = r.by + r.bh/2 + 22;
+      path(gE, [[r.x, fy], [r.x, jy1]], "flow", P);
+      path(gE, [[minX, jy1], [maxX, jy1]], "flow", P);
+      r.bx.forEach(function(bx){ path(gE, [[bx, jy1], [bx, r.by - r.bh/2]], "flow", P, "flow"); path(gE, [[bx, r.by + r.bh/2], [bx, my]], "flow", P); });
+      path(gE, [[minX, my], [maxX, my]], "flow", P);
+      if (i < n - 1){ var nf = rows[i + 1]; path(gE, [[nf.x, my], [nf.x, nf.y - nf.h/2]], "flow", P, "flow"); }
+      return;
+    }
+    if (r.loopTo){
+      var lt = N[r.loopTo], ly = r.y + (r.stop ? STH/2 : r.h/2) + 26;
+      path(gE, [[ex.x, ex.y], [ex.x, ly], [LOOPX, ly], [LOOPX, lt.y - 50], [lt.x, lt.y - 50], [lt.x, lt.y - lt.h/2]], "loop", P, "loop");
+      label(gL, ex.x + 8, ex.y + 15, "yes");
+      label(gL, LOOPX - 8, (ly + lt.y) / 2, r.loopLabel || "next", "loop", "middle", -90);
+      return;
+    }
+    if (r.end || i === n - 1) return;
+    var nx = rows[i + 1], entry = [nx.x, nx.y - nx.h/2];
+    if (Math.abs(ex.x - entry[0]) < 1) path(gE, [[ex.x, ex.y], entry], "flow", P, "flow");
+    else { var jy = (ex.y + entry[1]) / 2; path(gE, [[ex.x, ex.y], [ex.x, jy], [entry[0], jy], entry], "flow", P, "flow"); }
+    if (ex.dia) label(gL, ex.x + 8, ex.y + 15, r.yesLabel || "yes");
+  });
+}
+
+/* the swimlanes: one per workflow, each row a step */
+var QL = {name:"Question log", sub:"gaps, as rated questions"};
+var DMD = {name:"Data model's decisions", sub:"DM and GC entries", kind:"record"};
+render("wf-req", [
+  {id:"r0", lane:"skill", shape:"pill", lines:["Start: the client's", "requirement files, in sources/"], nowrite:true, docs:[{name:"Requirement files", sub:"as you received them", kind:"external"}]},
+  {id:"r1", lane:"skill", shape:"skill", name:"discovery-author", tag:"list-sources.cjs lists the files first; proposes which kind of document wins; compares every topic; each gap becomes a question", stop:["Accept the","Discovery brief?"], docs:[{name:"Discovery brief", sub:"sources, authority, topics, clashes", kind:"record"}, QL]},
+  {id:"r2", lane:"skill", shape:"skill", name:"brd-author", tag:"from the Discovery brief and the files it marks Used; every line says where it came from", stop:["Accept","the BRD?"], docs:[{name:"BRD", sub:"business requirements BR-01 onward"}, QL]},
+  {id:"r3", lane:"skill", shape:"skill", name:"prd-author", tag:"one requirement per row, in simple words, each with its kind, the client's words and its source", stop:["Accept","the PRD?"], docs:[{name:"PRD", sub:"requirements, journey, NFRs"}, QL]},
+  {id:"r4", lane:"skill", shape:"pill", lines:["Next: the Glossary"]}
+]);
+render("wf-gl", [
+  {id:"g0", lane:"skill", shape:"pill", lines:["Start: the PRD is accepted"]},
+  {id:"g1", lane:"skill", shape:"skill", name:"glossary-author", tag:"agrees one word per meaning, from the BRD and PRD", stop:["Gate 1: are the","words settled?"], docs:[{name:"Glossary gate log", sub:"the only glossary decision record", kind:"record"}]},
+  {id:"g2", lane:"skill", shape:"skill", name:"glossary-author", tag:"writes the definitions", docs:[{name:"Glossary", sub:"seven pages"}]},
+  {id:"g3", lane:"prog", shape:"prog", pw:248, lines:["fill-also-written-as.cjs"], sub:"run by glossary-author before Gate 2: fills \"Also written as\" from Gate 1", stop:["Gate 2: are the","definitions settled?"], back:"g2", docs:[{name:"Glossary gate log", sub:"Gate 2, with \"Also written as\"", kind:"record"}]},
+  {id:"g4", lane:"prog", shape:"prog", pw:248, lines:["build-glossary-records.cjs"], sub:"fills the records from the gate log", docs:[{name:"Decision register", kind:"generated"}, {name:"Section decisions", kind:"generated"}]},
+  {id:"g5", lane:"prog", shape:"prog", pw:248, lines:["build-retired-words-tables.cjs"], sub:"fills each kind page's retired-words table from the gate log", docs:[{name:"Retired-words tables", sub:"on each kind page", kind:"generated"}]},
+  {id:"g6", lane:"skill", shape:"pill", lines:["Next: the data model"]}
+]);
+render("wf-dm", [
+  {id:"m0", lane:"skill", shape:"pill", lines:["Start: the Glossary is written"]},
+  {id:"m1", lane:"skill", shape:"skill", name:"things-author", tag:"every thing the product keeps information about, by its Glossary family; the decisions every family shares", stop:["Gate 1: the decisions,","then Accept","the things?"], docs:[{name:"Things file", sub:"things, by family"}, DMD]},
+  {id:"m2", lane:"prog", shape:"router", lines:["Next family?", "one file for each"], no:"m5", noLabel:"every file accepted"},
+  {id:"m3", lane:"skill", shape:"skill", name:"data-model-author", tag:"one family: what people do with each thing, the rules for each field, how each thing moves", stop:["Gate 2: the decisions,","then Accept the","{family} data model?"], loopTo:"m2", loopLabel:"next family", docs:[{name:"Data model file", sub:"one per family, such as lending.md"}, DMD]},
+  {id:"m5", lane:"skill", shape:"skill", name:"glossary-disposition", tag:"only when a Glossary change waits: once, with every one as a batch; new words go to glossary-author together, in one run", stop:["How should the","Glossary settle","each change?"], docs:[{name:"Glossary"}, {name:"Glossary gate log", kind:"record"}]},
+  {id:"m6", lane:"skill", shape:"skill", name:"both skills, in a change", tag:"things-author, then data-model-author, only when the Glossary settled a change: for the changed words only", stop:["Their own gates,","for what changed"], docs:[{name:"Things file and", sub:"data model files"}]},
+  {id:"m7", lane:"skill", shape:"pill", lines:["Next: features and EPICs"]}
+]);
+render("wf-fe", [
+  {id:"f0", lane:"skill", shape:"pill", lines:["Start: the data model is accepted"]},
+  {id:"f1", lane:"skill", shape:"skill", name:"feature-author", tag:"features in the Glossary's words; \"Done when\" pieces; priority with its basis; every action and move of the data model given to a feature", stop:["Accept the","Feature catalog?","\"?\" rows first"], docs:[{name:"Feature catalog"}, QL]},
+  {id:"f2", lane:"skill", shape:"skill", name:"epic-grouping-author", tag:"2 or 3 groupings; finds clashes; proposes the EPIC brief list", stop:["Pick a grouping,","settle its clashes,","confirm the EPIC","brief list"], docs:[{name:"EPIC grouping", sub:"options, pick, clashes, list", kind:"record"}, QL]},
+  {id:"f3", lane:"skill", shape:"skill", name:"epic-author", tag:"register mode: copies the pick into the EPIC register", docs:[{name:"EPIC register"}]},
+  {id:"f4", lane:"prog", shape:"prog", pw:248, lines:["check-register.cjs"], sub:"proves the copy; a pass counts as acceptance; if it fails, back to epic-author"},
+  {id:"f5", lane:"prog", shape:"prog", pw:248, lines:["build-sequencing-mapping.cjs"], sub:"rearranges the EPIC register; a loop in the dependencies goes back to the grouping", docs:[{name:"EPIC sequencing", kind:"generated"}, {name:"EPIC mapping", kind:"generated"}]},
+  {id:"f6", lane:"skill", shape:"pill", lines:["Next: the FRD workflow"]}
+]);
+render("wf-frd", [
+  {id:"d0", lane:"skill", shape:"pill", lines:["Start: the EPIC register is written"]},
+  {id:"d1", lane:"prog", shape:"router", lines:["Next capability?", "route-next-capability.cjs", "waiting, parked last"], noEnd:["Every FRD accepted:", "next, the Stories workflow"]},
+  {id:"d2", lane:"skill", shape:"skill", name:"frd-author", tag:"written whole; each rule traced to a \"Done when\" piece; its Data copied word for word from the data model", docs:[{name:"FRD", sub:"one per capability"}, QL]},
+  {id:"d3", lane:"prog", shape:"prog", lines:["check-frd.cjs"], stop:["Accept the FRD?","Must answer","questions first"], back:"d2", loopTo:"d1", loopLabel:"next capability"}
+]);
+render("wf-st", [
+  {id:"s0", lane:"skill", shape:"pill", lines:["Start: the FRDs of the", "EPIC's features are accepted"]},
+  {id:"s1", lane:"prog", shape:"router", lines:["Next EPIC?", "route-next-epic.cjs", "waiting, parked last"], noEnd:["Every EPIC's", "stories ready"]},
+  {id:"s2", lane:"prog", shape:"router", lines:["route-brief-list.cjs:", "on the EPIC brief list?"], no:"s4"},
+  {id:"s3", lane:"skill", shape:"skill", name:"epic-author", tag:"brief mode: writes the EPIC brief", stop:["Accept the","EPIC brief?"], docs:[{name:"EPIC brief"}, QL]},
+  {id:"s4", lane:"skill", shape:"skill", name:"story-drafter", tag:"splits the EPIC into stories along the FRD flows, in the order they are worked", stop:["Approve the split?","all stories together"], docs:[{name:"Story list"}, QL]},
+  {id:"s5", lane:"skill", shape:"skill", name:"story-groomer", tag:"scope, roles, and the FRD rules it delivers, in flow order", stop:["Accept the grooming?","all stories together"], docs:[{name:"Stories", sub:"groomed"}, QL]},
+  {id:"s6", lane:"skill", shape:"skill", name:"ac-author", tag:"3 to 7 Given/When/Then scenarios, each naming the FRD rules it proves", docs:[{name:"Stories", sub:"with acceptance criteria"}, QL]},
+  {id:"s7", lane:"prog", shape:"prog", lines:["coverage-check.cjs"], sub:"every rule of the EPIC's features is proved", stop:["Accept the criteria?","this marks the","stories ready"], back:"s6", loopTo:"s1", loopLabel:"next EPIC", docs:[{name:"Story list", sub:"ready marks"}]}
+]);
+
+/* one data block: every step, what it reads, looks up and writes */
+var GROUPS = ["Requirements", "Glossary", "Data model", "Features and EPICs", "FRD", "Stories", "Every acceptance", "Any time"];
+var STEPS = [
+  {g:"Requirements", name:"list-sources.cjs", prog:true, reads:["SRC"]},
+  {g:"Requirements", name:"discovery-author", reads:["SRC"], writes:["DB","QL"]},
+  {g:"Requirements", name:"brd-author", reads:["DB","SRC"], writes:["BRD","QL"]},
+  {g:"Requirements", name:"prd-author", reads:["BRD","DB","SRC"], writes:["PRD","QL"]},
+  {g:"Glossary", name:"glossary-author", reads:["BRD","PRD"], writes:["GL","GLOG","QL"]},
+  {g:"Glossary", name:"fill-also-written-as.cjs", prog:true, reads:["GLOG"], writes:["GLOG"]},
+  {g:"Glossary", name:"build-glossary-records.cjs", prog:true, reads:["GLOG"], writes:["GREC"]},
+  {g:"Glossary", name:"build-retired-words-tables.cjs", prog:true, reads:["GLOG"], writes:["GL"]},
+  {g:"Data model", name:"things-author", reads:["GL","BRD","PRD"], writes:["TH","DMD"]},
+  {g:"Data model", name:"data-model-author", reads:["TH","DMD","GL","BRD","PRD"], writes:["DMF","DMD"]},
+  {g:"Data model", name:"glossary-disposition", reads:["DMD"], looks:["GL"], writes:["GL","GLOG"]},
+  {g:"Features and EPICs", name:"feature-author", reads:["PRD","DMF"], looks:["GL","BRD"], writes:["FC","QL"]},
+  {g:"Features and EPICs", name:"epic-grouping-author", reads:["FC"], writes:["CL","QL"]},
+  {g:"Features and EPICs", name:"epic-author, register", reads:["CL"], looks:["FC"], writes:["REG"]},
+  {g:"Features and EPICs", name:"check-register.cjs", prog:true, reads:["REG","CL"]},
+  {g:"Features and EPICs", name:"build-sequencing-mapping.cjs", prog:true, reads:["REG","CL"], looks:["FC"], writes:["SEQ","MAP"]},
+  {g:"FRD", name:"route-next-capability.cjs", prog:true, reads:["REG","FC","FRD"]},
+  {g:"FRD", name:"frd-author", reads:["FC"], looks:["PRD","GL","DMF"], writes:["FRD","QL"]},
+  {g:"Stories", name:"route-next-epic.cjs", prog:true, reads:["REG","SL"]},
+  {g:"Stories", name:"route-brief-list.cjs", prog:true, reads:["CL"]},
+  {g:"Stories", name:"epic-author, brief", reads:["REG"], looks:["BRD","PRD","FC"], writes:["ED","QL"]},
+  {g:"Stories", name:"story-drafter", reads:["REG","FRD","ED"], looks:["GL","BRD","PRD"], writes:["SL","QL"]},
+  {g:"Stories", name:"story-groomer", reads:["SL","ST"], looks:["FRD","FC","BRD","ED","GL"], writes:["ST","QL"]},
+  {g:"Stories", name:"ac-author", reads:["ST"], looks:["FRD","GL","QL"], writes:["ST","SL","QL"]},
+  {g:"Stories", name:"coverage-check.cjs", prog:true, reads:["REG","FRD","ST"]},
+  {g:"Every acceptance", name:"version-log.cjs", prog:true, writes:["VL"]},
+  {g:"Every acceptance", name:"traceability-map.cjs", prog:true, writes:["TM"]},
+  {g:"Any time", name:"status.cjs", prog:true, reads:["VL","SL","QL","FRD","DMD"]}
+];
+var DOCS = [
+ {
+  "id": "SRC",
+  "name": "Sources",
+  "path": [
+   "sources/"
+  ],
+  "kind": "external",
+  "contains": [
+   "the client's requirement files, as you received them",
+   "notes or other files from anyone else who has something to say"
+  ]
+ },
+ {
+  "id": "DB",
+  "name": "Discovery brief",
+  "path": [
+   "{product}-discovery-brief.md"
+  ],
+  "kind": "record",
+  "contains": [
+   "the list of sources",
+   "which kind of document wins when two disagree",
+   "every topic compared",
+   "clashes",
+   "what's assumed",
+   "risks",
+   "your decisions"
+  ]
+ },
+ {
+  "id": "BRD",
+  "name": "BRD",
+  "path": [
+   "{product}-brd.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "why the product is needed, as a Problem or an Opportunity",
+   "objectives with confidence-tagged KPIs",
+   "scope",
+   "business requirements, BR-01 onward",
+   "risks and constraints",
+   "release criteria"
+  ]
+ },
+ {
+  "id": "PRD",
+  "name": "PRD",
+  "path": [
+   "{product}-prd.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "every requirement the client stated, one per row, each with its kind",
+   "each requirement in simple words, with the client's words next to it",
+   "each requirement's source and version",
+   "what each requirement traces to",
+   "personas and roles",
+   "the end-to-end journey",
+   "NFRs",
+   "transition requirements"
+  ]
+ },
+ {
+  "id": "QL",
+  "name": "Question log",
+  "path": [
+   "{product}-question-log.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "every question in the project",
+   "its impact and severity",
+   "its group and its order",
+   "who can answer it, and by which step",
+   "its answer, once given"
+  ]
+ },
+ {
+  "id": "GL",
+  "name": "Glossary",
+  "path": [
+   "glossary/"
+  ],
+  "kind": "living",
+  "contains": [
+   "a gateway page, README.md",
+   "terms and relationships, with every flow row",
+   "four kind pages: object terms, role terms, step terms, states and values",
+   "the families",
+   "each kind page's table of terms replaced or retired over time"
+  ]
+ },
+ {
+  "id": "GLOG",
+  "name": "Glossary gate log",
+  "path": [
+   "glossary/deep-dives/gate-log.md"
+  ],
+  "kind": "record",
+  "contains": [
+   "every glossary decision, at Gate 1, at Gate 2, and in each later change or re-run",
+   "each term's \"Also written as\" words"
+  ]
+ },
+ {
+  "id": "GREC",
+  "name": "Glossary decision register",
+  "path": [
+   "glossary/decision-register.md"
+  ],
+  "kind": "generated",
+  "contains": [
+   "each settled glossary decision, D-1 onward, linked to its row in the gate log"
+  ]
+ },
+ {
+  "id": "TH",
+  "name": "Things file",
+  "path": [
+   "glossary/data-models/{product}-glossary-things.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "one section per Glossary family, naming its data model file",
+   "each thing, with its definition copied from the Glossary",
+   "which things are a kind of another thing",
+   "the words left out",
+   "the open product-wide decisions",
+   "the words waiting on the Glossary",
+   "the \"Next step\" line"
+  ]
+ },
+ {
+  "id": "DMF",
+  "name": "Data model file",
+  "path": [
+   "glossary/data-models/{family}.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "one Glossary family's things and their fields",
+   "each thing's actions: in which step, who, and the rules",
+   "each thing's rules table",
+   "how each thing moves",
+   "what the family adds to things from earlier families",
+   "the decisions to make, and the words waiting on the Glossary",
+   "the \"Next step\" line"
+  ]
+ },
+ {
+  "id": "DMD",
+  "name": "Data model decisions file",
+  "path": [
+   "glossary/data-models/{product}-data-model-decisions.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "every data model decision still open, DM-1 onward",
+   "every data model decision you settled, with who decided and when",
+   "every Glossary change the data model needs, GC-1 onward, with its mark"
+  ]
+ },
+ {
+  "id": "FC",
+  "name": "Feature catalog",
+  "path": [
+   "frd/feature-catalog.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "every feature, with its description, priority and its basis, and capability",
+   "each feature's \"Done when\", cut into pieces",
+   "the coverage check: every Requirement row and its features",
+   "data model coverage: every action and move, and its feature"
+  ]
+ },
+ {
+  "id": "CL",
+  "name": "EPIC grouping",
+  "path": [
+   "epics/grouping.md"
+  ],
+  "kind": "record",
+  "contains": [
+   "two or three ways to group the features",
+   "the pick, written out in full",
+   "borderline features",
+   "dependencies between EPICs, and the sequence",
+   "clashes settled",
+   "the EPIC brief list, in run order"
+  ]
+ },
+ {
+  "id": "REG",
+  "name": "EPIC register",
+  "path": [
+   "epics/register.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "one row per EPIC, copied from the pick: name, outcome, features, band, persona, dependencies",
+   "the run order"
+  ]
+ },
+ {
+  "id": "SEQ",
+  "name": "EPIC sequencing",
+  "path": [
+   "epics/sequencing.md"
+  ],
+  "kind": "generated",
+  "contains": [
+   "the build order",
+   "which EPICs run side by side",
+   "the critical path"
+  ]
+ },
+ {
+  "id": "MAP",
+  "name": "EPIC mapping",
+  "path": [
+   "epics/mapping.md"
+  ],
+  "kind": "generated",
+  "contains": [
+   "each EPIC's band and features",
+   "the coverage count"
+  ]
+ },
+ {
+  "id": "FRD",
+  "name": "FRD",
+  "path": [
+   "frd/frd-{capability}.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "one capability's \"The system shall\" rules, each with its source",
+   "its gates and actors",
+   "its two coverage tables",
+   "its flow",
+   "its data, copied from the data model",
+   "its seven Standard questions",
+   "its decisions"
+  ]
+ },
+ {
+  "id": "ED",
+  "name": "EPIC brief",
+  "path": [
+   "epics/{epic}/brief.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "description",
+   "business value",
+   "fitness criteria",
+   "scope",
+   "features",
+   "dependencies",
+   "the NFR IDs that apply",
+   "references"
+  ]
+ },
+ {
+  "id": "SL",
+  "name": "Story list",
+  "path": [
+   "epics/{epic}/story-list.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "one EPIC's stories, in the order they are worked",
+   "each story's status",
+   "the decisions at the EPIC's story gates"
+  ]
+ },
+ {
+  "id": "ST",
+  "name": "Stories",
+  "path": [
+   "epics/{epic}/{story}.md"
+  ],
+  "kind": "living",
+  "contains": [
+   "its title and its \"As a, I want, So that\" statement",
+   "its status: drafted, groomed or ready",
+   "proven dependencies",
+   "scope in and out",
+   "roles, when they differ from the FRD's actors",
+   "the FRD rules it delivers, quoted by ID, each with its flow step",
+   "metrics and design links",
+   "3 to 7 Given, When, Then scenarios, each naming the rules it proves"
+  ]
+ },
+ {
+  "id": "VL",
+  "name": "Version log",
+  "path": [
+   "version-log/log.md, with each copy in version-log/{document}/v{n}.md"
+  ],
+  "kind": "record",
+  "contains": [
+   "one row for each acceptance",
+   "a numbered copy of each document every time it is accepted",
+   "a copy of the Question log as it stood",
+   "for the data model, a copy of its decisions file"
+  ]
+ },
+ {
+  "id": "TM",
+  "name": "Traceability map",
+  "path": [
+   "traceability-map.json"
+  ],
+  "kind": "generated",
+  "contains": [
+   "every ID and what it links to, from requirement to feature to EPIC to FRD rule to story"
+  ]
+ }
+];
+
+function esc(t){ return String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+function has(list, id){ return (list || []).indexOf(id) >= 0; }
+function listHTML(items){
+  var out = "<ul>";
+  items.forEach(function(it, k){
+    if (Array.isArray(it)) return;
+    out += "<li>" + esc(it) + (Array.isArray(items[k + 1]) ? listHTML(items[k + 1]) : "") + "</li>";
+  });
+  return out + "</ul>";
+}
+function stepsHTML(list, extra, more){
+  var lis = list.map(function(st){ return "<li>" + esc(st.name) + " <span class=\"note\">(" + esc(st.g) + ")</span></li>"; });
+  (more || []).forEach(function(st){ lis.push("<li>" + esc(st.name) + " <span class=\"note\">(when it re-runs for a change)</span></li>"); });
+  if (extra) lis.push("<li>" + esc(extra) + "</li>");
+  return lis.length ? "<ul>" + lis.join("") + "</ul>" : "<span class=\"note\">nobody</span>";
+}
+(function(){
+  var h1 = "<thead><tr><th class=\"rowh\" rowspan=\"2\">Document</th>", h2 = "<tr>", body = "<tbody>";
+  GROUPS.forEach(function(g){
+    var c = STEPS.filter(function(st){ return st.g === g; }).length;
+    h1 += "<th class=\"grp\" colspan=\"" + c + "\">" + esc(g) + "</th>";
+  });
+  STEPS.forEach(function(st, i){
+    var gs = i === 0 || STEPS[i - 1].g !== st.g;
+    h2 += "<th class=\"col" + (gs ? " gstart" : "") + (st.prog ? " prog" : "") + "\" title=\"" + esc(st.g + ": " + st.name) + "\"><span>" + esc(st.name) + "</span></th>";
+  });
+  DOCS.forEach(function(d){
+    body += "<tr><td class=\"rowh\">" + esc(d.name) + "</td>";
+    STEPS.forEach(function(st, i){
+      var gs = i === 0 || STEPS[i - 1].g !== st.g, c = "";
+      if (has(st.reads, d.id)) c += "<span class=\"mk r\" title=\"" + esc(st.name + " reads " + d.name) + "\">R</span>";
+      else if (has(st.today, d.id)) c += "<span class=\"mk x\" title=\"" + esc(st.name + " reads " + d.name + " today, and no longer") + "\">R</span>";
+      if (has(st.looks, d.id)) c += (c ? " " : "") + "<span class=\"mk l\" title=\"" + esc(st.name + " looks up items in " + d.name + " by ID") + "\">L</span>";
+      if (has(st.change, d.id)) c += (c ? " " : "") + "<span class=\"mk c\" title=\"" + esc(st.name + " reads " + d.name + " when it re-runs for a change") + "\">R</span>";
+      if (has(st.writes, d.id)) c += (c ? " " : "") + "<span class=\"mk w\" title=\"" + esc(st.name + " writes " + d.name) + "\">W</span>";
+      body += "<td" + (gs ? " class=\"gstart\"" : "") + ">" + c + "</td>";
+    });
+    body += "</tr>";
+  });
+  document.getElementById("mx").innerHTML = h1 + "</tr>" + h2 + "</tr></thead>" + body + "</tbody>";
+
+  var rowsHTML = DOCS.map(function(d){
+    var W_ = STEPS.filter(function(st){ return has(st.writes, d.id); });
+    var R_ = STEPS.filter(function(st){ return has(st.reads, d.id); });
+    var L_ = STEPS.filter(function(st){ return has(st.looks, d.id); });
+    var C_ = STEPS.filter(function(st){ return has(st.change, d.id) && !has(st.reads, d.id); });
+    return "<tr><td>" + esc(d.name) + "</td>" +
+      "<td>" + (d.path || []).map(function(p){ return "<code>" + esc(p) + "</code>"; }).join("<br>") + "</td>" +
+      "<td><span class=\"kind " + d.kind + "\">" + d.kind + "</span>" + (d.kindNote ? "<br><span class=\"note\">" + esc(d.kindNote) + "</span>" : "") + "</td>" +
+      "<td>" + (W_.length ? stepsHTML(W_) : esc(d.from || "")) + "</td>" +
+      "<td>" + listHTML(d.contains) + "</td>" +
+      "<td>" + stepsHTML(R_, d.human, C_) + "</td>" +
+      "<td>" + stepsHTML(L_) + "</td>" + "</tr>";
+  }).join("");
+  document.getElementById("doctable").innerHTML = "<thead><tr><th>Document</th><th>File, in the project folder</th><th>Kind</th><th>Produced by</th><th>What it contains</th><th>Read by</th><th>Looked up by ID by</th></tr></thead><tbody>" + rowsHTML + "</tbody>";
+})();
+})();
+</script>

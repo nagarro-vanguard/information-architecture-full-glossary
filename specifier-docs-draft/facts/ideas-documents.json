@@ -1,0 +1,1820 @@
+{
+  "ideas": [
+    {
+      "term": "the specifiers",
+      "meaning": "You: the BA and the PO. You are the only people who decide. Skills read, draft, check and record. Programs check, route and generate. Neither decides anything. Anyone else, such as the client or an architect, sends what they say as a file in the sources folder.",
+      "whereYouMeetIt": [
+        "every gate",
+        "conventions.md, section 1"
+      ],
+      "status": "same",
+      "note": "The kit now also says that other people never decide at a gate. Their words come in as sources."
+    },
+    {
+      "term": "skill, workflow and program",
+      "meaning": "A skill writes one document and holds its gate. A workflow runs a few skills in order, for one piece, then stops. A program is code in the tools folder. It checks, routes or builds a file, and has no gate. Nothing runs everything at once.",
+      "whereYouMeetIt": [
+        "README.md, section 2",
+        "README.md, section 3",
+        "the tools folder"
+      ],
+      "status": "new",
+      "note": "There are six workflows, plus `glossary-author`, which is a skill that runs between the first two."
+    },
+    {
+      "term": "running on its own",
+      "meaning": "You can call any skill without its workflow. It behaves the same. It finds its inputs from the project name, runs `scaffold-project.cjs` first, and stops and names the input when one is missing or not accepted.",
+      "whereYouMeetIt": [
+        "every skill",
+        "README.md, section 5"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "a mode",
+      "meaning": "The first thing a skill says when it starts: what kind of run this is. The modes are a new build, picking up where it stopped, a change, and nothing to do. `glossary-author` also has a re-run, and a mode for adding words from a request.",
+      "whereYouMeetIt": [
+        "`things-author`",
+        "`data-model-author`",
+        "`data-model-workflow`",
+        "`glossary-author`"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "a gate",
+      "meaning": "A decision review gate, or gate for short. It is the point where a skill shows you its whole draft, asks its questions one at a time, then asks whether to accept the document. Nothing goes on until you answer.",
+      "whereYouMeetIt": [
+        "every skill with a judgement",
+        "decision-review-gates.md"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "one gate per skill",
+      "meaning": "Each skill drafts the whole document, runs its check, then holds one gate. The one exception is `glossary-author`, with Gate 1 for the words and Gate 2 for the definitions.",
+      "whereYouMeetIt": [
+        "every skill",
+        "conventions.md, section 6"
+      ],
+      "status": "same",
+      "note": "The data model also has a gate 1 and a gate 2, but each belongs to a different skill: gate 1 to `things-author` and gate 2 to `data-model-author`."
+    },
+    {
+      "term": "the three blocks",
+      "meaning": "What the check program prints for the gate. You read these first, so the facts come from a program, not from the AI. \"For the person\" holds the facts for the first message. \"One line\" is the check result in one line, for each later decision. \"For the file\" is the check record, pasted into the document.",
+      "whereYouMeetIt": [
+        "every gate",
+        "every check program",
+        "`grade-questions.cjs`"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the order at a gate",
+      "meaning": "Every gate goes in the same order. First the \"For the person\" blocks. Then the Must answer questions, one at a time. Then the Should answer questions, one at a time. Then the Can move ahead questions, as one list. Last, the gate's own question.",
+      "whereYouMeetIt": [
+        "every gate"
+      ],
+      "status": "new",
+      "note": "The data model's gates take a different order: the check block, then the data model's decisions, then the gate's own question."
+    },
+    {
+      "term": "the gate's own question",
+      "meaning": "The last question at a gate, about the document itself, such as \"Accept the FRD?\". It is the only yes or no question. Its answers are Accept, or Change something first.",
+      "whereYouMeetIt": [
+        "every gate"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the shape of a decision",
+      "meaning": "Every question at a gate has the same parts: why I'm asking, an example, what it changes with its impact and severity, the real answers with why you'd pick each and what happens next, \"I don't know yet\", the recommendation, and the next best action. The answers are real choices, never yes or no.",
+      "whereYouMeetIt": [
+        "every gate",
+        "decision-review-gates.md, rule 4"
+      ],
+      "status": "new",
+      "note": "Each decision opens with a progress line, such as \"Decision 4. Must answer: 1 of 2. Left at this gate: 5.\""
+    },
+    {
+      "term": "names, not codes",
+      "meaning": "At a gate, the skill names things in words: a feature by its name, a requirement by its title, a rule by its words. A code, such as F-03, shows only in brackets after the name. You never have to read a code to decide.",
+      "whereYouMeetIt": [
+        "every gate",
+        "decision-review-gates.md, rule 2"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "\"I don't know yet\"",
+      "meaning": "An answer offered with every question. The recommended answer is used, marked Proposed, and the question stays open in the Question log.",
+      "whereYouMeetIt": [
+        "every gate",
+        "decision record",
+        "status.cjs"
+      ],
+      "status": "changed",
+      "note": "There are now two exceptions. At a data model gate, the cell keeps its \"? (DM-n)\", the decision stays open in the data model's decisions file, and it is asked again first at the next run. At a change's gate, it leaves the Change impact report drafted, and nothing runs."
+    },
+    {
+      "term": "going back to a decision",
+      "meaning": "At a gate, you can say \"go back to Decision\" and its number. The skill asks it again. Your new answer is a new entry that starts \"Replaces Decision n:\". The earlier entry stays. Skipping a question counts as \"I don't know yet\".",
+      "whereYouMeetIt": [
+        "every gate"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the third \"no\"",
+      "meaning": "After your third \"no\" at the same gate in one run, the skill stops redrafting. It offers: park it, accept it as it is with your remaining points as questions, or one more round.",
+      "whereYouMeetIt": [
+        "every gate",
+        "`park.cjs`"
+      ],
+      "status": "same",
+      "note": "\"Park it\" is offered only at an FRD's gate and an EPIC's gates. The data model's gates join the list of gates that never offer it. At a data model gate, your remaining points go to the data model's decisions file, never to the Question log."
+    },
+    {
+      "term": "parked",
+      "meaning": "A piece set aside, at the back of the queue, so other work goes on. Anything that depends on it waits too. Only an FRD or an EPIC can be parked. `park.cjs` writes the mark in its status line.",
+      "whereYouMeetIt": [
+        "`park.cjs`",
+        "the status line",
+        "status.cjs",
+        "the routes"
+      ],
+      "status": "changed",
+      "note": "Old meaning was only \"parked by a large change\". Now a piece is parked two ways: at its gate after your third \"no\", or by a large change. The second belongs to handling changes, in changeIdeas."
+    },
+    {
+      "term": "acceptance",
+      "meaning": "Your \"yes\" at a gate. It runs `accept.cjs`. That saves a numbered copy of the document in the Version log, saves a copy of the Question log, rebuilds the Traceability map, and brings every open change's progress up to date. It also sets the document's status line.",
+      "whereYouMeetIt": [
+        "`accept.cjs`",
+        "every gate"
+      ],
+      "status": "changed",
+      "note": "For the data model, it also saves the data model's decisions file. A skill never writes \"accepted\" itself."
+    },
+    {
+      "term": "the status line",
+      "meaning": "The line right under a document's title that says where it stands: drafted, accepted on a date with its version, or parked on a date. The skill writes only \"drafted\". Programs write the rest.",
+      "whereYouMeetIt": [
+        "every document",
+        "`accept.cjs`",
+        "`park.cjs`",
+        "status.cjs"
+      ],
+      "status": "new",
+      "note": "A Story has no status line. Its status is a row of its own table: drafted, groomed or ready."
+    },
+    {
+      "term": "the \"Next step\" line",
+      "meaning": "A line straight after the status line, only in the things file and each data model file. It tells you what to do next, such as how many decisions are still open.",
+      "whereYouMeetIt": [
+        "the things file",
+        "each data model file"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "check record",
+      "meaning": "The last section of a document. It holds the \"For the file\" block of the last check, pasted exactly as the check program printed it.",
+      "whereYouMeetIt": [
+        "every document"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "decision record",
+      "meaning": "The section of a document where each question asked at its gate, and your answer, is written. It is never rewritten.",
+      "whereYouMeetIt": [
+        "every document with a gate, except the data model's files"
+      ],
+      "status": "changed",
+      "note": "The data model's files have no decision record. Their decisions go to the data model's decisions file."
+    },
+    {
+      "term": "what's next",
+      "meaning": "`status.cjs` prints one line for each document, the open changes, every Must answer question still open, and every data model entry still open. It ends with a \"Next:\" line that names what to run next. Every skill pastes its parts at the close of its gate.",
+      "whereYouMeetIt": [
+        "status.cjs",
+        "the close of every gate"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "living document",
+      "meaning": "A document kept up to date by its own skill. Each change makes a new version, saved when you accept it.",
+      "whereYouMeetIt": [
+        "BRD",
+        "PRD",
+        "Glossary",
+        "the things file",
+        "each data model file",
+        "the data model's decisions file",
+        "Feature catalog",
+        "FRD",
+        "Stories",
+        "Question log"
+      ],
+      "status": "changed",
+      "note": "The data model's three kinds of file are new on the list. conventions.md, section 2 no longer names the EPIC register, the EPIC brief or the Story list, which the old book called living."
+    },
+    {
+      "term": "record",
+      "meaning": "A document that is only ever added to. A later change adds an entry, and nothing already written is changed.",
+      "whereYouMeetIt": [
+        "Discovery brief",
+        "EPIC grouping",
+        "Change impact report",
+        "Version log"
+      ],
+      "status": "changed",
+      "note": "conventions.md, section 2 no longer names the Glossary gate log, but it still works as a record."
+    },
+    {
+      "term": "generated file",
+      "meaning": "A file a program rebuilds from other documents. Never edited by hand.",
+      "whereYouMeetIt": [
+        "EPIC sequencing",
+        "EPIC mapping",
+        "Traceability map"
+      ],
+      "status": "changed",
+      "note": "conventions.md, section 2 no longer names the Glossary decision register. A program writes only its table. The rest of that page is `glossary-author`'s."
+    },
+    {
+      "term": "external",
+      "meaning": "Something you bring in from outside the workflow.",
+      "whereYouMeetIt": [
+        "your requirement files",
+        "design files",
+        "files brought with a change"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "each fact is written once",
+      "meaning": "Each fact is written in one living document only. Every other document refers to it by its ID, such as NFR-2. When the fact changes, only that document changes. When a document does copy text, a program checks the copy matches.",
+      "whereYouMeetIt": [
+        "every document",
+        "conventions.md, section 3"
+      ],
+      "status": "changed",
+      "note": "Was \"one home per fact\". The kit's simple writing rules now treat \"home\" as a figure of speech, so the idea is named in plain words. The checked copies are: the EPIC register copies the grouping, an FRD quotes the PRD's simple words and copies the data model's rules tables, and a story quotes its FRD's rules."
+    },
+    {
+      "term": "the latest document wins",
+      "meaning": "A decision at a later gate may change an answer that an earlier document gives. The later document then says the new answer, with a note that names the decision. The earlier document stays as it is, and no change is raised. Later steps copy the later document.",
+      "whereYouMeetIt": [
+        "an FRD's gate",
+        "conventions.md, section 3"
+      ],
+      "status": "new",
+      "note": "Example: the data model says 3 books at a time, and a decision at an FRD's gate makes it 5. The FRD says 5 with its note. The data model still says 3. The stories copy the FRD. A real mistake is the one exception: it is fixed through a change."
+    },
+    {
+      "term": "the ways back",
+      "meaning": "Most steps only go forward. When a step finds something an earlier document must settle, it goes back one of a fixed set of ways: a data model decision, a Glossary change, a \"?\" row in the Feature catalog, a note in the FRD, or a change. A later gate never sends an answer back.",
+      "whereYouMeetIt": [
+        "README.md, section 3, \"The ways back\""
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "a mistake found later",
+      "meaning": "When a step finds a mistake in a document you already accepted, it pauses. You raise the mistake as a change. Nothing you accepted is edited outside a change.",
+      "whereYouMeetIt": [
+        "any step",
+        "conventions.md, section 17"
+      ],
+      "status": "new",
+      "note": "Two things never raise a change: a Glossary change the data model finds, and a decision at an FRD's gate that changes a data model answer."
+    },
+    {
+      "term": "the reader's copy",
+      "meaning": "A copy of a document without its citations, for a reader outside the kit, such as a developer reading a story as a GitHub issue. `reader-copy.cjs` prints it. The document itself never changes.",
+      "whereYouMeetIt": [
+        "`reader-copy.cjs`",
+        "`stories-workflow`, when a ready story goes into a tracker"
+      ],
+      "status": "new",
+      "note": "It is printed, not saved in the project folder."
+    },
+    {
+      "term": "template",
+      "meaning": "The blank shape of a document. Each document is written from its template. The template's Placeholders part says what each section holds, and is never copied into a document. Text in {curly braces} is a placeholder, and none is left at the gate.",
+      "whereYouMeetIt": [
+        "the templates folder",
+        "the examples folder"
+      ],
+      "status": "new",
+      "note": "The examples folder holds filled ones for a made-up product, Expense claims. The data model's examples use a made-up City library."
+    },
+    {
+      "term": "the labels for unknowns",
+      "meaning": "A gap is never filled with a guess. It gets one label: [Not specified in provided sources], Proposed, needs confirmation, TBD, or [Needs source excerpt]. Each gap also names its question, such as \"TBD, question 12\".",
+      "whereYouMeetIt": [
+        "every document",
+        "conventions.md, section 9"
+      ],
+      "status": "new",
+      "note": "The data model is the one exception. Its gaps name a decision or a Glossary change, such as \"? (DM-8)\"."
+    },
+    {
+      "term": "confidence tags",
+      "meaning": "Every KPI, NFR and measurable claim gets one tag. CONFIRMED: every detail is in a source. TENTATIVE: it is in a source, but incomplete. AI-RECOMMENDED: it is in no source, and you decide at the gate.",
+      "whereYouMeetIt": [
+        "BRD",
+        "PRD"
+      ],
+      "status": "new",
+      "note": "An AI-RECOMMENDED item is never relabelled."
+    },
+    {
+      "term": "cite every specific",
+      "meaning": "Every number, limit, rule or other specific says where it came from, such as \"per claims-requirements-v2.docx\" or \"per your decision at a gate\". Nothing is invented: a specific no source states is TBD or Proposed.",
+      "whereYouMeetIt": [
+        "every document",
+        "conventions.md, section 11",
+        "conventions.md, section 12"
+      ],
+      "status": "new",
+      "note": "The data model's files cite no source. Their decisions file keeps the reason for each decision."
+    },
+    {
+      "term": "beyond the client's words",
+      "meaning": "Every place where a document goes beyond, or differs from, what the client wrote is marked, so a program can list it for you. For example, a Proposed value, an AI-RECOMMENDED item you accepted, or an FRD rule whose source is proposed or decided.",
+      "whereYouMeetIt": [
+        "every gate, before you accept",
+        "conventions.md, section 24"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the list for the client",
+      "meaning": "What the check gives you after you accept, to take back to the client. It has two halves: what we changed or added, for the client to confirm, and what we still need from the client, each worded as a question.",
+      "whereYouMeetIt": [
+        "the close of every gate"
+      ],
+      "status": "new",
+      "note": "A data model decision is never on this list. The client sees it later, only as an FRD rule."
+    },
+    {
+      "term": "business language",
+      "meaning": "Documents say what the user sees and does, never how it is built. Words such as API, database, table or cache never appear, unless a source uses them.",
+      "whereYouMeetIt": [
+        "BRD",
+        "PRD",
+        "Feature catalog",
+        "EPICs",
+        "FRDs",
+        "stories"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "a name is not a source",
+      "meaning": "A title, a feature name or a file name only points at sourced text. A word that appears only in a name never becomes content.",
+      "whereYouMeetIt": [
+        "every document",
+        "conventions.md, section 14"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "NFRs",
+      "meaning": "The non-functional requirements. Each one is kept only in the PRD, with an ID such as NFR-2. Every other document lists only the IDs that apply to it.",
+      "whereYouMeetIt": [
+        "PRD",
+        "EPIC brief"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the Question log",
+      "meaning": "The one file that keeps every question in a project, whichever document raised it. Each gap in a document names its question, such as \"TBD, question 12\". A document never keeps its own list of open questions.",
+      "whereYouMeetIt": [
+        "every document with a gap",
+        "every gate",
+        "status.cjs"
+      ],
+      "status": "changed",
+      "note": "The data model is the one exception. Its gaps are decisions in its own decisions file, and never go into the Question log. The data model reads the log only for the recommended answer to a question the PRD left open."
+    },
+    {
+      "term": "impact and severity",
+      "meaning": "How each question is rated. Impact measures rework: how much is redone if the answer is wrong. Severity measures harm: how much harm is done if work goes ahead on a wrong answer.",
+      "whereYouMeetIt": [
+        "Question log",
+        "every gate"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "Must answer, Should answer and Can move ahead",
+      "meaning": "The three groups a question is placed in, from its severity and impact. Must answer: any High severity, asked first, one at a time. Should answer: asked next, one at a time. Can move ahead: settled together, as one list.",
+      "whereYouMeetIt": [
+        "Question log",
+        "every gate",
+        "`grade-questions.cjs`"
+      ],
+      "status": "same",
+      "note": "For the Can move ahead list you give one answer: take all the recommended answers, change some then take the rest, or \"I don't know yet\"."
+    },
+    {
+      "term": "the Must answer guard",
+      "meaning": "A Must answer question is answered before an FRD that builds on it is accepted, and before the stories it was raised in are marked ready.",
+      "whereYouMeetIt": [
+        "`check-frd.cjs`",
+        "`check-stories.cjs`",
+        "status.cjs"
+      ],
+      "status": "same",
+      "note": "An open question never fails a check, except where this guard applies."
+    },
+    {
+      "term": "simple writing",
+      "meaning": "The rules every document and every gate message follows, so a reader whose first language isn't English understands each sentence the first time. One idea per sentence, everyday words, say who does it, no figure of speech, numbers as digits, no side notes in dashes or brackets.",
+      "whereYouMeetIt": [
+        "every document",
+        "every gate message",
+        "simple-writing-rules.md"
+      ],
+      "status": "new",
+      "note": "Simple writing never drops a condition, a number or a source, never picks one meaning of a phrase with two, and never changes an agreed Glossary word."
+    },
+    {
+      "term": "the quick check",
+      "meaning": "The simple writing check, `check-simple-writing.cjs`. Every check program runs it. A file with no check program gets it on its own. At the gate you see one line per file, such as \"Simple writing, lending.md: 0 to fix, 4 to look at.\"",
+      "whereYouMeetIt": [
+        "every gate",
+        "`check-simple-writing.cjs`"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "\"to fix\" and \"to look at\"",
+      "meaning": "The two kinds of finding a check gives. A \"to fix\" finding, such as a hard word or a semicolon, is fixed by the skill before you see the document. A \"to look at\" finding, such as a sentence over 20 words, is shown to you at the gate and never fails the check.",
+      "whereYouMeetIt": [
+        "every gate"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "our words, not the client's",
+      "meaning": "A requirement is written in simple words. The client's exact words are kept next to it, never copied into it. They are kept only in the PRD's \"The client's words\" column, the Discovery brief's quotes, the Glossary's deep-dives, and a Change impact report's old and new words.",
+      "whereYouMeetIt": [
+        "PRD",
+        "simple-writing-rules.md, part 4"
+      ],
+      "status": "new",
+      "note": "The PRD's two columns are \"In simple words\" and \"The client's words\". Every later document copies the simple words."
+    },
+    {
+      "term": "one requirement per row",
+      "meaning": "Each row holds one thing the product must do, or must not do, that you can test on its own. A client row that holds two is cut into two rows. A list of details, a list of values, an example or a reason stays with its requirement. The check lists each row that may hold two, for you to look at. It never fails.",
+      "whereYouMeetIt": [
+        "BRD",
+        "PRD",
+        "Feature catalog",
+        "FRD",
+        "Story list",
+        "Stories",
+        "each data model file",
+        "atomic-rules.md"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "quality characteristics",
+      "meaning": "The ten tests, Q1 to Q10, that each requirement, feature, story and acceptance criterion must pass. A skill that writes them names the ones they must meet.",
+      "whereYouMeetIt": [
+        "quality-characteristics.md"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "agreed words",
+      "meaning": "The words the Glossary settled, one word per meaning. From the data model on, every document uses them. The BRD and the first PRD keep plain or client words, because they come before the Glossary. In a change, the PRD uses the agreed words.",
+      "whereYouMeetIt": [
+        "Glossary",
+        "every check from the data model on"
+      ],
+      "status": "changed",
+      "note": "Old book said \"from the Feature catalog on\". The accepted PRD is never rewritten to match the Glossary. The Glossary records each word it replaced as \"also written as\"."
+    },
+    {
+      "term": "also written as",
+      "meaning": "Another word the sources used for an agreed term, such as the client's own word. The Glossary records it, so the two can always be matched.",
+      "whereYouMeetIt": [
+        "Glossary",
+        "Gate 2 of the Glossary",
+        "`fill-also-written-as.cjs`"
+      ],
+      "status": "changed",
+      "note": "Old book said it was kept in the section decisions files. Now it is written in Gate 2's rows in the gate log, filled by `fill-also-written-as.cjs` from the words Gate 1 merged."
+    },
+    {
+      "term": "retired word",
+      "meaning": "A word the Glossary replaced. The check programs flag it, and name the agreed word to use instead.",
+      "whereYouMeetIt": [
+        "`lib/scan-retired-words.cjs`",
+        "`check-data-model.cjs`",
+        "`check-features.cjs`",
+        "`check-epic-grouping.cjs`",
+        "`check-epic-brief.cjs`",
+        "`check-frd.cjs`",
+        "`check-stories.cjs`",
+        "`check-prd.cjs`, once a Glossary exists"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "Gate 1 and Gate 2 of the Glossary",
+      "meaning": "The two gates of `glossary-author`. Gate 1 settles the words, and which groups become the families. Gate 2 settles their definitions.",
+      "whereYouMeetIt": [
+        "`glossary-author`"
+      ],
+      "status": "new",
+      "note": "Not the same as the data model's gate 1 and gate 2."
+    },
+    {
+      "term": "family",
+      "meaning": "A group of Glossary terms, decided at the Glossary's Gate 1, usually from the source's top-level groups. The Glossary's pages are arranged by family. The data model writes one file per family.",
+      "whereYouMeetIt": [
+        "Glossary, \"Families at a glance\"",
+        "the things file",
+        "each data model file"
+      ],
+      "status": "new",
+      "note": "Not the same as a section. A section is one part of a source, and is how the Glossary reads it."
+    },
+    {
+      "term": "the ripple list",
+      "meaning": "When the Glossary changes a term, `glossary-disposition` lists every document that uses it. It flags them for their authors and never edits them.",
+      "whereYouMeetIt": [
+        "`glossary-disposition`",
+        "`data-model-workflow`, step 3"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the data model",
+      "meaning": "What the product keeps information about, written from the Glossary, the BRD and the PRD. For each thing, it gives what people do with it, the rules for each field, and how it moves. It never names or defines a term again, and never comments on the requirements.",
+      "whereYouMeetIt": [
+        "`data-model-workflow`",
+        "data-model-design.md",
+        "glossary/data-models/"
+      ],
+      "status": "new",
+      "note": "It comes after the Glossary and before the Feature catalog. Its goal: AI writes a feature's stories and tests the same way every time."
+    },
+    {
+      "term": "thing",
+      "meaning": "Something the product keeps information about, such as a Book, a Loan or a Member. A Glossary word becomes a thing when it has nothing above it, or has details of its own.",
+      "whereYouMeetIt": [
+        "the things file",
+        "each data model file"
+      ],
+      "status": "new",
+      "note": "Every thing has the same parts in the same order: definition, kind of, actions, rules table, how it moves, decisions to make."
+    },
+    {
+      "term": "field and choice",
+      "meaning": "A field is one piece of information a thing holds, like a box on its form, such as a book's title. A choice is one allowed value of a field, such as Paperback for a book's format.",
+      "whereYouMeetIt": [
+        "each data model file"
+      ],
+      "status": "new",
+      "note": "A Glossary word with no details of its own often becomes a field or a choice, not a thing."
+    },
+    {
+      "term": "action",
+      "meaning": "Something a person, or the product, does with a thing, such as Borrow or Extend. Each action has the step it happens in, who does it, and its rules. Every thing has an action that makes it, and rows for finding, opening, changing and removing it.",
+      "whereYouMeetIt": [
+        "each data model file",
+        "Feature catalog, section 5"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "rules table",
+      "meaning": "One row per field of a thing, with the same six columns every time: Type, Required, Limits, Can two share it, Can change, Starts as. Each rule always becomes the same kind of test.",
+      "whereYouMeetIt": [
+        "each data model file",
+        "the FRD's Data section"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "how it moves",
+      "meaning": "For a status or a step: a one-line picture of the path, a Moves table with From, To, When and Who, and what each state means, in positive words. A move not in the table is refused.",
+      "whereYouMeetIt": [
+        "each data model file",
+        "Feature catalog, section 5"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "Adds to {Thing}",
+      "meaning": "A part of a data model file that adds a field, an action or a move to a thing from an earlier family. Each family's file covers only its own part of the PRD.",
+      "whereYouMeetIt": [
+        "each data model file"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the things file",
+      "meaning": "The data model's first file. It lists every thing the product keeps information about, by Glossary family, with its definition copied word for word. Each family names its data model file once. It also lists the words left out, and the product-wide decisions.",
+      "whereYouMeetIt": [
+        "`things-author`",
+        "the data model's gate 1"
+      ],
+      "status": "new",
+      "note": "File name: {product}-glossary-things.md."
+    },
+    {
+      "term": "data model file",
+      "meaning": "One file per Glossary family, named after the family, such as lending.md. It holds each thing's actions, rules table and moves, and anything the family adds to earlier things.",
+      "whereYouMeetIt": [
+        "`data-model-author`",
+        "the data model's gate 2",
+        "`feature-author`",
+        "`frd-author`"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the data model's decisions file",
+      "meaning": "The data model's own record of decisions, one per product. It holds every data model decision, open or settled, and every Glossary change the data model needs, with its status.",
+      "whereYouMeetIt": [
+        "`things-author`",
+        "`data-model-author`",
+        "`data-model-workflow`",
+        "status.cjs"
+      ],
+      "status": "new",
+      "note": "File name: {product}-data-model-decisions.md. data-model-design.md also calls it \"the decision register\", which is also the name of a Glossary page."
+    },
+    {
+      "term": "data model decision (DM-n)",
+      "meaning": "A gap in the data model that you settle at its gate, numbered DM-1 onward across the product. It is only ever about a rule: a limit, who does an action, or which of two requirements that disagree the data model follows. It never goes into the Question log, and never onto the list for the client.",
+      "whereYouMeetIt": [
+        "the data model's gates",
+        "the data model's decisions file",
+        "an FRD note \"on the basis of DM-n\""
+      ],
+      "status": "new",
+      "note": "Some are asked one at a time, such as who can remove a thing. Others are settled together, such as limits. A settled decision is never edited. A later one starts \"Replaces DM-n:\"."
+    },
+    {
+      "term": "product-wide decision",
+      "meaning": "A data model decision that would be asked the same way in every family's file, such as which roles can act in the first release. `things-author` asks it once, at gate 1, and its answer fills every family's file.",
+      "whereYouMeetIt": [
+        "the things file",
+        "the data model's gate 1"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "Glossary change (GC-n)",
+      "meaning": "A word the data model needs that the Glossary doesn't settle, numbered GC-1 onward. The data model collects them all. Once every data model file is accepted, they go together to `glossary-disposition`, in one run. Then the data model is brought in step. Each one is marked as it goes: \"To raise\", then \"Raised\", then \"Settled in the Glossary on {date}\" or \"Left open on {date}\", then \"Brought into the data model on {date}\".",
+      "whereYouMeetIt": [
+        "the data model's decisions file",
+        "`data-model-workflow`, steps 3 and 4",
+        "`glossary-disposition`"
+      ],
+      "status": "new",
+      "note": "It changes words, not requirements, so it needs no change of its own."
+    },
+    {
+      "term": "\"? (DM-n)\" and \"? (GC-n)\"",
+      "meaning": "How a data model file shows a gap: a question mark, then the decision or Glossary change it waits on. Each thing lists its open ones under \"Decisions to make\" and \"Waiting on the Glossary\", with the recommended answer.",
+      "whereYouMeetIt": [
+        "each data model file",
+        "the things file"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "where each gap goes",
+      "meaning": "The table that sends each data model gap to exactly one document, by its kind. Most become a data model decision. A word the Glossary doesn't settle becomes a Glossary change. A question the PRD left open takes the Question log's recommended answer, marked Proposed. A new action big enough to be a feature is written only when the Glossary names it.",
+      "whereYouMeetIt": [
+        "data-model-design.md, section 2"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "asked again first",
+      "meaning": "A data model decision answered \"I don't know yet\", and a Glossary change left open, are never forgotten. `status.cjs` lists them under \"Data model, still open\". The skill that owns each one asks it again first, at its next run. They hold up no other step.",
+      "whereYouMeetIt": [
+        "status.cjs",
+        "`things-author`",
+        "`data-model-author`"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "\"Is it big enough to be a feature?\"",
+      "meaning": "The one test the data model and `feature-author` both use. Making, finding, opening, changing and removing a thing are small enough to be a rule. Any other action, such as one that moves a thing to another state, is big enough to be a feature. A field is always small enough to be a rule.",
+      "whereYouMeetIt": [
+        "data-model-design.md, section 2",
+        "Feature catalog, section 5"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "a requirement's kind",
+      "meaning": "Each row of the PRD's Requirements section has a kind. Requirement: what the product must do. Purpose: why the product exists. Scope: what the project covers. Way of working: how the client's people work today. Only a Requirement row becomes a feature. A row whose kind isn't clear is a Requirement.",
+      "whereYouMeetIt": [
+        "PRD",
+        "`prd-author`'s gate, \"Are these rows not requirements?\""
+      ],
+      "status": "new",
+      "note": "Every row has an ID, REQ-{section}.{n}, such as REQ-3.1, whatever its kind."
+    },
+    {
+      "term": "the journey",
+      "meaning": "How the work flows, kept at three levels: the PRD's end-to-end journey across capabilities, each FRD's flow inside its capability, and the Glossary's Steps page, which shows how the steps connect.",
+      "whereYouMeetIt": [
+        "PRD",
+        "FRD",
+        "Glossary"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "capability",
+      "meaning": "A group of features that share one FRD, set in the Feature catalog.",
+      "whereYouMeetIt": [
+        "Feature catalog",
+        "FRD",
+        "`route-next-capability.cjs`"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "\"Done when\" pieces",
+      "meaning": "A feature's \"Done when\" cut into numbered conditions, F-nn.dw1 onward, using only its own words, in its own order. Every piece must be proved by at least one FRD rule.",
+      "whereYouMeetIt": [
+        "Feature catalog",
+        "FRD"
+      ],
+      "status": "changed",
+      "note": "Old book said each FRD rule points to one piece. Now a rule can also come from the data model, the requirement's own text, a proposal or your decision."
+    },
+    {
+      "term": "data model coverage and the \"?\" row",
+      "meaning": "Section 5 of the Feature catalog lists every action and move of the data model, and gives each one to one feature. A row no feature names shows \"?\" until the catalog's gate settles it. The catalog can't be accepted while a \"?\" is left.",
+      "whereYouMeetIt": [
+        "Feature catalog, section 5",
+        "`feature-author`'s gate"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "\"waits on change\"",
+      "meaning": "At the Feature catalog's gate, you may say a \"?\" row needs a new requirement first. Then only step 1 of `requirement-update-workflow` runs, and gives the change its number. The row reads \"waits on change\" and that number, such as \"waits on change 004\". The catalog can be accepted while a row waits.",
+      "whereYouMeetIt": [
+        "Feature catalog, section 5"
+      ],
+      "status": "new",
+      "note": "A row that still waits once its change is closed is a finding."
+    },
+    {
+      "term": "an FRD rule's source",
+      "meaning": "Each FRD rule completes \"The system shall\" and names one source: a \"Done when\" piece, a data model row such as \"data model — Loan, Extend\", req for the requirement's own text, proposed for a rule the skill suggests, or decided for a rule from your decision.",
+      "whereYouMeetIt": [
+        "FRD"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the FRD's coverage tables",
+      "meaning": "Two tables in each FRD. One shows a rule for every \"Done when\" piece. The other shows a rule for every data model answer its features own. A row with no rule is an error, unless it waits on an open question or decision.",
+      "whereYouMeetIt": [
+        "FRD"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the seven Standard questions",
+      "meaning": "The same seven questions every FRD asks about every thing in its Data, such as whether it can be removed and who can do each action. The answer is read from the data model file first. Only when the files are silent does the question come to you.",
+      "whereYouMeetIt": [
+        "FRD",
+        "data-model-design.md, step 2"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "the \"Updated from\" note",
+      "meaning": "The note an FRD writes where it differs from an earlier document because of a decision. \"Updated from the requirement on the basis of Decision n\", or of DM-n. \"Updated from the data model on the basis of Decision n\" when a decision at the FRD's gate changed a data model answer.",
+      "whereYouMeetIt": [
+        "FRD"
+      ],
+      "status": "new",
+      "note": "This is how \"the latest document wins\" shows in a document."
+    },
+    {
+      "term": "clash",
+      "meaning": "A feature in an early EPIC that depends on a feature in a later EPIC. Settled at the EPIC grouping gate.",
+      "whereYouMeetIt": [
+        "EPIC grouping"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "run order",
+      "meaning": "The order the EPICs are worked in, from the EPIC register.",
+      "whereYouMeetIt": [
+        "EPIC register",
+        "EPIC grouping",
+        "the routes"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "EPIC brief list",
+      "meaning": "Which EPICs get an EPIC brief, in run order, decided at the EPIC grouping gate.",
+      "whereYouMeetIt": [
+        "EPIC grouping",
+        "`route-brief-list.cjs`"
+      ],
+      "status": "same",
+      "note": ""
+    },
+    {
+      "term": "register mode and brief mode",
+      "meaning": "The two ways `epic-author` runs. Register mode copies the chosen grouping into the EPIC register. A program proves the copy, and a pass is its acceptance, with no gate. Brief mode writes one EPIC brief, with its own gate.",
+      "whereYouMeetIt": [
+        "`epic-author`",
+        "`check-register.cjs`"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "ready",
+      "meaning": "A story's last status, after drafted and groomed. `ac-author` marks stories ready when you accept their acceptance criteria. An EPIC is ready when every one of its stories is ready.",
+      "whereYouMeetIt": [
+        "Story",
+        "Story list",
+        "`ac-author`"
+      ],
+      "status": "new",
+      "note": ""
+    },
+    {
+      "term": "Net new, Optimize, Extend, Reuse",
+      "meaning": "The four labels the old book used for build work on the kit.",
+      "whereYouMeetIt": [],
+      "status": "gone",
+      "note": "These were labels for building the kit, not for using it. The kit's shared files no longer keep build history. \"Net new\" now appears only as a kind of change, in changeIdeas."
+    }
+  ],
+  "changeIdeas": [
+    {
+      "term": "a change",
+      "meaning": "One thing you ask to change after documents exist. It can come from the client, from you, from a step that found a mistake, from a late answer, or from the Feature catalog's gate. Each change gets a number, 001 onward, and its own folder.",
+      "whereYouMeetIt": [
+        "`requirement-update-workflow`",
+        "Change impact report"
+      ],
+      "status": "changed",
+      "note": "As the kit defines it today. New since the old book: a change can start at the Feature catalog's gate, and the path can name `data-model-workflow`. The data model and an FRD's gate never raise one."
+    },
+    {
+      "term": "a late answer",
+      "meaning": "An answer to an open question that arrives after the documents that use it exist. It comes in as a change.",
+      "whereYouMeetIt": [
+        "`requirement-update-workflow`",
+        "`insert-answer.cjs`"
+      ],
+      "status": "new",
+      "note": "As the kit defines it today."
+    },
+    {
+      "term": "an ask",
+      "meaning": "One thing a change asks for. A statement that asks for several things is split, one ask per row.",
+      "whereYouMeetIt": [
+        "Change impact report, section 5"
+      ],
+      "status": "new",
+      "note": "As the kit defines it today."
+    },
+    {
+      "term": "kind of change",
+      "meaning": "One of: Net new, Extend or enhance, Update or optimize, Already covered, or Blocked. The kind sets the path.",
+      "whereYouMeetIt": [
+        "Change impact report, section 7"
+      ],
+      "status": "same",
+      "note": "As the kit defines it today."
+    },
+    {
+      "term": "Feature Fit",
+      "meaning": "The method that says whether a change's words exist in the Glossary. Its verdict is Fits, Extend, New capability or Blocked. It comes before the update test.",
+      "whereYouMeetIt": [
+        "`change-impact-author`",
+        "Change impact report, section 7"
+      ],
+      "status": "new",
+      "note": "As the kit defines it today. The old book named it only inside the glossary method."
+    },
+    {
+      "term": "the update test",
+      "meaning": "Fixed steps that decide whether a change alters an existing FRD rule, value, limit or wording. Each rule compared gets a result: same, opposite, changed value or new. A changed rule makes the kind Update or optimize. A reworded requirement with no rule touched is \"wording only\".",
+      "whereYouMeetIt": [
+        "`change-impact-author`",
+        "Change impact report, section 7"
+      ],
+      "status": "changed",
+      "note": "As the kit defines it today. The \"wording only\" result is new."
+    },
+    {
+      "term": "linked item and judgement",
+      "meaning": "A linked item is anything linked to where the change lands, found through the Traceability map or a drafted document. A judgement is `feature-impact`'s call on one linked item: No change, Update, New story or Split. A data model row gets No change or Update only.",
+      "whereYouMeetIt": [
+        "Change impact report, sections 12 and 13",
+        "`find-linked.cjs`",
+        "`feature-impact`"
+      ],
+      "status": "new",
+      "note": "As the kit defines it today."
+    },
+    {
+      "term": "a piece in progress",
+      "meaning": "Whatever is drafted but not yet accepted: the things file or a data model file, the Feature catalog, the EPIC grouping, an FRD, or an EPIC from when its Story list exists until every story is ready.",
+      "whereYouMeetIt": [
+        "`size-rules.cjs`",
+        "status.cjs"
+      ],
+      "status": "changed",
+      "note": "As the kit defines it today. The data model's files are new on the list. Only an FRD or an EPIC can be parked."
+    },
+    {
+      "term": "size of a change",
+      "meaning": "Small: the change is folded into the piece in progress. Large: a feature moves into or out of the piece in progress, or regroups two or more pieces, or an EPIC gets more than one new or split story. Not sized: nothing is in progress.",
+      "whereYouMeetIt": [
+        "`size-rules.cjs`",
+        "Change impact report, section 14"
+      ],
+      "status": "changed",
+      "note": "As the kit defines it today. \"Not sized\" is new."
+    },
+    {
+      "term": "parked by a large change",
+      "meaning": "When a change is large and you choose to run the path, `park.cjs` parks every FRD and EPIC in progress until the change is applied. Its status line reads \"parked on {date}, change {nnn}\".",
+      "whereYouMeetIt": [
+        "`park.cjs`",
+        "status.cjs"
+      ],
+      "status": "same",
+      "note": "As the kit defines it today."
+    },
+    {
+      "term": "the path and the recommendation",
+      "meaning": "The recommendation names the workflows to run again, from which steps, for which items. Your choices at the change's gate: Run the path, Insert it, Copy the wording, Re-run the whole workflow, Close it, or Correct the analysis.",
+      "whereYouMeetIt": [
+        "`recommend.cjs`",
+        "Change impact report, section 15"
+      ],
+      "status": "changed",
+      "note": "As the kit defines it today. Insert it and Copy the wording are small updates done by programs, with nothing re-run. The path can now name `data-model-workflow`."
+    },
+    {
+      "term": "starting again from nothing",
+      "meaning": "A re-run of the whole workflow, from `requirements-workflow`, step 1. It is offered when a change reaches more than half of the business requirements, and happens only when you ask for it in words. Everything in the project folder except sources moves to an archive folder, by hand.",
+      "whereYouMeetIt": [
+        "`requirements-workflow`",
+        "conventions.md, section 15"
+      ],
+      "status": "new",
+      "note": "As the kit defines it today. No program does the move yet."
+    },
+    {
+      "term": "a change's progress and its closing",
+      "meaning": "Each accepted change keeps a progress file, one row for each document it sends work to. `track-change.cjs` updates it at every acceptance. When the last row is accepted, `close-change.cjs` writes a closing entry, and the change closes by itself.",
+      "whereYouMeetIt": [
+        "`track-change.cjs`",
+        "`close-change.cjs`",
+        "status.cjs, \"Open changes\""
+      ],
+      "status": "new",
+      "note": "As the kit defines it today."
+    }
+  ],
+  "documents": [
+    {
+      "document": "Sources",
+      "whatItHolds": [
+        "the client's requirement files, as you received them",
+        "notes or other files from anyone else who has something to say"
+      ],
+      "kind": "external",
+      "writtenBy": [
+        "you"
+      ],
+      "readBy": [
+        "`list-sources.cjs`",
+        "`discovery-author`",
+        "`brd-author`",
+        "`prd-author`",
+        "`compare-versions.cjs`, for the old version"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "sources/",
+      "changeOnly": false
+    },
+    {
+      "document": "Discovery brief",
+      "whatItHolds": [
+        "the list of sources",
+        "which kind of document wins when two disagree",
+        "every topic compared",
+        "clashes",
+        "what's assumed",
+        "risks",
+        "your decisions"
+      ],
+      "kind": "record",
+      "writtenBy": [
+        "`discovery-author`"
+      ],
+      "readBy": [
+        "`brd-author`",
+        "`prd-author`",
+        "`check-discovery-brief.cjs`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "{product}-discovery-brief.md",
+      "changeOnly": false
+    },
+    {
+      "document": "BRD",
+      "whatItHolds": [
+        "why the product is needed, as a Problem or an Opportunity",
+        "objectives with confidence-tagged KPIs",
+        "scope",
+        "business requirements, BR-01 onward",
+        "risks and constraints",
+        "release criteria"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`brd-author`"
+      ],
+      "readBy": [
+        "`prd-author`",
+        "`glossary-author`",
+        "`things-author`",
+        "`data-model-author`",
+        "`check-brd.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`feature-author`",
+        "`epic-author`, for a brief",
+        "`story-drafter`",
+        "`story-groomer`"
+      ],
+      "where": "{product}-brd.md",
+      "changeOnly": false
+    },
+    {
+      "document": "PRD",
+      "whatItHolds": [
+        "every requirement the client stated, one per row, each with its kind",
+        "each requirement in simple words, with the client's words next to it",
+        "each requirement's source and version",
+        "what each requirement traces to",
+        "personas and roles",
+        "the end-to-end journey",
+        "NFRs",
+        "transition requirements"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`prd-author`"
+      ],
+      "readBy": [
+        "`glossary-author`",
+        "`things-author`",
+        "`data-model-author`",
+        "`feature-author`",
+        "`check-prd.cjs`",
+        "`check-features.cjs`",
+        "`check-frd.cjs`",
+        "`check-epic-brief.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`frd-author`",
+        "`epic-author`, for a brief",
+        "`story-drafter`",
+        "`change-impact-author`",
+        "`adversarial-check`",
+        "`copy-wording.cjs`"
+      ],
+      "where": "{product}-prd.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Question log",
+      "whatItHolds": [
+        "every question in the project",
+        "its impact and severity",
+        "its group and its order",
+        "who can answer it, and by which step",
+        "its answer, once given"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`probing-questions-author`",
+        "`grade-questions.cjs`, for the order",
+        "every skill with a gate, when it moves a question to Answered",
+        "`insert-answer.cjs`"
+      ],
+      "readBy": [
+        "every gate",
+        "`status.cjs`",
+        "`check-frd.cjs`",
+        "`check-stories.cjs`",
+        "`route-next-capability.cjs`",
+        "`route-next-epic.cjs`",
+        "`change-impact-author`",
+        "`things-author` and `data-model-author`, only for a recommended answer"
+      ],
+      "lookedUpByIdBy": [
+        "every document with a gap, by question number"
+      ],
+      "where": "{product}-question-log.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Glossary",
+      "whatItHolds": [
+        "a gateway page, README.md",
+        "terms and relationships, with every flow row",
+        "four kind pages: object terms, role terms, step terms, states and values",
+        "the families",
+        "each kind page's table of terms replaced or retired over time"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`glossary-author`",
+        "`glossary-disposition`",
+        "`build-retired-words-tables.cjs`, for the retired-words tables"
+      ],
+      "readBy": [
+        "`things-author`",
+        "`data-model-author`",
+        "`glossary-check`",
+        "`glossary-disposition`"
+      ],
+      "lookedUpByIdBy": [
+        "`feature-author`",
+        "`frd-author`",
+        "`story-drafter`",
+        "`story-groomer`",
+        "`ac-author`",
+        "every check from the data model on, for retired words",
+        "`change-impact-author`",
+        "`adversarial-check`"
+      ],
+      "where": "glossary/",
+      "changeOnly": false
+    },
+    {
+      "document": "Glossary decision register",
+      "whatItHolds": [
+        "each settled glossary decision, D-1 onward, linked to its row in the gate log"
+      ],
+      "kind": "generated",
+      "writtenBy": [
+        "`build-glossary-records.cjs`, for the register's table",
+        "`glossary-author`, for the rest of the page"
+      ],
+      "readBy": [
+        "you, for reference",
+        "`adversarial-check`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "glossary/decision-register.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Glossary gate log",
+      "whatItHolds": [
+        "every glossary decision, at Gate 1, at Gate 2, and in each later change or re-run",
+        "each term's \"Also written as\" words"
+      ],
+      "kind": "record",
+      "writtenBy": [
+        "`glossary-author`",
+        "`glossary-disposition`",
+        "`fill-also-written-as.cjs`, for Gate 2's \"Also written as\""
+      ],
+      "readBy": [
+        "`build-glossary-records.cjs`",
+        "`fill-also-written-as.cjs`",
+        "`build-retired-words-tables.cjs`",
+        "`lib/scan-retired-words.cjs`",
+        "`status.cjs`",
+        "`recommend.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`requirement-update-workflow`, which links each settled word to its row"
+      ],
+      "where": "glossary/deep-dives/gate-log.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Glossary assembly draft",
+      "whatItHolds": [
+        "the draft that joins every section's words before the Glossary pages are written"
+      ],
+      "kind": "record",
+      "writtenBy": [
+        "`glossary-author`"
+      ],
+      "readBy": [
+        "`glossary-author`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "glossary/deep-dives/glossary-assembly-draft.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Glossary section draft",
+      "whatItHolds": [
+        "the words one section of the sources uses, with the evidence for each, in the client's exact words"
+      ],
+      "kind": "record",
+      "writtenBy": [
+        "`glossary-author`"
+      ],
+      "readBy": [
+        "`glossary-author`",
+        "`build-glossary-records.cjs`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "glossary/deep-dives/{section}/{section}-glossary.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Glossary section decisions",
+      "whatItHolds": [
+        "each word of one section, mapped to the agreed word, with what the gates did to it"
+      ],
+      "kind": "generated",
+      "writtenBy": [
+        "`build-glossary-records.cjs`"
+      ],
+      "readBy": [
+        "you, for reference"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "glossary/deep-dives/{section}/{section}-decisions.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Things file",
+      "whatItHolds": [
+        "one section per Glossary family, naming its data model file",
+        "each thing, with its definition copied from the Glossary",
+        "which things are a kind of another thing",
+        "the words left out",
+        "the open product-wide decisions",
+        "the words waiting on the Glossary",
+        "the \"Next step\" line"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`things-author`"
+      ],
+      "readBy": [
+        "`data-model-author`",
+        "`feature-author`",
+        "`change-impact-author`",
+        "`check-data-model.cjs`",
+        "`status.cjs`",
+        "`size-rules.cjs`",
+        "`traceability-map.cjs`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "glossary/data-models/{product}-glossary-things.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Data model file",
+      "whatItHolds": [
+        "one Glossary family's things and their fields",
+        "each thing's actions: in which step, who, and the rules",
+        "each thing's rules table",
+        "how each thing moves",
+        "what the family adds to things from earlier families",
+        "the decisions to make, and the words waiting on the Glossary",
+        "the \"Next step\" line"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`data-model-author`",
+        "`insert-answer.cjs`, for a late answer"
+      ],
+      "readBy": [
+        "`feature-author`",
+        "`check-data-model.cjs`",
+        "`check-features.cjs`",
+        "`check-frd.cjs`",
+        "`status.cjs`",
+        "`size-rules.cjs`",
+        "`find-linked.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`frd-author`",
+        "`change-impact-author`",
+        "`feature-impact`"
+      ],
+      "where": "glossary/data-models/{family}.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Data model decisions file",
+      "whatItHolds": [
+        "every data model decision still open, DM-1 onward",
+        "every data model decision you settled, with who decided and when",
+        "every Glossary change the data model needs, GC-1 onward, with its mark"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`things-author`",
+        "`data-model-author`",
+        "`data-model-workflow`, for the marks on each Glossary change"
+      ],
+      "readBy": [
+        "`data-model-author`",
+        "`glossary-disposition`, for the batch of Glossary changes",
+        "`check-data-model.cjs`",
+        "`status.cjs`",
+        "`accept.cjs`, which saves a copy"
+      ],
+      "lookedUpByIdBy": [
+        "`frd-author`, for a note that names DM-n"
+      ],
+      "where": "glossary/data-models/{product}-data-model-decisions.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Feature catalog",
+      "whatItHolds": [
+        "every feature, with its description, priority and its basis, and capability",
+        "each feature's \"Done when\", cut into pieces",
+        "the coverage check: every Requirement row and its features",
+        "data model coverage: every action and move, and its feature"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`feature-author`"
+      ],
+      "readBy": [
+        "`epic-grouping-author`",
+        "`frd-author`",
+        "`route-next-capability.cjs`",
+        "`check-features.cjs`",
+        "`check-epic-grouping.cjs`",
+        "`check-frd.cjs`",
+        "`check-stories.cjs`",
+        "`build-sequencing-mapping.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`epic-author`",
+        "`story-groomer`",
+        "`change-impact-author`",
+        "`feature-impact`"
+      ],
+      "where": "frd/feature-catalog.md",
+      "changeOnly": false
+    },
+    {
+      "document": "FRD",
+      "whatItHolds": [
+        "one capability's \"The system shall\" rules, each with its source",
+        "its gates and actors",
+        "its two coverage tables",
+        "its flow",
+        "its data, copied from the data model",
+        "its seven Standard questions",
+        "its decisions"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`frd-author`"
+      ],
+      "readBy": [
+        "`story-drafter`",
+        "`coverage-check.cjs`",
+        "`check-frd.cjs`",
+        "`check-stories.cjs`",
+        "`route-next-capability.cjs`, for its status line",
+        "`size-rules.cjs`, for its status line"
+      ],
+      "lookedUpByIdBy": [
+        "`story-groomer`",
+        "`ac-author`",
+        "`change-impact-author`",
+        "`adversarial-check`",
+        "`feature-impact`",
+        "`copy-wording.cjs`"
+      ],
+      "where": "frd/frd-{capability}.md",
+      "changeOnly": false
+    },
+    {
+      "document": "EPIC grouping",
+      "whatItHolds": [
+        "two or three ways to group the features",
+        "the pick, written out in full",
+        "borderline features",
+        "dependencies between EPICs, and the sequence",
+        "clashes settled",
+        "the EPIC brief list, in run order"
+      ],
+      "kind": "record",
+      "writtenBy": [
+        "`epic-grouping-author`"
+      ],
+      "readBy": [
+        "`epic-author`, register mode",
+        "`check-register.cjs`",
+        "`build-sequencing-mapping.cjs`",
+        "`route-brief-list.cjs`",
+        "`check-epic-grouping.cjs`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "epics/grouping.md",
+      "changeOnly": false
+    },
+    {
+      "document": "EPIC register",
+      "whatItHolds": [
+        "one row per EPIC, copied from the pick: name, outcome, features, band, persona, dependencies",
+        "the run order"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`epic-author`, register mode"
+      ],
+      "readBy": [
+        "`check-register.cjs`",
+        "`build-sequencing-mapping.cjs`",
+        "`route-next-capability.cjs`",
+        "`route-next-epic.cjs`",
+        "`epic-author`, brief mode",
+        "`story-drafter`",
+        "`coverage-check.cjs`",
+        "`check-epic-brief.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`change-impact-author`"
+      ],
+      "where": "epics/register.md",
+      "changeOnly": false
+    },
+    {
+      "document": "EPIC sequencing",
+      "whatItHolds": [
+        "the build order",
+        "which EPICs run side by side",
+        "the critical path"
+      ],
+      "kind": "generated",
+      "writtenBy": [
+        "`build-sequencing-mapping.cjs`"
+      ],
+      "readBy": [
+        "you, for reference"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "epics/sequencing.md",
+      "changeOnly": false
+    },
+    {
+      "document": "EPIC mapping",
+      "whatItHolds": [
+        "each EPIC's band and features",
+        "the coverage count"
+      ],
+      "kind": "generated",
+      "writtenBy": [
+        "`build-sequencing-mapping.cjs`"
+      ],
+      "readBy": [
+        "you, for reference"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "epics/mapping.md",
+      "changeOnly": false
+    },
+    {
+      "document": "EPIC brief",
+      "whatItHolds": [
+        "description",
+        "business value",
+        "fitness criteria",
+        "scope",
+        "features",
+        "dependencies",
+        "the NFR IDs that apply",
+        "references"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`epic-author`, brief mode"
+      ],
+      "readBy": [
+        "`check-epic-brief.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`story-groomer`, for metrics"
+      ],
+      "where": "epics/{epic}/brief.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Story list",
+      "whatItHolds": [
+        "one EPIC's stories, in the order they are worked",
+        "each story's status",
+        "the decisions at the EPIC's story gates"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`story-drafter`",
+        "`ac-author`, for the ready marks",
+        "`park.cjs`"
+      ],
+      "readBy": [
+        "`story-groomer`",
+        "`route-next-epic.cjs`",
+        "`size-rules.cjs`",
+        "`status.cjs`",
+        "`check-stories.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`feature-impact`"
+      ],
+      "where": "epics/{epic}/story-list.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Story",
+      "whatItHolds": [
+        "its title and its \"As a, I want, So that\" statement",
+        "its status: drafted, groomed or ready",
+        "proven dependencies",
+        "scope in and out",
+        "roles, when they differ from the FRD's actors",
+        "the FRD rules it delivers, quoted by ID, each with its flow step",
+        "metrics and design links",
+        "3 to 7 Given, When, Then scenarios, each naming the rules it proves"
+      ],
+      "kind": "living",
+      "writtenBy": [
+        "`story-drafter`",
+        "`story-groomer`",
+        "`ac-author`"
+      ],
+      "readBy": [
+        "`story-groomer`",
+        "`ac-author`",
+        "`coverage-check.cjs`",
+        "`check-stories.cjs`",
+        "`reader-copy.cjs`, for a tracker"
+      ],
+      "lookedUpByIdBy": [
+        "`feature-impact`"
+      ],
+      "where": "epics/{epic}/{story}.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Design",
+      "whatItHolds": [
+        "screens or flows, if you have any"
+      ],
+      "kind": "external",
+      "writtenBy": [
+        "you"
+      ],
+      "readBy": [
+        "`story-drafter`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "design/",
+      "changeOnly": false
+    },
+    {
+      "document": "Files brought with a change",
+      "whatItHolds": [
+        "a new version of a requirement file",
+        "a document from outside",
+        "anything else that backs up a change"
+      ],
+      "kind": "external",
+      "writtenBy": [
+        "you"
+      ],
+      "readBy": [
+        "`compare-versions.cjs`",
+        "`glossary-check`",
+        "`change-impact-author`",
+        "`prd-author`, in a change"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "not set in project-folders.md: each file is named in section 2 of the Change impact report",
+      "changeOnly": true
+    },
+    {
+      "document": "Change impact report",
+      "whatItHolds": [
+        "your statement, word for word",
+        "the files you brought",
+        "the differences between versions",
+        "how each mismatched word was settled",
+        "the change restated, one ask per row",
+        "where it lands, the data model included",
+        "its kind, and the test that decided it",
+        "the journey",
+        "what's reused, new and what blocks",
+        "the adversarial check's findings",
+        "the linked items and their judgements",
+        "the size",
+        "the recommendation",
+        "your decision"
+      ],
+      "kind": "record",
+      "writtenBy": [
+        "`requirement-update-workflow`, sections 1 and 2",
+        "`compare-versions.cjs`",
+        "`change-impact-author`",
+        "`adversarial-check`",
+        "`find-linked.cjs`",
+        "`feature-impact`",
+        "`size-rules.cjs`",
+        "`recommend.cjs`"
+      ],
+      "readBy": [
+        "you, at the gate",
+        "the skills the path re-runs",
+        "`check-change-report.cjs`",
+        "`park.cjs`",
+        "`track-change.cjs`",
+        "`insert-answer.cjs`",
+        "`copy-wording.cjs`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "changes/{change}/impact-report.md",
+      "changeOnly": true
+    },
+    {
+      "document": "Check findings",
+      "whatItHolds": [
+        "each word in a document from outside that doesn't match the Glossary, with a recommended fix"
+      ],
+      "kind": "record",
+      "writtenBy": [
+        "`glossary-check`"
+      ],
+      "readBy": [
+        "`glossary-disposition`",
+        "`change-impact-author`",
+        "you"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "changes/{change}/check-findings.md",
+      "changeOnly": true
+    },
+    {
+      "document": "Change progress",
+      "whatItHolds": [
+        "one row for each document the change sends work to",
+        "whether each row is pending or accepted",
+        "whether the change is closed"
+      ],
+      "kind": "generated",
+      "writtenBy": [
+        "`track-change.cjs`",
+        "`insert-answer.cjs`",
+        "`copy-wording.cjs`",
+        "`close-change.cjs`, for the closed mark"
+      ],
+      "readBy": [
+        "`status.cjs`",
+        "`close-change.cjs`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "changes/{change}/progress.md",
+      "changeOnly": true
+    },
+    {
+      "document": "Version log",
+      "whatItHolds": [
+        "one row for each acceptance",
+        "a numbered copy of each document every time it is accepted",
+        "a copy of the Question log as it stood",
+        "for the data model, a copy of its decisions file"
+      ],
+      "kind": "record",
+      "writtenBy": [
+        "`version-log.cjs`, run by `accept.cjs`"
+      ],
+      "readBy": [
+        "`status.cjs`",
+        "`size-rules.cjs`",
+        "`track-change.cjs`"
+      ],
+      "lookedUpByIdBy": [
+        "`change-impact-author`",
+        "`feature-impact`"
+      ],
+      "where": "version-log/log.md, with each copy in version-log/{document}/v{n}.md",
+      "changeOnly": false
+    },
+    {
+      "document": "Traceability map",
+      "whatItHolds": [
+        "every ID and what it links to, from requirement to feature to EPIC to FRD rule to story"
+      ],
+      "kind": "generated",
+      "writtenBy": [
+        "`traceability-map.cjs`, run by `accept.cjs`"
+      ],
+      "readBy": [
+        "`find-linked.cjs`",
+        "`recommend.cjs`"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "traceability-map.json",
+      "changeOnly": false
+    },
+    {
+      "document": "Reader's copy",
+      "whatItHolds": [
+        "a document without its citations, for a reader outside the kit, such as a story's GitHub issue"
+      ],
+      "kind": "generated",
+      "writtenBy": [
+        "`reader-copy.cjs`"
+      ],
+      "readBy": [
+        "a reader outside the kit, such as a developer"
+      ],
+      "lookedUpByIdBy": [],
+      "where": "not saved in Output/{project}/: `reader-copy.cjs` prints it",
+      "changeOnly": false
+    }
+  ]
+}

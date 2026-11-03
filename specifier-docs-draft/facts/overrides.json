@@ -1,0 +1,28 @@
+{
+  "note": "Shorter 'In the flow' lists for the programs every skill runs. The full list of callers is in programs.json; the book says it once, in words.",
+  "programs": {
+    "`scaffold-project.cjs`": [
+      "the first thing each workflow runs, and each skill that writes, before it writes",
+      "`epic-author` in brief mode, to create the EPIC's folder",
+      "you can run it any time: running it again changes no folder or file that already exists"
+    ],
+    "`accept.cjs`": [
+      "every skill with a gate, when you say yes",
+      "`epic-author` in register mode, when `check-register.cjs` passes, because a pass is the EPIC register's acceptance",
+      "`glossary-author` and `glossary-disposition`, last, to save the Glossary gate log",
+      "in a change: `insert-answer.cjs` and `copy-wording.cjs`, for each accepted document they change"
+    ],
+    "`status.cjs`": [
+      "every skill with a gate, at its close, after `accept.cjs`",
+      "`things-author` and `data-model-author`, at their start, to find the entries still open that they must ask again",
+      "`frd-workflow`, for an accepted FRD that waits on a data model answer now settled",
+      "you can run it any time: it changes nothing"
+    ],
+    "`grade-questions.cjs`": [
+      "every skill that writes the Question log, after `probing-questions-author` and before its check",
+      "every check program, through `lib/check-document.cjs`",
+      "`status.cjs`, which reads its results and changes nothing",
+      "its \"For the person\" block is shown at each gate, after the check program's"
+    ]
+  }
+}

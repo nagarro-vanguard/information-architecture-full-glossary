@@ -1,0 +1,1379 @@
+{
+  "programs": [
+    {
+      "name": "`scaffold-project.cjs`",
+      "what": "Checks that a project's folders exist, and creates any that are missing. It never deletes, moves or overwrites anything, and it creates nothing when the project folder holds things the layout does not know.",
+      "takesIn": [
+        "the project name",
+        "an EPIC, a change or a section, when that piece needs its own folder",
+        "the folder layout in project-folders.md"
+      ],
+      "givesOut": [
+        "the project's folders, such as sources/, frd/ and epics/",
+        "a piece's own folder, such as an EPIC's folder or a change's folder, when you name it",
+        "a message, and nothing created, when the project folder holds things the layout does not know"
+      ],
+      "inFlow": [
+        "`requirements-workflow`, step 1",
+        "`features-and-epics-workflow`, step 1",
+        "`frd-workflow`, step 1",
+        "`stories-workflow`, at the start of each EPIC",
+        "`discovery-author`, before anything is written",
+        "`brd-author`, before anything is written",
+        "`prd-author`, before anything is written",
+        "`glossary-author`, before anything is written",
+        "`feature-author`, before anything is written",
+        "`epic-grouping-author`, before anything is written",
+        "`epic-author` in register mode, before anything is written",
+        "`frd-author`, before it creates the FRD file",
+        "`story-drafter`, before anything is written",
+        "`epic-author` in brief mode, with the EPIC, to create the EPIC's folder",
+        "`requirement-update-workflow` step 1, with the change, to create the change's folder",
+        "you can run it any time. Running it again changes no folder or file that already exists"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Every workflow and author skill runs it at the start, in the forward flow.",
+      "evidence": [
+        "tools/scaffold-project.cjs lines 4 to 19",
+        ".claude/skills/requirements-workflow/SKILL.md line 46",
+        ".claude/skills/discovery-author/SKILL.md line 38",
+        ".claude/skills/brd-author/SKILL.md line 41",
+        ".claude/skills/prd-author/SKILL.md line 43",
+        ".claude/skills/glossary-author/SKILL.md line 45",
+        ".claude/skills/feature-author/SKILL.md line 42",
+        ".claude/skills/features-and-epics-workflow/SKILL.md line 45",
+        ".claude/skills/epic-grouping-author/SKILL.md line 38",
+        ".claude/skills/epic-author/SKILL.md lines 31 and 48",
+        ".claude/skills/frd-workflow/SKILL.md line 42",
+        ".claude/skills/frd-author/SKILL.md line 77",
+        ".claude/skills/stories-workflow/SKILL.md line 47",
+        ".claude/skills/story-drafter/SKILL.md line 39",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 54",
+        ".claude/skills/_shared/project-folders.md lines 7 and 86"
+      ]
+    },
+    {
+      "name": "`accept.cjs`",
+      "what": "Does everything that must happen when you accept a document, in a fixed order, and stops at the first step that fails. It saves the version, rebuilds the Traceability map and brings every open change up to date.",
+      "takesIn": [
+        "the project name",
+        "the document being accepted, such as brd, frd or story-list",
+        "the piece it belongs to, when it has one: a capability, an EPIC, a story or a change"
+      ],
+      "givesOut": [
+        "a numbered copy of the document in the Version log, and its status line set to accepted, through `version-log.cjs`",
+        "a numbered copy of the data model's decisions file, when the document is the things file or a data model file",
+        "a numbered copy of the Question log, when the project has one and it is not the document being accepted",
+        "the Traceability map rebuilt, through `traceability-map.cjs`",
+        "every open change's progress updated, through `track-change.cjs`",
+        "pass, or the exit code of the first step that failed"
+      ],
+      "inFlow": [
+        "`discovery-author`, when you accept the Discovery brief",
+        "`brd-author`, when you accept the BRD",
+        "`prd-author`, when you accept the PRD",
+        "`glossary-author`, last, to save the Glossary gate log",
+        "`things-author`, when you accept the things file",
+        "`data-model-author`, when you accept a data model file",
+        "`feature-author`, when you accept the Feature catalog",
+        "`epic-grouping-author`, when you accept the EPIC grouping",
+        "`epic-author` in brief mode, when you accept the EPIC brief",
+        "`frd-author`, when you accept the FRD",
+        "`story-drafter`, when you approve the split",
+        "`story-groomer`, when you accept the grooming",
+        "`ac-author`, when you accept the criteria",
+        "`change-impact-author`, when you accept the recommendation",
+        "`epic-author` in register mode, when `check-register.cjs` passes, because a pass is the EPIC register's acceptance",
+        "`glossary-disposition`, last, to save the Glossary gate log",
+        "`insert-answer.cjs`, for each accepted document it changes",
+        "`copy-wording.cjs`, for each accepted document it changes"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Every gate in the forward flow runs it when you accept.",
+      "evidence": [
+        "tools/accept.cjs lines 4 to 25 and 31 to 35",
+        ".claude/skills/discovery-author/SKILL.md line 93",
+        ".claude/skills/brd-author/SKILL.md line 83",
+        ".claude/skills/prd-author/SKILL.md line 113",
+        ".claude/skills/glossary-author/SKILL.md line 59",
+        ".claude/skills/things-author/SKILL.md line 110",
+        ".claude/skills/data-model-author/SKILL.md line 110",
+        ".claude/skills/feature-author/SKILL.md line 108",
+        ".claude/skills/epic-grouping-author/SKILL.md lines 77 and 90",
+        ".claude/skills/epic-author/SKILL.md lines 36 and 52",
+        ".claude/skills/frd-author/SKILL.md line 117",
+        ".claude/skills/story-drafter/SKILL.md line 48",
+        ".claude/skills/story-groomer/SKILL.md line 47",
+        ".claude/skills/ac-author/SKILL.md line 46",
+        ".claude/skills/glossary-disposition/SKILL.md line 61",
+        ".claude/skills/change-impact-author/SKILL.md line 102",
+        "tools/insert-answer.cjs line 155",
+        "tools/copy-wording.cjs line 104"
+      ]
+    },
+    {
+      "name": "`version-log.cjs`",
+      "what": "Saves a numbered copy of a document the moment you accept it. It sets the document's status line to \"accepted on {date}, version {n}\" and adds one row to the Version log.",
+      "takesIn": [
+        "the project name",
+        "the document, by its name or its path inside the project",
+        "the piece it belongs to, when it has one: a capability, an EPIC, a story or a change"
+      ],
+      "givesOut": [
+        "the document's status line set to accepted, with its version number: a Story has no status line",
+        "a copy of the document in version-log/, as v{n}.md",
+        "one new row in the Version log, version-log/log.md, with the document's latest Decision record entry"
+      ],
+      "inFlow": [
+        "`accept.cjs`, at every acceptance: once for the document, once for the data model's decisions file when it applies, and once for the Question log"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "`accept.cjs` runs it at every acceptance in the forward flow.",
+      "evidence": [
+        "tools/version-log.cjs lines 4 to 18",
+        "tools/accept.cjs lines 31 to 33",
+        ".claude/skills/_shared/conventions.md line 107",
+        ".claude/skills/_shared/decision-review-gates.md line 165",
+        ".claude/skills/_shared/templates/parts/version-log.md lines 7 and 9",
+        ".claude/skills/_shared/project-folders.md line 82"
+      ]
+    },
+    {
+      "name": "`traceability-map.cjs`",
+      "what": "Rebuilds the Traceability map from the latest accepted version of each document. It lists links whose far end is missing, as waiting when that document is not accepted yet, or as a problem when it is.",
+      "takesIn": [
+        "the project name",
+        "the Version log, to find the latest accepted copy of each document",
+        "every accepted document, the things file and the data model files among them"
+      ],
+      "givesOut": [
+        "traceability-map.json, the Traceability map",
+        "pass, or the problems found: missing links and IDs that appear twice"
+      ],
+      "inFlow": [
+        "`accept.cjs` step 4, at every acceptance",
+        "`find-linked.cjs` and `recommend.cjs` load its readers, so they read documents the same way"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "`accept.cjs` runs it at every acceptance in the forward flow.",
+      "evidence": [
+        "tools/traceability-map.cjs lines 4 to 29",
+        "tools/accept.cjs line 34",
+        "tools/find-linked.cjs line 32",
+        "tools/recommend.cjs line 60",
+        ".claude/skills/_shared/templates/parts/traceability-map.md lines 7, 9 and 60",
+        ".claude/skills/_shared/project-folders.md line 72"
+      ]
+    },
+    {
+      "name": "`track-change.cjs`",
+      "what": "Keeps each open change's progress up to date. It writes the change's progress file from the option you chose at the change's gate, marks each document accepted once a later version is saved, and closes the change when every document is accepted.",
+      "takesIn": [
+        "the project name",
+        "each accepted Change impact report whose progress is not closed",
+        "the Version log"
+      ],
+      "givesOut": [
+        "changes/{change}/progress.md, written when the change has no progress yet",
+        "each progress row marked accepted once its document has a later version",
+        "the change closed, through `close-change.cjs`, when every row is accepted",
+        "nothing to do, when no change is open"
+      ],
+      "inFlow": [
+        "`accept.cjs` step 5, at every acceptance"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "`accept.cjs` runs it at every acceptance, in the forward flow too. It only has work to do while a change is open.",
+      "evidence": [
+        "tools/track-change.cjs lines 4 to 28",
+        "tools/accept.cjs line 35",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 50",
+        ".claude/skills/_shared/templates/change-impact-report.md line 149"
+      ]
+    },
+    {
+      "name": "`status.cjs`",
+      "what": "Says where a project stands and what to run next. It prints one line per step and piece, the open changes, the open Must answer questions, the open entries in the data model's decisions file, and a \"Next:\" line.",
+      "takesIn": [
+        "the project name",
+        "the status line of every document",
+        "the Question log, read through `grade-questions.cjs`",
+        "the data model's things file and decisions file",
+        "the latest accepted Feature catalog and EPIC register"
+      ],
+      "givesOut": [
+        "one line per step and piece: not started, drafted, accepted, parked, ready or written",
+        "the open changes",
+        "every Must answer question still open",
+        "every entry still open in the data model's decisions file",
+        "\"Next:\", the next thing to run, with parked pieces last"
+      ],
+      "inFlow": [
+        "`discovery-author`, at its close, after `accept.cjs`",
+        "`brd-author`, at its close, after `accept.cjs`",
+        "`prd-author`, at its close, after `accept.cjs`",
+        "`things-author`, at its close, after `accept.cjs`",
+        "`data-model-author`, at its close, after `accept.cjs`",
+        "`feature-author`, at its close, after `accept.cjs`",
+        "`epic-grouping-author`, at its close, after `accept.cjs`",
+        "`frd-author`, at its close, after `accept.cjs`",
+        "`story-drafter`, at its close, after `accept.cjs`",
+        "`story-groomer`, at its close, after `accept.cjs`",
+        "`ac-author`, at its close, after `accept.cjs`",
+        "`change-impact-author`, at its close, after `accept.cjs`",
+        "`things-author`, at its start, to find the entries still open that it must ask again",
+        "`data-model-author`, at its start, to find the entries still open that it must ask again",
+        "`frd-workflow`, which follows what it names for an accepted FRD that waits on a data model answer now settled",
+        "`requirement-update-workflow`, at the end",
+        "you can run it any time. It changes nothing"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Every author skill in the forward flow closes with it.",
+      "evidence": [
+        "tools/status.cjs lines 4 to 46",
+        ".claude/skills/brd-author/SKILL.md line 83",
+        ".claude/skills/frd-author/SKILL.md lines 117, 127 and 130",
+        ".claude/skills/things-author/SKILL.md lines 59 and 111",
+        ".claude/skills/data-model-author/SKILL.md lines 64 and 111",
+        ".claude/skills/ac-author/SKILL.md line 46",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 67",
+        ".claude/skills/_shared/decision-review-gates.md lines 169, 185, 282, 284 and 286"
+      ]
+    },
+    {
+      "name": "`grade-questions.cjs`",
+      "what": "Places every question in the Question log in its group, sets the order they are asked in, and checks the log. It also checks that every gap in the project's documents names a question that is in the log.",
+      "takesIn": [
+        "the project name",
+        "the Question log",
+        "the grid in the Question log template",
+        "every document in the project, for the gaps that name a question"
+      ],
+      "givesOut": [
+        "the Question log's four group sections rewritten in the right order: nothing changed with --check-only",
+        "three blocks: For the person, One line, and For the file",
+        "pass, or the problems found. An open question is never a problem"
+      ],
+      "inFlow": [
+        "every author skill except the data model's two, after `probing-questions-author` raises the questions and before the gate",
+        "`discovery-author`",
+        "`brd-author`",
+        "`prd-author`",
+        "`feature-author`",
+        "`epic-grouping-author`",
+        "`epic-author` in brief mode",
+        "`frd-author`",
+        "`story-drafter`",
+        "`story-groomer`",
+        "`ac-author`",
+        "`change-impact-author`",
+        "its \"For the person\" block is shown at each gate, after the check program's",
+        "every check program, through `lib/check-document.cjs`",
+        "`status.cjs`, which reads its results and changes nothing",
+        "`insert-answer.cjs`, which finds the gaps that name a question the same way"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Every author skill in the forward flow runs it before its gate.",
+      "evidence": [
+        "tools/grade-questions.cjs lines 4 to 26",
+        "tools/lib/check-document.cjs line 144",
+        "tools/status.cjs line 52",
+        "tools/insert-answer.cjs line 47",
+        ".claude/skills/discovery-author/SKILL.md lines 30, 77, 86 and 87",
+        ".claude/skills/brd-author/SKILL.md lines 33, 69, 78 and 79",
+        ".claude/skills/prd-author/SKILL.md lines 35, 90, 99 and 100",
+        ".claude/skills/frd-author/SKILL.md lines 94, 101 and 103",
+        ".claude/skills/ac-author/SKILL.md lines 31 and 39",
+        ".claude/skills/change-impact-author/SKILL.md lines 68, 79, 96 and 98",
+        ".claude/skills/probing-questions-author/SKILL.md lines 20, 33, 87 and 101",
+        ".claude/skills/_shared/decision-review-gates.md lines 29, 41, 77, 79, 215 and 230"
+      ]
+    },
+    {
+      "name": "`check-simple-writing.cjs`",
+      "what": "Checks one or more documents against the simple writing rules, and says what to fix and what to look at. It is the quick check for a document that has no check program of its own, such as a Glossary page or the Question log.",
+      "takesIn": [
+        "one or more documents",
+        "the project name, so the agreed Glossary words are allowed",
+        "columns to skip, and a pair of columns to compare, when asked"
+      ],
+      "givesOut": [
+        "pass, or what to fix",
+        "what to look at, such as sentences over 20 words"
+      ],
+      "inFlow": [
+        "`probing-questions-author`, on the Question log, after it writes",
+        "`glossary-author`, before each gate and before finishing",
+        "`glossary-disposition`, on each glossary page it changed and the Glossary gate log",
+        "`data-model-workflow`, on the decision register after each mark it writes",
+        "`adversarial-check`, on the Change impact report after it writes section 11",
+        "`feature-impact`, when it writes its block into a file itself",
+        "any skill, after writing a file that has no check program",
+        "you can run it any time, on any document"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "`probing-questions-author`, `glossary-author` and `data-model-workflow` run it in the forward flow.",
+      "evidence": [
+        "tools/check-simple-writing.cjs lines 4 to 14",
+        ".claude/skills/_shared/simple-writing-rules.md lines 11 and 16",
+        ".claude/skills/probing-questions-author/SKILL.md line 103",
+        ".claude/skills/glossary-author/SKILL.md lines 58 and 75",
+        ".claude/skills/glossary-disposition/SKILL.md line 60",
+        ".claude/skills/data-model-workflow/SKILL.md lines 44 and 85",
+        ".claude/skills/adversarial-check/SKILL.md line 83",
+        ".claude/skills/feature-impact/SKILL.md line 86",
+        ".claude/skills/_shared/decision-review-gates.md lines 78 and 154"
+      ]
+    },
+    {
+      "name": "`lib/run-paths.cjs`",
+      "what": "Turns a project and a document name into the document's path, from the one copy of the folder layout in project-folders.md. It also holds the shared helpers for reading command options, reading and writing text, and stopping with an error.",
+      "takesIn": [
+        "the project name",
+        "a document name, with its values such as an EPIC or a capability",
+        "the folder layout in project-folders.md"
+      ],
+      "givesOut": [
+        "the document's path, and whether the file exists",
+        "which document a path is",
+        "the folders to create at setup"
+      ],
+      "inFlow": [
+        "loaded by every program in tools/",
+        "loaded by every other library",
+        "named by `frd-author` as the way it finds its files",
+        "named by `change-impact-author` as the way it finds its files",
+        "named by `probing-questions-author` as the way it finds the Question log"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Every program loads it.",
+      "evidence": [
+        "tools/lib/run-paths.cjs lines 2 to 26",
+        "tools/scaffold-project.cjs line 26",
+        "tools/accept.cjs line 28",
+        "tools/lib/check-document.cjs line 29",
+        ".claude/skills/_shared/project-folders.md lines 7 and 86",
+        ".claude/skills/_shared/conventions.md line 223",
+        ".claude/skills/frd-author/SKILL.md lines 60 and 61"
+      ]
+    },
+    {
+      "name": "`lib/md-tables.cjs`",
+      "what": "Reads the markdown tables under a given heading into rows keyed by column name. It also reads a Story's acceptance scenarios and the rule IDs each one names.",
+      "takesIn": [
+        "a document, or its text",
+        "the heading to read under"
+      ],
+      "givesOut": [
+        "every heading in the document",
+        "the rows of every table under the heading",
+        "a Story's scenarios, each with the rules it proves"
+      ],
+      "inFlow": [
+        "loaded by every check program",
+        "loaded by `status.cjs`",
+        "loaded by `traceability-map.cjs`",
+        "loaded by `grade-questions.cjs`",
+        "loaded by the three route programs",
+        "loaded by `build-sequencing-mapping.cjs`",
+        "loaded by `build-glossary-records.cjs`",
+        "loaded by the change programs",
+        "loaded by `lib/check-document.cjs` and the other libraries",
+        "no skill names it"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Programs of the forward flow load it.",
+      "evidence": [
+        "tools/lib/md-tables.cjs lines 2 to 20",
+        "tools/status.cjs line 51",
+        "tools/traceability-map.cjs line 33",
+        "tools/check-brd.cjs line 24",
+        "tools/build-glossary-records.cjs line 37"
+      ]
+    },
+    {
+      "name": "`lib/check-document.cjs`",
+      "what": "Holds the checks every check program shares, and prints the three blocks a gate needs: For the person, One line, and For the file. It checks the opening, the template's sections, placeholders left in, markdown that will not render and simple writing.",
+      "takesIn": [
+        "a document and its template",
+        "the project name",
+        "the Question log's results, through `grade-questions.cjs`"
+      ],
+      "givesOut": [
+        "the shared check results, each a name and its findings",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "loaded by every check program",
+        "loaded by the three route programs",
+        "loaded by `build-sequencing-mapping.cjs`",
+        "loaded by `park.cjs`",
+        "loaded by the change programs",
+        "no skill names it"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Every check program of the forward flow loads it.",
+      "evidence": [
+        "tools/lib/check-document.cjs lines 2 to 28 and 144",
+        "tools/check-brd.cjs lines 25 and 121",
+        "tools/check-frd.cjs lines 58 and 929",
+        "tools/route-next-epic.cjs line 24"
+      ]
+    },
+    {
+      "name": "`lib/md-lint.cjs`",
+      "what": "Finds markdown that will not render as written. Examples are a table row with the wrong number of cells, text in angle brackets, a link path with a space, and a broken mermaid diagram.",
+      "takesIn": [
+        "a document's text"
+      ],
+      "givesOut": [
+        "a list of problems, each with its line, or nothing when the text renders cleanly"
+      ],
+      "inFlow": [
+        "every check program, through `lib/check-document.cjs`"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Every check program of the forward flow runs it.",
+      "evidence": [
+        "tools/lib/md-lint.cjs lines 2 to 20",
+        "tools/lib/check-document.cjs line 31",
+        ".claude/skills/_shared/conventions.md line 200"
+      ]
+    },
+    {
+      "name": "`lib/simple-writing.cjs`",
+      "what": "Checks a document against the simple writing rules. It lists what to fix, such as a hard word or a semicolon, and what to look at, such as a sentence over 20 words.",
+      "takesIn": [
+        "a document's text",
+        "the simple writing rules' word lists",
+        "the agreed Glossary words, which it never flags",
+        "columns to skip, and a pair of columns to compare, when asked"
+      ],
+      "givesOut": [
+        "what to fix, each one a finding",
+        "what to look at, shown at the gate"
+      ],
+      "inFlow": [
+        "every check program, through `lib/check-document.cjs`",
+        "`check-simple-writing.cjs`, on any document"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Every check program of the forward flow runs it.",
+      "evidence": [
+        "tools/lib/simple-writing.cjs lines 2 to 30",
+        "tools/lib/check-document.cjs line 32",
+        "tools/check-simple-writing.cjs line 18",
+        ".claude/skills/_shared/simple-writing-rules.md lines 16 and 90",
+        ".claude/skills/_shared/quality-characteristics.md line 23"
+      ]
+    },
+    {
+      "name": "`lib/one-per-row.cjs`",
+      "what": "Lists the rows that may hold two requirements, such as a rule with two actions joined by \"and\". It never fails a row, because only you can judge it: each row is shown to look at.",
+      "takesIn": [
+        "the rows a check program gives it, each with its ID, its text and its kind"
+      ],
+      "givesOut": [
+        "each row that may hold two requirements, to look at",
+        "the lines the gate shows in For the person"
+      ],
+      "inFlow": [
+        "`check-brd.cjs`",
+        "`check-prd.cjs`",
+        "`check-data-model.cjs`",
+        "`check-features.cjs`",
+        "`check-frd.cjs`",
+        "`check-stories.cjs`"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Check programs of the forward flow run it.",
+      "evidence": [
+        "tools/lib/one-per-row.cjs lines 2 to 34",
+        "tools/check-brd.cjs line 26",
+        "tools/check-prd.cjs line 39",
+        "tools/check-data-model.cjs line 74",
+        "tools/check-features.cjs line 58",
+        "tools/check-frd.cjs line 61",
+        "tools/check-stories.cjs line 44",
+        ".claude/skills/_shared/atomic-rules.md lines 14 and 60",
+        ".claude/skills/_shared/quality-characteristics.md line 17"
+      ]
+    },
+    {
+      "name": "`lib/scan-retired-words.cjs`",
+      "what": "Finds the words the Glossary retired that a document still uses, and names the agreed word to use now. It skips the kit's own words, quotes, code, IDs and the Decision record.",
+      "takesIn": [
+        "a document's text and the name of its template",
+        "the \"Terms replaced or retired over time\" tables on the Glossary's four kind pages",
+        "every term the Glossary defines"
+      ],
+      "givesOut": [
+        "each retired word used, with its line and the word to use now"
+      ],
+      "inFlow": [
+        "`check-prd.cjs`",
+        "`check-data-model.cjs`",
+        "`check-features.cjs`",
+        "`check-epic-grouping.cjs`",
+        "`check-epic-brief.cjs`",
+        "`check-frd.cjs`",
+        "`check-stories.cjs`"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Check programs of the forward flow run it.",
+      "evidence": [
+        "tools/lib/scan-retired-words.cjs lines 2 to 29",
+        "tools/check-prd.cjs line 38",
+        "tools/check-data-model.cjs line 72",
+        "tools/check-features.cjs line 56",
+        "tools/check-epic-grouping.cjs line 32",
+        "tools/check-epic-brief.cjs line 28",
+        "tools/check-frd.cjs line 59",
+        "tools/check-stories.cjs line 43",
+        ".claude/skills/_shared/conventions.md line 50"
+      ]
+    },
+    {
+      "name": "`lib/data-model.cjs`",
+      "what": "Reads a product's data model: the things file, the data model file of each family it names, and the data model's decisions file. Every program that needs the data model reads it through this library, so they all read it the same way.",
+      "takesIn": [
+        "the project name",
+        "the things file",
+        "each data model file the things file names",
+        "the data model's decisions file"
+      ],
+      "givesOut": [
+        "the whole data model as data: families, things, actions, fields and moves",
+        "every entry in the data model's decisions file, open and settled"
+      ],
+      "inFlow": [
+        "`check-data-model.cjs`",
+        "`check-features.cjs`",
+        "`check-frd.cjs`",
+        "`status.cjs`",
+        "`traceability-map.cjs`",
+        "`track-change.cjs`",
+        "`check-change-report.cjs`",
+        "`size-rules.cjs`",
+        "`recommend.cjs`",
+        "`insert-answer.cjs`",
+        "no skill names it"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "Programs of the forward flow load it, such as `check-data-model.cjs` and `check-features.cjs`.",
+      "evidence": [
+        "tools/lib/data-model.cjs lines 2 to 40 and 109",
+        "tools/check-data-model.cjs line 73",
+        "tools/check-features.cjs line 57",
+        "tools/check-frd.cjs line 60",
+        "tools/status.cjs line 53",
+        "tools/traceability-map.cjs line 34",
+        "tools/insert-answer.cjs line 46"
+      ]
+    },
+    {
+      "name": "`list-sources.cjs`",
+      "what": "Lists every file in a project's sources/ folder, and marks the files that are the same as another or an older version of another. This way no file is missed or counted twice.",
+      "takesIn": [
+        "the project name",
+        "every file in sources/"
+      ],
+      "givesOut": [
+        "\"For the brief\": the counts and one table per folder, in the shape of the Discovery brief's section 1",
+        "\"For discovery-author\": the files whose names differ only by a date, for you to judge, or \"None\""
+      ],
+      "inFlow": [
+        "`discovery-author`, first, in step 1 of `requirements-workflow`",
+        "`check-discovery-brief.cjs` loads it, to check section 1 of the Discovery brief"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "`discovery-author` runs it at the start of the forward flow.",
+      "evidence": [
+        "tools/list-sources.cjs lines 4 to 22",
+        "tools/check-discovery-brief.cjs line 32",
+        ".claude/skills/discovery-author/SKILL.md line 42",
+        ".claude/skills/requirements-workflow/SKILL.md line 40",
+        ".claude/skills/_shared/templates/discovery-brief.md line 69"
+      ]
+    },
+    {
+      "name": "`check-discovery-brief.cjs`",
+      "what": "Checks the Discovery brief before its gate, and prints the three blocks the gate needs. It checks that section 1 lists every source file once, that every clash is settled, and that every Silent topic and assumption names its question.",
+      "takesIn": [
+        "the Discovery brief",
+        "the files in sources/, through `list-sources.cjs`",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`discovery-author`, before its gate \"Accept the Discovery brief?\", in step 1 of `requirements-workflow`. It is run again until every check passes"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of the first forward step.",
+      "evidence": [
+        "tools/check-discovery-brief.cjs lines 4 to 25",
+        ".claude/skills/discovery-author/SKILL.md lines 32 and 81",
+        ".claude/skills/requirements-workflow/SKILL.md line 40",
+        ".claude/skills/_shared/templates/discovery-brief.md lines 63 and 76"
+      ]
+    },
+    {
+      "name": "`check-brd.cjs`",
+      "what": "Checks the BRD before its gate, and prints the three blocks the gate needs. It checks the template's sections, that business requirements run from BR-01 with no gaps, that every KPI has a confidence tag, and that every line says where it came from.",
+      "takesIn": [
+        "the BRD",
+        "the BRD template",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "business requirements that may hold two actions, to look at",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`brd-author`, before its gate \"Accept the BRD?\", in step 2 of `requirements-workflow`. It is run again until every check passes"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of a forward step.",
+      "evidence": [
+        "tools/check-brd.cjs lines 4 to 22",
+        ".claude/skills/brd-author/SKILL.md lines 35, 65 and 73",
+        ".claude/skills/requirements-workflow/SKILL.md line 41",
+        ".claude/skills/brd-author/references/brd-checklist.md line 3"
+      ]
+    },
+    {
+      "name": "`check-prd.cjs`",
+      "what": "Checks the PRD before its gate, and prints the three blocks the gate needs. It checks that every requirement has its ID, its wording and its source, traces to business requirements in the BRD, and holds one requirement per row.",
+      "takesIn": [
+        "the PRD",
+        "the BRD",
+        "the requirement files in sources/, to compare the client's words",
+        "the Glossary, when the project has one",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "requirements that may hold two actions, to look at",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`prd-author`, before its gate \"Accept the PRD?\", in step 3 of `requirements-workflow`. It is run again until every check passes"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of a forward step.",
+      "evidence": [
+        "tools/check-prd.cjs lines 4 to 33",
+        ".claude/skills/prd-author/SKILL.md lines 37, 86 and 94",
+        ".claude/skills/requirements-workflow/SKILL.md line 42",
+        ".claude/skills/prd-author/references/prd-checklist.md line 3"
+      ]
+    },
+    {
+      "name": "`fill-also-written-as.cjs`",
+      "what": "Before Gate 2 of the Glossary is shown, fills each Gate 2 row's \"Also written as\" from the settled Gate 1 rows. The words a term replaces are copied by a program, never retyped.",
+      "takesIn": [
+        "the Glossary gate log, its Gate 1 rows and any Re-run part"
+      ],
+      "givesOut": [
+        "the \"Also written as\" column of each Gate 2 row, filled. No other cell changes",
+        "nothing written, and the open rows listed, while a Gate 1 row is still open"
+      ],
+      "inFlow": [
+        "`glossary-author`, first thing at Gate 2"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "`glossary-author` runs it when the Glossary is built in the forward flow.",
+      "evidence": [
+        "tools/fill-also-written-as.cjs lines 4 to 17",
+        ".claude/skills/glossary-author/SKILL.md line 53",
+        ".claude/skills/_shared/glossary/output-formats.md line 154"
+      ]
+    },
+    {
+      "name": "`build-glossary-records.cjs`",
+      "what": "Builds the decision register and every section decisions file from the Glossary gate log, the only place a glossary decision is written. It gives each settled row a decision ID, D-1 onward.",
+      "takesIn": [
+        "the Glossary gate log",
+        "the decision register page",
+        "each section's draft"
+      ],
+      "givesOut": [
+        "the table under \"The register\" in glossary/decision-register.md",
+        "glossary/deep-dives/{section}/{section}-decisions.md for every section",
+        "nothing written, and the open rows listed, while a gate-log row is still open"
+      ],
+      "inFlow": [
+        "`glossary-author`, when it writes its output, after both gates are closed",
+        "`glossary-disposition`, after it records a glossary change",
+        "step 4 of `requirement-update-workflow`, after `glossary-disposition`",
+        "`fill-also-written-as.cjs` and `build-retired-words-tables.cjs` load it, to read the gate log the same way"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "`glossary-author` runs it when the Glossary is built in the forward flow.",
+      "evidence": [
+        "tools/build-glossary-records.cjs lines 4 to 31",
+        ".claude/skills/glossary-author/SKILL.md line 56",
+        ".claude/skills/glossary-disposition/SKILL.md line 59",
+        ".claude/skills/requirement-update-workflow/SKILL.md lines 46 and 60",
+        "tools/fill-also-written-as.cjs line 20",
+        "tools/build-retired-words-tables.cjs line 28"
+      ]
+    },
+    {
+      "name": "`build-retired-words-tables.cjs`",
+      "what": "Writes the \"Terms replaced or retired over time\" table on each of the Glossary's four kind pages, from the Glossary gate log. The table is never edited by hand.",
+      "takesIn": [
+        "the Glossary gate log",
+        "the Glossary's four kind pages"
+      ],
+      "givesOut": [
+        "the \"Terms replaced or retired over time\" table on each kind page, or \"None yet.\"",
+        "nothing written, and the open rows listed, while a gate-log row is still open"
+      ],
+      "inFlow": [
+        "`glossary-author`, right after `build-glossary-records.cjs`",
+        "`glossary-disposition`, after it records a glossary change",
+        "step 4 of `requirement-update-workflow`, after `glossary-disposition`"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "`glossary-author` runs it when the Glossary is built in the forward flow.",
+      "evidence": [
+        "tools/build-retired-words-tables.cjs lines 4 to 25",
+        ".claude/skills/glossary-author/SKILL.md line 57",
+        ".claude/skills/glossary-disposition/SKILL.md line 59",
+        ".claude/skills/requirement-update-workflow/SKILL.md lines 46 and 60",
+        ".claude/skills/_shared/glossary/glossary-assembly-principles.md line 299"
+      ]
+    },
+    {
+      "name": "`check-data-model.cjs`",
+      "what": "Checks the data model before its gate, and prints the three blocks the gate needs. Without a family it checks the things file. With a family it checks that one data model file. It checks the data model's decisions file every time.",
+      "takesIn": [
+        "the things file, or one data model file named by its family",
+        "the data model's decisions file",
+        "the Glossary's four term pages",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "rows that may hold two requirements, to look at",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`things-author`, before its gate, in step 1 of `data-model-workflow`",
+        "`data-model-author`, with the family, before its gate, in step 2 of `data-model-workflow`",
+        "both again in step 4 of `data-model-workflow`, for terms the Glossary changed",
+        "`accept.cjs` does not run it again"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of the data model's forward steps.",
+      "evidence": [
+        "tools/check-data-model.cjs lines 4 to 68",
+        ".claude/skills/things-author/SKILL.md lines 40 and 94",
+        ".claude/skills/data-model-author/SKILL.md lines 43 and 96",
+        ".claude/skills/data-model-workflow/SKILL.md lines 42, 43 and 45",
+        ".claude/skills/_shared/conventions.md line 51"
+      ]
+    },
+    {
+      "name": "`check-features.cjs`",
+      "what": "Checks the Feature catalog before its gate, and prints the three blocks the gate needs. It checks that every requirement in the PRD lands in a feature, that every \"Done when\" is cut into pieces, and that every action and move in the data model files has its feature.",
+      "takesIn": [
+        "the Feature catalog",
+        "the PRD",
+        "the Glossary",
+        "the things file and every data model file it names",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "data model rows still waiting on a feature or a change, listed for you",
+        "feature names and descriptions that may hold two things, to look at",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`feature-author`, before its gate \"Accept the Feature catalog?\", in step 1 of `features-and-epics-workflow`. It is run again until every check passes"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of a forward step.",
+      "evidence": [
+        "tools/check-features.cjs lines 4 to 51",
+        ".claude/skills/feature-author/SKILL.md lines 36 and 93",
+        ".claude/skills/features-and-epics-workflow/SKILL.md line 38",
+        ".claude/skills/feature-author/references/feature-catalog.md line 18"
+      ]
+    },
+    {
+      "name": "`check-epic-grouping.cjs`",
+      "what": "Checks the EPIC grouping before its gate, and prints the three blocks the gate needs. It checks the two or three options, that the chosen grouping is copied in full, and it finds every clash from the Feature catalog so none is missed.",
+      "takesIn": [
+        "the EPIC grouping",
+        "the Feature catalog",
+        "the Glossary",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found, every clash not yet settled among them",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`epic-grouping-author`, before its gate \"Pick a grouping, settle its clashes, confirm the EPIC brief list\", in step 2 of `features-and-epics-workflow`",
+        "`epic-grouping-author`, in a change, after it places one new feature"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of a forward step.",
+      "evidence": [
+        "tools/check-epic-grouping.cjs lines 4 to 27",
+        ".claude/skills/epic-grouping-author/SKILL.md lines 32, 66 and 85",
+        ".claude/skills/features-and-epics-workflow/SKILL.md line 39"
+      ]
+    },
+    {
+      "name": "`check-register.cjs`",
+      "what": "Proves the EPIC register is an exact copy of the chosen grouping in the EPIC grouping, and checks its simple writing. The EPIC register has no gate: a pass is its acceptance.",
+      "takesIn": [
+        "the EPIC register",
+        "the EPIC grouping"
+      ],
+      "givesOut": [
+        "pass, or each mismatch and each simple writing problem",
+        "the date written on the register's \"Copy checked on\" line, on a pass"
+      ],
+      "inFlow": [
+        "`epic-author` in register mode, in step 3 of `features-and-epics-workflow`. On a mismatch the copy is corrected and it is run again, and on a pass `accept.cjs` runs"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of a forward step.",
+      "evidence": [
+        "tools/check-register.cjs lines 4 to 25",
+        ".claude/skills/epic-author/SKILL.md lines 29 and 33",
+        ".claude/skills/features-and-epics-workflow/SKILL.md lines 40 and 51",
+        ".claude/skills/_shared/templates/epic-register.md lines 30 and 48"
+      ]
+    },
+    {
+      "name": "`build-sequencing-mapping.cjs`",
+      "what": "Builds the EPIC sequencing and the EPIC mapping from the EPIC register, so neither is written by hand. It works out each EPIC's step, the critical path and the most depended-on EPIC, and checks that every feature is in exactly one EPIC.",
+      "takesIn": [
+        "the EPIC register",
+        "the EPIC grouping",
+        "the Feature catalog"
+      ],
+      "givesOut": [
+        "the EPIC sequencing, epics/sequencing.md",
+        "the EPIC mapping, epics/mapping.md",
+        "a dependency loop, or a feature not in exactly one EPIC, listed. Nothing is written for a loop"
+      ],
+      "inFlow": [
+        "step 4 of `features-and-epics-workflow`, after the EPIC register is accepted. A loop sends the run back to step 2"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is a step of the forward flow.",
+      "evidence": [
+        "tools/build-sequencing-mapping.cjs lines 4 to 24",
+        ".claude/skills/features-and-epics-workflow/SKILL.md lines 8, 41 and 52",
+        ".claude/skills/epic-author/SKILL.md line 66",
+        ".claude/skills/_shared/project-folders.md line 78"
+      ]
+    },
+    {
+      "name": "`route-next-capability.cjs`",
+      "what": "Names the next FRD to write. It orders the capabilities by the EPIC register's run order, leaves out the accepted ones, and puts those waiting on a Must answer question, then the parked ones, last.",
+      "takesIn": [
+        "the Feature catalog",
+        "the EPIC register",
+        "the FRDs' status lines",
+        "the Question log"
+      ],
+      "givesOut": [
+        "the next capability and its features, then the queue",
+        "or \"Every FRD accepted: next, run stories-workflow.\""
+      ],
+      "inFlow": [
+        "step 1 of `frd-workflow`, at the start of each run",
+        "`frd-workflow` again at the end, to print what comes next"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the first step of `frd-workflow`.",
+      "evidence": [
+        "tools/route-next-capability.cjs lines 4 to 20",
+        ".claude/skills/frd-workflow/SKILL.md lines 6, 18, 37, 43 and 51",
+        ".claude/skills/frd-author/SKILL.md line 58"
+      ]
+    },
+    {
+      "name": "`check-frd.cjs`",
+      "what": "Runs the fixed checks on one FRD before its gate, and prints the three blocks the gate needs. It proves the FRD is copied, numbered and linked correctly, including its data model coverage, but not that its rules are right.",
+      "takesIn": [
+        "the FRD",
+        "the Feature catalog",
+        "the PRD",
+        "the Glossary",
+        "the things file, the data model files and the data model's decisions file",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "rules that may hold two behaviours, to look at",
+        "the FRD guard: each open Must answer question the FRD names, and a line saying it cannot be accepted until it is answered or parked",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`frd-author`, before its gate \"Accept the FRD?\" and after every decision, in step 2 of `frd-workflow`"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of a forward step.",
+      "evidence": [
+        "tools/check-frd.cjs lines 4 to 54",
+        ".claude/skills/frd-author/SKILL.md lines 50, 51, 73 and 95",
+        ".claude/skills/frd-workflow/SKILL.md line 38",
+        ".claude/skills/_shared/templates/frd.md lines 124 and 141"
+      ]
+    },
+    {
+      "name": "`park.cjs`",
+      "what": "Sets a piece in progress aside, at the back of the queue, by setting its status line to parked. It parks an FRD or an EPIC at its gate, or every FRD and EPIC in progress when a change is Large.",
+      "takesIn": [
+        "the project name",
+        "a capability, to park that FRD",
+        "or an EPIC, to park that EPIC",
+        "or a change, to park every FRD and EPIC in progress",
+        "for a change: section 14 of its Change impact report, and the pieces in progress, through `size-rules.cjs`"
+      ],
+      "givesOut": [
+        "the FRD's status line, or the EPIC's Story list status line, set to \"parked on {date}, at its gate\" or \"parked on {date}, change {nnn}\"",
+        "a message, and nothing parked, when nothing is in progress or the change is not Large"
+      ],
+      "inFlow": [
+        "`frd-author`, at its gate, when you choose to park after your third \"no\", or while a Must answer question is open",
+        "at an EPIC's gates, after your third \"no\", when you choose \"Park it\"",
+        "step 6 of `requirement-update-workflow`, when the change is Large and you chose to run the path. `change-impact-author` names it first in the path"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is also used at an FRD's or an EPIC's gate after your third \"no\", in the forward flow.",
+      "evidence": [
+        "tools/park.cjs lines 4 to 23",
+        ".claude/skills/frd-author/SKILL.md line 119",
+        ".claude/skills/frd-author/references/conventions.md lines 152 and 182",
+        ".claude/skills/_shared/decision-review-gates.md lines 165 and 214",
+        ".claude/skills/_shared/conventions.md lines 108 and 109",
+        ".claude/skills/requirement-update-workflow/SKILL.md lines 9, 48 and 62",
+        ".claude/skills/change-impact-author/SKILL.md line 103"
+      ]
+    },
+    {
+      "name": "`route-next-epic.cjs`",
+      "what": "Names the next EPIC to write stories for. It follows the EPIC register's run order, leaves out the EPICs that are ready, and puts last those waiting on a Must answer question, the parked ones, and those that depend on a parked one.",
+      "takesIn": [
+        "the EPIC register",
+        "every Story list and its Stories",
+        "the Question log"
+      ],
+      "givesOut": [
+        "the next EPIC, then the queue",
+        "or \"Every EPIC ready.\""
+      ],
+      "inFlow": [
+        "step 1 of `stories-workflow`, at the start of each run",
+        "`stories-workflow` again at the end, to print what comes next"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the first step of `stories-workflow`.",
+      "evidence": [
+        "tools/route-next-epic.cjs lines 4 to 20",
+        ".claude/skills/stories-workflow/SKILL.md lines 37, 46 and 53"
+      ]
+    },
+    {
+      "name": "`route-brief-list.cjs`",
+      "what": "Says whether an EPIC gets an EPIC brief, from the EPIC brief list in the EPIC grouping. It prints yes or no, then the reason the list gives.",
+      "takesIn": [
+        "the EPIC",
+        "the EPIC grouping's EPIC brief list",
+        "the EPIC register"
+      ],
+      "givesOut": [
+        "\"yes\" or \"no\" on the first line",
+        "the reason the list gives"
+      ],
+      "inFlow": [
+        "step 2 of `stories-workflow`: on yes, `epic-author` runs in brief mode. On no, the workflow goes to `story-drafter`"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is a step of `stories-workflow`.",
+      "evidence": [
+        "tools/route-brief-list.cjs lines 4 to 11",
+        ".claude/skills/stories-workflow/SKILL.md lines 38 and 48"
+      ]
+    },
+    {
+      "name": "`check-epic-brief.cjs`",
+      "what": "Checks an EPIC brief before its gate, and prints the three blocks the gate needs. It checks that the brief matches its EPIC register row and the Feature catalog, and that every measure has a confidence tag.",
+      "takesIn": [
+        "the EPIC brief",
+        "the EPIC register",
+        "the EPIC grouping",
+        "the Feature catalog",
+        "the PRD",
+        "the Glossary",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`epic-author` in brief mode, before its gate \"Accept the EPIC brief?\", in step 3 of `stories-workflow`"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of a forward step.",
+      "evidence": [
+        "tools/check-epic-brief.cjs lines 4 to 23",
+        ".claude/skills/epic-author/SKILL.md lines 46 and 51",
+        ".claude/skills/stories-workflow/SKILL.md line 39",
+        ".claude/skills/_shared/templates/epic-brief.md lines 84 and 99"
+      ]
+    },
+    {
+      "name": "`check-stories.cjs`",
+      "what": "Checks an EPIC's Story list and Stories before each story gate, and prints the three blocks the gate needs. What it checks grows with each story's stage: drafted, groomed or ready.",
+      "takesIn": [
+        "the EPIC's Story list and Stories",
+        "the EPIC register",
+        "the Feature catalog",
+        "the PRD",
+        "the FRDs",
+        "the Glossary",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "stories and scenarios that may hold two actions, to look at",
+        "the ready guard: the stories cannot be ready while a Must answer question raised in them is open",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`story-drafter`, before its gate \"Approve the split?\", in step 4 of `stories-workflow`",
+        "`story-groomer`, before its gate \"Accept the grooming?\", in step 5",
+        "`ac-author`, before `coverage-check.cjs` and its gate \"Accept the criteria? This marks the stories ready.\", in step 6"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is the check of the forward story steps.",
+      "evidence": [
+        "tools/check-stories.cjs lines 4 to 38",
+        ".claude/skills/story-drafter/SKILL.md lines 33 and 46",
+        ".claude/skills/story-groomer/SKILL.md lines 32 and 46",
+        ".claude/skills/ac-author/SKILL.md lines 33, 40 and 43",
+        ".claude/skills/stories-workflow/SKILL.md lines 40, 41 and 42"
+      ]
+    },
+    {
+      "name": "`coverage-check.cjs`",
+      "what": "Proves that every rule of an EPIC's features is named by at least one acceptance scenario. It lists every rule no scenario names.",
+      "takesIn": [
+        "the EPIC",
+        "the EPIC register, for the EPIC's features",
+        "the FRDs, for those features' rules",
+        "the EPIC's Stories, for the rule IDs each scenario names"
+      ],
+      "givesOut": [
+        "pass, or each rule no scenario names"
+      ],
+      "inFlow": [
+        "`ac-author`, right after `check-stories.cjs`, before its gate, in step 6 of `stories-workflow`"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is a check of a forward step.",
+      "evidence": [
+        "tools/coverage-check.cjs lines 4 to 18",
+        ".claude/skills/ac-author/SKILL.md lines 33 and 40",
+        ".claude/skills/stories-workflow/SKILL.md line 42",
+        ".claude/skills/ac-author/references/acceptance-criteria.md lines 18 and 56"
+      ]
+    },
+    {
+      "name": "`reader-copy.cjs`",
+      "what": "Prints the copy of a document that a reader outside the kit sees, such as the body of a story's GitHub issue. It leaves out the opening notes, lines in italics and citations, and never changes the document.",
+      "takesIn": [
+        "one document, such as a Story file"
+      ],
+      "givesOut": [
+        "the reader's copy, printed. Nothing is written"
+      ],
+      "inFlow": [
+        "you, when you put a ready story into a tracker, such as a GitHub issue, as `stories-workflow` describes",
+        "you can run it any time, on any document"
+      ],
+      "changeOnly": false,
+      "changeOnlyWhy": "It is used for ready stories at the end of the forward flow.",
+      "evidence": [
+        "tools/reader-copy.cjs lines 4 to 18",
+        ".claude/skills/stories-workflow/SKILL.md line 55",
+        ".claude/skills/_shared/conventions.md line 116"
+      ]
+    },
+    {
+      "name": "`compare-versions.cjs`",
+      "what": "Lists every difference between a new and an old version of a requirement file, so no quiet edit is missed. It compares requirement by requirement when the files hold requirement IDs, and line by line otherwise.",
+      "takesIn": [
+        "the change",
+        "the new version of the requirement file",
+        "the old version, from sources/",
+        "a text copy beside any Word or PDF file"
+      ],
+      "givesOut": [
+        "section 3 of the Change impact report, \"Other differences in a new version\": one row per difference, or one line when nothing differs"
+      ],
+      "inFlow": [
+        "step 2 of `requirement-update-workflow`, only when a new version of a source is attached"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "Only `requirement-update-workflow` runs it.",
+      "evidence": [
+        "tools/compare-versions.cjs lines 4 to 20",
+        ".claude/skills/requirement-update-workflow/SKILL.md lines 44 and 58",
+        ".claude/skills/_shared/templates/change-impact-report.md line 135",
+        ".claude/skills/_shared/conventions.md line 39"
+      ]
+    },
+    {
+      "name": "`find-linked.cjs`",
+      "what": "Lists everything linked to where a change lands, so nothing affected is missed. It follows the links forward, from business requirements to requirements, features, rules, FRDs, EPICs, stories and scenarios, and from data model rows to the rules that name them.",
+      "takesIn": [
+        "section 6 of the Change impact report, \"Where it lands\"",
+        "the Traceability map",
+        "every document drafted since it was last accepted, the things file and data model files among them"
+      ],
+      "givesOut": [
+        "section 12 of the Change impact report, \"Linked items\", grouped by document",
+        "or, when an ID in section 6 is in no document, that ID listed and nothing written"
+      ],
+      "inFlow": [
+        "`change-impact-author`, after `adversarial-check`, in step 5 of `requirement-update-workflow`",
+        "`size-rules.cjs` loads it",
+        "`recommend.cjs` loads it",
+        "`track-change.cjs` loads it, and uses it only for an open change"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "Only `change-impact-author` runs it, and the programs that load it use it only for a change.",
+      "evidence": [
+        "tools/find-linked.cjs lines 4 to 27",
+        ".claude/skills/change-impact-author/SKILL.md lines 8, 37 and 87",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 47",
+        ".claude/skills/adversarial-check/SKILL.md line 21",
+        "tools/size-rules.cjs line 37",
+        "tools/recommend.cjs line 59",
+        "tools/track-change.cjs lines 39 and 116"
+      ]
+    },
+    {
+      "name": "`size-rules.cjs`",
+      "what": "Gives the tentative size of a change, Small, Large or Not sized, against the work in progress now. A change is Large when a feature moves into or out of a piece in progress, when an EPIC gets more than one New story or Split, or when two or more pieces regroup.",
+      "takesIn": [
+        "the change",
+        "section 13 of the Change impact report, the judgements",
+        "the status lines of the things file, the data model files, the Feature catalog, the EPIC grouping, the FRDs and the Story lists"
+      ],
+      "givesOut": [
+        "section 14 of the Change impact report, \"The tentative size\": the size, the rule that decided it, and the pieces it was sized against"
+      ],
+      "inFlow": [
+        "`change-impact-author`, after `feature-impact`, in step 5 of `requirement-update-workflow`",
+        "`park.cjs` loads it, to find the pieces in progress for a Large change",
+        "`check-change-report.cjs` loads it, to check section 14",
+        "`recommend.cjs` loads it"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "Only `change-impact-author` runs it. `park.cjs` loads it, but uses it only with a change.",
+      "evidence": [
+        "tools/size-rules.cjs lines 4 to 31",
+        ".claude/skills/change-impact-author/SKILL.md lines 9, 39 and 89",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 47",
+        ".claude/skills/_shared/conventions.md line 111",
+        "tools/park.cjs lines 29 and 45",
+        "tools/check-change-report.cjs line 40",
+        "tools/recommend.cjs line 61"
+      ]
+    },
+    {
+      "name": "`recommend.cjs`",
+      "what": "Writes the recommendation of a change: which workflows to run, from which steps, for which items. It also offers a small update when one fits, \"Insert it\" or \"Copy the wording\", and offers a re-run of the whole workflow when the change reaches more than half of the BRD's business requirements.",
+      "takesIn": [
+        "the Change impact report: sections 5, 6, 7, 9, 13 and 14",
+        "the Traceability map",
+        "the data model, when the project has one",
+        "the Question log"
+      ],
+      "givesOut": [
+        "section 15 of the Change impact report, \"The recommendation\": the steps with their items, `park.cjs` first when the change is Large, your choices, and the one it recommends"
+      ],
+      "inFlow": [
+        "`change-impact-author`, after `size-rules.cjs` and before its gate, in step 5 of `requirement-update-workflow`",
+        "`check-change-report.cjs` loads it, to check section 15",
+        "`track-change.cjs` loads it, to write a change's progress rows"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "Only `change-impact-author` runs it, and the programs that load it use it only for a change.",
+      "evidence": [
+        "tools/recommend.cjs lines 4 to 52",
+        ".claude/skills/change-impact-author/SKILL.md lines 9, 40 and 90",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 47",
+        ".claude/skills/_shared/templates/change-impact-report.md lines 138, 148 and 200",
+        "tools/check-change-report.cjs line 41",
+        "tools/track-change.cjs lines 38 and 115"
+      ]
+    },
+    {
+      "name": "`check-change-report.cjs`",
+      "what": "Checks a Change impact report before the gate of `change-impact-author`, and prints the three blocks the gate needs. It checks every section, 1 to 16, and that the size and the recommendation are what `size-rules.cjs` and `recommend.cjs` give now.",
+      "takesIn": [
+        "the Change impact report",
+        "the things file",
+        "the Traceability map",
+        "the Question log"
+      ],
+      "givesOut": [
+        "pass, or the problems found",
+        "the three blocks: For the person, One line, and For the file"
+      ],
+      "inFlow": [
+        "`change-impact-author`, after `recommend.cjs` and before its gate \"Accept the recommendation, including the size?\", in step 5 of `requirement-update-workflow`"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "Only `change-impact-author` runs it.",
+      "evidence": [
+        "tools/check-change-report.cjs lines 4 to 33",
+        ".claude/skills/change-impact-author/SKILL.md line 91",
+        ".claude/skills/_shared/templates/change-impact-report.md lines 126 and 150",
+        ".claude/skills/feature-impact/SKILL.md line 86"
+      ]
+    },
+    {
+      "name": "`insert-answer.cjs`",
+      "what": "Writes a late answer into every place the documents name its question, and changes nothing else. It refuses, and writes nothing, when any place would need other words changed.",
+      "takesIn": [
+        "the change",
+        "the question's number",
+        "the answer, from the Question log",
+        "every document that names the question, the data model files among them",
+        "the change's progress"
+      ],
+      "givesOut": [
+        "the answer written in every place, with its source",
+        "each place recorded in the change's progress, under \"Places written\"",
+        "a new version of each accepted document it changed, through `accept.cjs`",
+        "or a refusal, with nothing written"
+      ],
+      "inFlow": [
+        "`requirement-update-workflow`, after you chose \"Insert it\" at the change's gate",
+        "`recommend.cjs` loads it, to name the places it would change",
+        "`copy-wording.cjs` loads it, to run `accept.cjs` the same way"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "It runs only after you chose \"Insert it\" at a change's gate.",
+      "evidence": [
+        "tools/insert-answer.cjs lines 4 to 40",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 64",
+        ".claude/skills/change-impact-author/SKILL.md lines 67 and 104",
+        ".claude/skills/data-model-workflow/SKILL.md line 100",
+        "tools/recommend.cjs lines 62 and 266"
+      ]
+    },
+    {
+      "name": "`copy-wording.cjs`",
+      "what": "Copies a requirement's new wording to every place that quotes it: its row in the PRD and its line in each FRD's Requirements list. It refuses, and writes nothing, when a place does not hold the old wording word for word.",
+      "takesIn": [
+        "the change",
+        "the requirement's ID",
+        "the new wording, from section 5 of the Change impact report",
+        "the old wording, from the PRD",
+        "every FRD",
+        "the change's progress"
+      ],
+      "givesOut": [
+        "the new wording in every place that quotes the requirement",
+        "each place recorded in the change's progress, under \"Places written\"",
+        "a new version of each accepted document it changed, through `accept.cjs`",
+        "or a refusal, with nothing written"
+      ],
+      "inFlow": [
+        "`requirement-update-workflow`, after you chose \"Copy the wording\" at the change's gate",
+        "`recommend.cjs` loads it, to name the places it would change"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "It runs only after you chose \"Copy the wording\" at a change's gate.",
+      "evidence": [
+        "tools/copy-wording.cjs lines 4 to 26",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 65",
+        ".claude/skills/change-impact-author/SKILL.md line 105",
+        ".claude/skills/change-impact-author/references/update-test.md line 19",
+        "tools/recommend.cjs lines 63 and 277"
+      ]
+    },
+    {
+      "name": "`close-change.cjs`",
+      "what": "Writes a change's closing entry once every document it named is accepted, and marks its progress closed. It refuses while any row of the progress is still pending.",
+      "takesIn": [
+        "the change",
+        "the change's progress",
+        "the Decision record of the first document in the progress, or the report's own"
+      ],
+      "givesOut": [
+        "the closing entry \"Change {nnn} closed\" in a Decision record",
+        "the progress marked \"Status: closed on {date}\"",
+        "or the pending rows listed"
+      ],
+      "inFlow": [
+        "`track-change.cjs`, when the last row of a change's progress is accepted"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "It runs only to close a change.",
+      "evidence": [
+        "tools/close-change.cjs lines 4 to 21",
+        "tools/track-change.cjs line 201",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 50",
+        ".claude/skills/_shared/templates/parts/decision-record.md lines 7 and 59"
+      ]
+    },
+    {
+      "name": "`lib/change-report.cjs`",
+      "what": "Reads a Change impact report into data, so every program reads its sections the same way. It gives each section the programs use, such as the asks, where they land, the kinds, the size and the choice at the gate.",
+      "takesIn": [
+        "the project name",
+        "the change"
+      ],
+      "givesOut": [
+        "the report's sections as data",
+        "the five kinds, the update test's results and the judgements, as the report writes them"
+      ],
+      "inFlow": [
+        "loaded by `check-change-report.cjs`",
+        "loaded by `size-rules.cjs`",
+        "loaded by `recommend.cjs`",
+        "loaded by `insert-answer.cjs`",
+        "loaded by `copy-wording.cjs`",
+        "loaded by `close-change.cjs`",
+        "loaded by `park.cjs`, which uses it only with a change",
+        "loaded by `track-change.cjs`, which uses it only for an open change",
+        "no skill names it"
+      ],
+      "changeOnly": true,
+      "changeOnlyWhy": "It reads only Change impact reports. `park.cjs` and `track-change.cjs` load it, but use it only for an open change.",
+      "evidence": [
+        "tools/lib/change-report.cjs lines 2 to 31",
+        "tools/check-change-report.cjs line 38",
+        "tools/size-rules.cjs line 36",
+        "tools/recommend.cjs line 58",
+        "tools/insert-answer.cjs line 45",
+        "tools/copy-wording.cjs line 32",
+        "tools/close-change.cjs line 26",
+        "tools/park.cjs lines 28 and 49",
+        "tools/track-change.cjs lines 37 and 187"
+      ]
+    }
+  ]
+}

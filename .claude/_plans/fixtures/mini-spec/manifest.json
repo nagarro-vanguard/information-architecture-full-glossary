@@ -1,0 +1,72 @@
+{
+  "run": {
+    "feature": "dark-mode-toggle",
+    "startedAt": "01-brd",
+    "status": "ok",
+    "kpi": { "artifacts": 6, "passed": 6, "evalPassRate": 1.0 }
+  },
+  "artifacts": [
+    {
+      "id": "BRD",
+      "type": "brd",
+      "stage": "01-brd",
+      "path": "01-brd/dark-mode-brd.md",
+      "provenance": "provided-normalized",
+      "eval": { "status": "PASS", "loops": 0, "findings": null },
+      "defines": ["BR-01", "BR-02"],
+      "tracesTo": []
+    },
+    {
+      "id": "PRD",
+      "type": "prd",
+      "stage": "02-prd",
+      "path": "02-prd/dark-mode-prd.md",
+      "provenance": "generated",
+      "eval": { "status": "PASS", "loops": 1, "findings": null },
+      "defines": ["FR-01", "FR-02", "FR-03"],
+      "tracesTo": ["BR-01", "BR-02"]
+    },
+    {
+      "id": "FEATURES",
+      "type": "features",
+      "stage": "03-features",
+      "path": "03-features/dark-mode-features.md",
+      "provenance": "generated",
+      "eval": { "status": "PASS_WITH_FINDINGS", "loops": 0, "findings": "_eval/03-features-eval.md" },
+      "defines": ["FEAT-01", "FEAT-02"],
+      "tracesTo": ["FR-01", "FR-02", "FR-03"]
+    },
+    {
+      "id": "EPIC-001",
+      "type": "epic",
+      "stage": "05-epics",
+      "path": "05-epics/EPIC-001-appearance.md",
+      "provenance": "generated",
+      "eval": { "status": "PASS", "loops": 0, "findings": null },
+      "defines": ["EPIC-001"],
+      "tracesTo": ["FEAT-01", "FEAT-02"]
+    },
+    {
+      "id": "toggle-dark-mode",
+      "type": "story",
+      "stage": "06-stories",
+      "path": "06-stories/EPIC-001-appearance/toggle-dark-mode.md",
+      "provenance": "generated",
+      "eval": { "status": "PASS", "loops": 2, "findings": null },
+      "subStates": { "shell": "PASS", "body": "PASS", "ac": "PASS" },
+      "defines": ["toggle-dark-mode"],
+      "tracesTo": ["EPIC-001", "FEAT-01", "FR-01"]
+    },
+    {
+      "id": "remember-preference",
+      "type": "story",
+      "stage": "06-stories",
+      "path": "06-stories/EPIC-001-appearance/remember-preference.md",
+      "provenance": "generated",
+      "eval": { "status": "PASS", "loops": 0, "findings": null },
+      "subStates": { "shell": "PASS", "body": "PASS", "ac": "PASS" },
+      "defines": ["remember-preference"],
+      "tracesTo": ["EPIC-001", "FEAT-02", "FR-02"]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "note": "The change skills as they are today, one line each, from each SKILL.md description. The change workflow is being redesigned, so the book lists them and says no more.",
+  "change": [
+    {
+      "name": "requirement-update-workflow",
+      "what": "The workflow for a change. It takes one change to your decision, and writes it into a Change impact report. The workflows its recommendation names then apply the change."
+    },
+    {
+      "name": "change-impact-author",
+      "what": "Writes the analysis of one change in its Change impact report: where it lands, its kind, what is linked and how big it is. It holds the gate \"Accept the recommendation, including the size?\"."
+    },
+    {
+      "name": "adversarial-check",
+      "what": "Challenges the verdict in a Change impact report, and reports only what is wrong with it. Run by `change-impact-author`."
+    },
+    {
+      "name": "feature-impact",
+      "what": "Judges whether one item made from a requirement is hit by a change, how badly, and what to do about it. Run by `change-impact-author`, once for each linked item."
+    }
+  ]
+}

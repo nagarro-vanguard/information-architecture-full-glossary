@@ -1,0 +1,1112 @@
+{
+  "templates": [
+    {
+      "name": "Discovery brief template",
+      "path": ".claude/skills/_shared/templates/discovery-brief.md",
+      "what": "The blank form for the Discovery brief, the first look at the requirement files. It lists the files, says which kind of file wins in a clash, and turns every gap into a question.",
+      "holds": [
+        "Status line",
+        "1. Sources",
+        "1: Summary",
+        "1: one part per folder",
+        "2. Which kind of source wins",
+        "3. Known: what the sources say, topic by topic",
+        "4. Clashes, and how each is settled",
+        "5. Assumed",
+        "6. Risks and edge cases",
+        "Decision record",
+        "Check record",
+        "Placeholders",
+        "Placeholders: About this template",
+        "Placeholders: What each section holds",
+        "Placeholders: What to write for each label"
+      ],
+      "filledBy": [
+        "`discovery-author`"
+      ],
+      "checkedBy": "`check-discovery-brief.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/discovery-brief.md line 63",
+        ".claude/skills/discovery-author/SKILL.md line 23",
+        "tools/check-discovery-brief.cjs line 93"
+      ]
+    },
+    {
+      "name": "Question log template",
+      "path": ".claude/skills/_shared/templates/question-log.md",
+      "what": "The blank form for the Question log, the one list of every question the specifiers are asked in a project. Each question is rated for impact and severity and placed in a group that says how soon it must be answered.",
+      "holds": [
+        "1. Impact",
+        "2. Severity",
+        "3. The grid",
+        "4. What each group does",
+        "5. Must answer",
+        "6. Should answer",
+        "7. Can move ahead",
+        "8. Answered",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`probing-questions-author`: drafts and rates each question",
+        "`grade-questions.cjs`: places each question in its group and sets the order"
+      ],
+      "checkedBy": "`grade-questions.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/question-log.md line 84",
+        ".claude/skills/probing-questions-author/SKILL.md lines 24 and 42",
+        "tools/grade-questions.cjs lines 9 and 32. It reads the grid from this template, its only home."
+      ]
+    },
+    {
+      "name": "BRD template",
+      "path": ".claude/skills/_shared/templates/brd.md",
+      "what": "The blank form for the BRD, the business case. It holds why the product is needed, what it must achieve, and the business requirements BR-01 onward.",
+      "holds": [
+        "Status line",
+        "1. Executive summary",
+        "2. Background and current state",
+        "3. Objectives and success metrics",
+        "4. Scope, assumptions and dependencies",
+        "4: In scope",
+        "4: Out of scope",
+        "4: Assumptions",
+        "4: Dependencies",
+        "5. Business requirements",
+        "6. Risks, constraints and mitigations",
+        "6: Risks",
+        "6: Constraints",
+        "7. Release criteria",
+        "Traceability mini-map",
+        "Decision record",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`brd-author`"
+      ],
+      "checkedBy": "`check-brd.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/brd.md line 97",
+        ".claude/skills/brd-author/SKILL.md line 23",
+        "tools/check-brd.cjs line 40"
+      ]
+    },
+    {
+      "name": "PRD template",
+      "path": ".claude/skills/_shared/templates/prd.md",
+      "what": "The blank form for the PRD. It holds every requirement the client stated, one per row, in simple words, with the client's own words and the source next to it.",
+      "holds": [
+        "Status line",
+        "1. Document control",
+        "2. Product overview",
+        "3. Personas and roles",
+        "3: Personas",
+        "3: Roles and permissions",
+        "4. Requirements: one part per source heading",
+        "5. The end-to-end journey",
+        "6. NFRs",
+        "6: Evidenced",
+        "6: Recommended",
+        "7. Transition requirements",
+        "8. Dependencies and assumptions",
+        "9. Traceability matrix",
+        "Decision record",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`prd-author`"
+      ],
+      "checkedBy": "`check-prd.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/prd.md line 103",
+        ".claude/skills/prd-author/SKILL.md line 24",
+        "tools/check-prd.cjs line 144"
+      ]
+    },
+    {
+      "name": "Things file template",
+      "path": ".claude/skills/_shared/templates/data-model-things.md",
+      "what": "The blank form for the things file: the things a product keeps information about, found from its Glossary, one section per Glossary family. The file it makes is named {product}-glossary-things.md, not data-model-things.md.",
+      "holds": [
+        "Status line and Next step line",
+        "One section per family",
+        "Decisions to make",
+        "Waiting on the Glossary",
+        "Check record",
+        "Placeholders, with a City library example"
+      ],
+      "filledBy": [
+        "`things-author`"
+      ],
+      "checkedBy": "`check-data-model.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/data-model-things.md lines 45 to 47",
+        ".claude/skills/things-author/SKILL.md line 25",
+        ".claude/skills/_shared/project-folders.md, section 3 (data-model-things path)",
+        "tools/check-data-model.cjs line 320"
+      ]
+    },
+    {
+      "name": "Data model file template",
+      "path": ".claude/skills/_shared/templates/data-model.md",
+      "what": "The blank form for one Glossary family's data model file. For each thing it holds its actions, the rules for each field, and how it moves.",
+      "holds": [
+        "Status line and Next step line",
+        "Things and their fields",
+        "One section per thing",
+        "Adds to {Thing}",
+        "Check record",
+        "Placeholders, with a City library example: lending.md"
+      ],
+      "filledBy": [
+        "`data-model-author`"
+      ],
+      "checkedBy": "`check-data-model.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/data-model.md line 86",
+        ".claude/skills/data-model-author/SKILL.md line 28",
+        "tools/check-data-model.cjs line 474"
+      ]
+    },
+    {
+      "name": "The data model's decisions file template",
+      "path": ".claude/skills/_shared/templates/data-model-decisions.md",
+      "what": "The blank form for the data model's decisions file: every decision the data model asks, open or settled, and every Glossary change it needs. These decisions never go into the Question log.",
+      "holds": [
+        "Status line",
+        "Open",
+        "Settled",
+        "Glossary changes",
+        "Check record",
+        "Placeholders, with the rules and a City library example"
+      ],
+      "filledBy": [
+        "`things-author`",
+        "`data-model-author`"
+      ],
+      "checkedBy": "`check-data-model.cjs`: run with the things file or a data model file",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/data-model-decisions.md line 53",
+        ".claude/skills/things-author/SKILL.md line 25",
+        ".claude/skills/data-model-author/SKILL.md line 28",
+        "tools/check-data-model.cjs lines 252 and 254"
+      ]
+    },
+    {
+      "name": "Feature catalog template",
+      "path": ".claude/skills/_shared/templates/feature-catalog.md",
+      "what": "The blank form for the Feature catalog: the requirements turned into features in the Glossary's agreed words. Each feature has a priority, the FRD it belongs to, and a \"Done when\" line cut into numbered pieces.",
+      "holds": [
+        "Status line",
+        "1. Catalog control",
+        "2. Feature catalog: one part per PRD section heading",
+        "3. \"Done when\" pieces",
+        "4. Coverage check",
+        "5. Data model coverage",
+        "Decision record",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`feature-author`"
+      ],
+      "checkedBy": "`check-features.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/feature-catalog.md line 74",
+        ".claude/skills/feature-author/SKILL.md line 22",
+        "tools/check-features.cjs line 227"
+      ]
+    },
+    {
+      "name": "EPIC grouping template",
+      "path": ".claude/skills/_shared/templates/epic-grouping.md",
+      "what": "The blank form for the EPIC grouping: the options for grouping features into EPICs, the one chosen, the clashes settled, and which EPICs get an EPIC brief. It is only ever added to.",
+      "holds": [
+        "Status line",
+        "1. Feature inventory",
+        "2. Options",
+        "2: Option A",
+        "2: Option B",
+        "2: Comparison in short",
+        "2: AI recommendation",
+        "3. Chosen grouping",
+        "3: EPIC list",
+        "3: EPIC definitions",
+        "3: Borderline features",
+        "3: Inter-EPIC dependencies",
+        "3: Suggested EPIC sequence",
+        "3: Clashes, and how you settled them",
+        "3: EPIC brief list, in run order",
+        "4. Placements from changes",
+        "Decision record",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`epic-grouping-author`"
+      ],
+      "checkedBy": "`check-epic-grouping.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/epic-grouping.md line 123",
+        ".claude/skills/epic-grouping-author/SKILL.md line 23",
+        "tools/check-epic-grouping.cjs line 66"
+      ]
+    },
+    {
+      "name": "EPIC register template",
+      "path": ".claude/skills/_shared/templates/epic-register.md",
+      "what": "The blank form for the EPIC register: the list of EPICs, copied field for field from the chosen grouping, with their run order. It has no gate: it is accepted when its check passes.",
+      "holds": [
+        "Status line",
+        "1. EPICs",
+        "2. Run order",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`epic-author`: register mode"
+      ],
+      "checkedBy": "`check-register.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/epic-register.md line 30",
+        ".claude/skills/epic-author/SKILL.md lines 23, 29 and 33"
+      ]
+    },
+    {
+      "name": "FRD template",
+      "path": ".claude/skills/_shared/templates/frd.md",
+      "what": "The blank form for one capability's FRD: the always-true \"The system shall\" rules, with the flow and the data they act on. Every \"Done when\" piece and every data model answer its features own is proved by at least one rule.",
+      "holds": [
+        "Title and status line",
+        "Features covered",
+        "Gates",
+        "Actors",
+        "Rules: one part per feature",
+        "Coverage — every Done-when piece has a rule",
+        "Coverage — every data model answer has a rule",
+        "Flow",
+        "Data: one part per thing",
+        "Standard questions",
+        "Decision record",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`frd-author`"
+      ],
+      "checkedBy": "`check-frd.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/frd.md line 124",
+        ".claude/skills/frd-author/SKILL.md line 68",
+        "tools/check-frd.cjs lines 64 and 351"
+      ]
+    },
+    {
+      "name": "EPIC brief template",
+      "path": ".claude/skills/_shared/templates/epic-brief.md",
+      "what": "The blank form for one EPIC described in full: its hypothesis, value, success measures, scope, features, dependencies and NFRs. It is written only for the EPICs the EPIC grouping's brief list marks Yes.",
+      "holds": [
+        "Status line",
+        "1. Description",
+        "2. Business value",
+        "3. Success or fitness criteria",
+        "4. Scope",
+        "4: In",
+        "4: Out",
+        "5. Features",
+        "6. Dependencies",
+        "6: EPICs this one needs",
+        "6: EPICs that need this one",
+        "7. NFRs that apply",
+        "8. References",
+        "Decision record",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`epic-author`: brief mode"
+      ],
+      "checkedBy": "`check-epic-brief.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/epic-brief.md line 84",
+        ".claude/skills/epic-author/SKILL.md line 23",
+        "tools/check-epic-brief.cjs line 52"
+      ]
+    },
+    {
+      "name": "Story list template",
+      "path": ".claude/skills/_shared/templates/story-list.md",
+      "what": "The blank form for one EPIC's Story list: its stories in order, each with its statement and status, and which stories cover each feature.",
+      "holds": [
+        "Title and opening table",
+        "Stories",
+        "Out of scope / routed",
+        "Coverage",
+        "Decision record",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`story-drafter`: writes it",
+        "`story-groomer`: keeps it up to date",
+        "`ac-author`: keeps it up to date"
+      ],
+      "checkedBy": "`check-stories.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/story-list.md line 45",
+        ".claude/skills/story-drafter/SKILL.md line 22",
+        "tools/check-stories.cjs line 115"
+      ]
+    },
+    {
+      "name": "Story template",
+      "path": ".claude/skills/_shared/templates/story.md",
+      "what": "The blank form for one Story, built up in one file: first its description, then its grooming, then its acceptance criteria. A Story has no status line.",
+      "holds": [
+        "Title and opening table",
+        "Description",
+        "Dependencies",
+        "Scope",
+        "Roles",
+        "Rules",
+        "Metrics traceability",
+        "Design links",
+        "Acceptance criteria: Behaviour",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`story-drafter`: Description",
+        "`story-groomer`: Dependencies to Design links",
+        "`ac-author`: Acceptance criteria"
+      ],
+      "checkedBy": "`check-stories.cjs`",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/story.md line 67",
+        ".claude/skills/story-drafter/SKILL.md line 22",
+        ".claude/skills/story-groomer/SKILL.md line 22",
+        ".claude/skills/ac-author/SKILL.md line 22"
+      ]
+    },
+    {
+      "name": "Change impact report template",
+      "path": ".claude/skills/_shared/templates/change-impact-report.md",
+      "what": "The blank form for one change, from the specifier's statement to the specifier's decision. Each of its 16 sections has exactly one writer, named under its heading. The file it makes is named impact-report.md, not change-impact-report.md.",
+      "holds": [
+        "1. The change, as you stated it",
+        "2. Files you brought",
+        "3. Other differences in a new version",
+        "4. Check findings on documents from outside",
+        "5. Restated, and split if several asks",
+        "5: Agreed words this change renames",
+        "6. Where it lands",
+        "7. Its kind",
+        "8. The journey",
+        "9. What's reused, and what's new",
+        "10. What blocks",
+        "11. The challenge's findings",
+        "12. Linked items",
+        "13. Each linked item's judgement",
+        "14. The tentative size",
+        "15. The recommendation",
+        "16. Your decision",
+        "Check record",
+        "Placeholders"
+      ],
+      "filledBy": [
+        "`requirement-update-workflow`: creates it. Sections 1 and 2",
+        "`compare-versions.cjs`: section 3",
+        "`glossary-check` and `glossary-disposition`: section 4",
+        "`change-impact-author`: sections 5 to 10 and 16",
+        "`adversarial-check`: section 11",
+        "`find-linked.cjs`: section 12",
+        "`feature-impact`: section 13",
+        "`size-rules.cjs`: section 14",
+        "`recommend.cjs`: section 15"
+      ],
+      "checkedBy": "`check-change-report.cjs`",
+      "changeOnly": true,
+      "evidence": [
+        ".claude/skills/_shared/templates/change-impact-report.md lines 126 and 133 to 150",
+        ".claude/skills/requirement-update-workflow/SKILL.md line 54",
+        ".claude/skills/change-impact-author/SKILL.md line 55",
+        "tools/check-change-report.cjs line 61",
+        ".claude/skills/_shared/project-folders.md, section 3 (change-impact-report path is changes/{change}/impact-report.md)"
+      ]
+    },
+    {
+      "name": "Decision record part",
+      "path": ".claude/skills/_shared/templates/parts/decision-record.md",
+      "what": "The shape of the Decision record, the second-last section of every document that has a gate. Each entry records what the specifier decided and names its question.",
+      "holds": [
+        "1. Where it goes",
+        "2. The rules",
+        "3. What each entry holds",
+        "4. Example",
+        "5. The closing entry of a change"
+      ],
+      "filledBy": [
+        "Every skill that has a gate",
+        "`close-change.cjs`: the closing entry of a change"
+      ],
+      "checkedBy": "none. Each document's own check program checks its Decision record.",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/parts/decision-record.md line 7",
+        ".claude/skills/_shared/decision-review-gates.md lines 143 and 150",
+        "tools/close-change.cjs line 11"
+      ]
+    },
+    {
+      "name": "Version log part",
+      "path": ".claude/skills/_shared/templates/parts/version-log.md",
+      "what": "The shape of the Version log, the list of every accepted version of every document. Only a program writes it. Nobody edits it by hand.",
+      "holds": [
+        "1. Where it lives",
+        "1: the log file, version-log/log.md",
+        "1: one saved copy per accepted version",
+        "2. The log: its columns",
+        "3. Example"
+      ],
+      "filledBy": [
+        "`version-log.cjs` (run by `accept.cjs`)"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/parts/version-log.md lines 7 and 9",
+        "tools/version-log.cjs line 15"
+      ]
+    },
+    {
+      "name": "Traceability map part",
+      "path": ".claude/skills/_shared/templates/parts/traceability-map.md",
+      "what": "The shape of the Traceability map, the file traceability-map.json that links every ID to the IDs it traces to. A program rebuilds it at every acceptance. Nobody edits it.",
+      "holds": [
+        "The shape: JSON",
+        "Items",
+        "Links",
+        "The check"
+      ],
+      "filledBy": [
+        "`traceability-map.cjs`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/templates/parts/traceability-map.md lines 7 and 9",
+        "tools/traceability-map.cjs line 8"
+      ]
+    }
+  ],
+  "shared": [
+    {
+      "name": "`conventions.md`",
+      "path": ".claude/skills/_shared/conventions.md",
+      "what": "The rules every skill follows when it writes a document. It says who decides, the kinds of document, IDs, how every document opens, how unknowns are handled, and how templates and examples work.",
+      "holds": [
+        "1. Who decides",
+        "2. Kinds of document",
+        "3. Each fact is written once",
+        "4. What each step reads",
+        "5. Agreed words",
+        "6. Draft first, decide once",
+        "7. IDs",
+        "8. The opening of every document",
+        "9. Unknowns",
+        "10. Confidence",
+        "11. Nothing invented",
+        "12. Cite every specific",
+        "13. Business language",
+        "14. A name is not a source",
+        "15. Ask, don't assume",
+        "16. Plain characters and lists",
+        "17. A mistake found later",
+        "18. NFRs",
+        "19. Each requirement's source",
+        "20. Running a skill on its own",
+        "21. Acceptance",
+        "22. Quality",
+        "23. Templates and examples",
+        "24. Beyond the client's words"
+      ],
+      "readBy": [
+        "`discovery-author`",
+        "`brd-author`",
+        "`prd-author`",
+        "`probing-questions-author`",
+        "`glossary-author`",
+        "`glossary-disposition`",
+        "`feature-author`",
+        "`epic-grouping-author`",
+        "`epic-author`",
+        "`frd-author`",
+        "`story-drafter`",
+        "`story-groomer`",
+        "`ac-author`",
+        "`change-impact-author`",
+        "`feature-impact`",
+        "`requirements-workflow`",
+        "`features-and-epics-workflow`",
+        "`frd-workflow`",
+        "`stories-workflow`",
+        "`requirement-update-workflow`",
+        "`accept.cjs`",
+        "`check-brd.cjs`",
+        "`check-prd.cjs`",
+        "`check-data-model.cjs`",
+        "`check-features.cjs`",
+        "`check-frd.cjs`",
+        "`check-stories.cjs`",
+        "`grade-questions.cjs`",
+        "`park.cjs`",
+        "`size-rules.cjs`",
+        "`status.cjs`",
+        "`version-log.cjs`",
+        "`lib/check-document.cjs`",
+        "`lib/md-lint.cjs`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/conventions.md line 7",
+        ".claude/skills/brd-author/SKILL.md line 23",
+        "tools/lib/check-document.cjs line 182"
+      ]
+    },
+    {
+      "name": "`simple-writing-rules.md`",
+      "path": ".claude/skills/_shared/simple-writing-rules.md",
+      "what": "The writing rules every document follows, so a reader whose first language is not English understands it the first time. It also holds the word lists that the check program reads.",
+      "holds": [
+        "The rule: every skill, every file, every time",
+        "1. Who we write for",
+        "2. The rules",
+        "3. What simple writing never does",
+        "4. Our words, not the client's",
+        "5. Where these rules apply",
+        "6. How the check works",
+        "7. Word lists"
+      ],
+      "readBy": [
+        "`discovery-author`",
+        "`brd-author`",
+        "`prd-author`",
+        "`probing-questions-author`",
+        "`glossary-author`",
+        "`glossary-check`",
+        "`glossary-disposition`",
+        "`things-author`",
+        "`data-model-author`",
+        "`feature-author`",
+        "`epic-grouping-author`",
+        "`epic-author`",
+        "`frd-author`",
+        "`story-drafter`",
+        "`story-groomer`",
+        "`ac-author`",
+        "`change-impact-author`",
+        "`adversarial-check`",
+        "`feature-impact`",
+        "`requirements-workflow`",
+        "`data-model-workflow`",
+        "`features-and-epics-workflow`",
+        "`frd-workflow`",
+        "`stories-workflow`",
+        "`requirement-update-workflow`",
+        "`check-simple-writing.cjs`",
+        "`lib/simple-writing.cjs`: loads the word lists",
+        "`lib/check-document.cjs`: so every check program runs it",
+        "`check-discovery-brief.cjs`",
+        "`check-epic-brief.cjs`",
+        "`check-register.cjs`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/simple-writing-rules.md lines 7 to 13",
+        "tools/lib/simple-writing.cjs line 34",
+        "tools/check-simple-writing.cjs line 3"
+      ]
+    },
+    {
+      "name": "`atomic-rules.md`",
+      "path": ".claude/skills/_shared/atomic-rules.md",
+      "what": "The rules for one requirement per row: what one requirement is, when to split and when to keep together. Its check only lists rows to look at. It never fails, because only a person can judge a row.",
+      "holds": [
+        "The rule: one requirement per row, in every document",
+        "1. What one requirement is",
+        "2. When to split, and when to keep together",
+        "3. Where the rules apply",
+        "4. How the check works"
+      ],
+      "readBy": [
+        "`brd-author`",
+        "`prd-author`",
+        "`data-model-author`",
+        "`feature-author`",
+        "`frd-author`",
+        "`story-drafter`",
+        "`story-groomer`",
+        "`ac-author`",
+        "`check-prd.cjs`",
+        "`lib/one-per-row.cjs`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/atomic-rules.md lines 7 to 13",
+        "tools/lib/one-per-row.cjs line 37",
+        "tools/check-prd.cjs line 14"
+      ]
+    },
+    {
+      "name": "`quality-characteristics.md`",
+      "path": ".claude/skills/_shared/quality-characteristics.md",
+      "what": "The ten yes-or-no tests, Q1 to Q10, that every unit a skill writes must pass. A skill names the tests by code and never copies the table.",
+      "holds": [
+        "1. The ten characteristics",
+        "2. Words the table uses",
+        "3. How skills use this"
+      ],
+      "readBy": [
+        "`discovery-author`",
+        "`brd-author`",
+        "`prd-author`",
+        "`feature-author`",
+        "`probing-questions-author`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/quality-characteristics.md line 7. It says check programs use it too. No program in tools/ names it.",
+        ".claude/skills/brd-author/SKILL.md line 93",
+        ".claude/skills/probing-questions-author/SKILL.md line 107"
+      ]
+    },
+    {
+      "name": "`decision-review-gates.md`",
+      "path": ".claude/skills/_shared/decision-review-gates.md",
+      "what": "The rules for every gate, the point where a skill hands its draft to the specifier for a decision. It covers what the specifier sees first, the order of questions, how each decision is put, and what happens after a third \"no\".",
+      "holds": [
+        "The rules",
+        "Layouts",
+        "Example: a decision at feature-author's gate, for Manager approval"
+      ],
+      "readBy": [
+        "`discovery-author`",
+        "`brd-author`",
+        "`prd-author`",
+        "`probing-questions-author`",
+        "`glossary-author`",
+        "`glossary-disposition`",
+        "`feature-author`",
+        "`epic-grouping-author`",
+        "`epic-author`",
+        "`frd-author`",
+        "`story-drafter`",
+        "`story-groomer`",
+        "`ac-author`",
+        "`change-impact-author`",
+        "`feature-impact`",
+        "`requirements-workflow`",
+        "`features-and-epics-workflow`",
+        "`frd-workflow`",
+        "`stories-workflow`",
+        "`requirement-update-workflow`",
+        "`lib/check-document.cjs`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/decision-review-gates.md line 7",
+        ".claude/skills/frd-author/SKILL.md line 46",
+        "tools/lib/check-document.cjs line 3"
+      ]
+    },
+    {
+      "name": "`project-folders.md`",
+      "path": ".claude/skills/_shared/project-folders.md",
+      "what": "The map of a project's folders: where every document lives inside Output/{project}/, and which step writes it. Its JSON block is the only copy of the layout, and programs read it.",
+      "holds": [
+        "1. Where a project lives",
+        "2. The folders and files",
+        "3. Every document's path: the JSON block of paths and the folders created at setup"
+      ],
+      "readBy": [
+        "`lib/run-paths.cjs`: so every skill and program finds files through it",
+        "`scaffold-project.cjs`: creates the folders",
+        "`version-log.cjs`",
+        "`glossary-check`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/project-folders.md line 7",
+        "tools/lib/run-paths.cjs lines 3 and 32",
+        "tools/scaffold-project.cjs line 7"
+      ]
+    },
+    {
+      "name": "`data-model-design.md`",
+      "path": ".claude/skills/_shared/data-model-design.md",
+      "what": "Step-by-step instructions for writing one product's data model from its Glossary, BRD and PRD. Followed exactly, two runs on the same files give the same result.",
+      "holds": [
+        "Contents",
+        "1. The goal and the picture",
+        "2. The rules for every answer",
+        "3. What you need, and what you write",
+        "4. Step 1: Find the things",
+        "5. Gate 1: Accept the things",
+        "6. Step 2: List each thing's actions",
+        "7. Step 3: List each thing's fields",
+        "8. Step 4: Fill the rules table",
+        "9. Step 5: Send every gap where it goes",
+        "10. Step 6: Write how it moves",
+        "11. Step 7: Check",
+        "12. Gate 2: Accept the file",
+        "13. Step 8: Send the Glossary changes together",
+        "14. Step 9: Bring the data model in step with the Glossary"
+      ],
+      "readBy": [
+        "`things-author`",
+        "`data-model-author`",
+        "`data-model-workflow`",
+        "`feature-author` (its test \"Is it big enough to be a feature?\")",
+        "`frd-author`: its step 2",
+        "`probing-questions-author`",
+        "`check-data-model.cjs`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/data-model-design.md line 7",
+        ".claude/skills/things-author/SKILL.md line 25",
+        ".claude/skills/feature-author/SKILL.md line 70",
+        "tools/check-data-model.cjs line 13"
+      ]
+    }
+  ],
+  "glossaryMethod": [
+    {
+      "name": "Glossary method overview (`glossary-design.md`)",
+      "path": ".claude/skills/_shared/glossary/glossary-design.md",
+      "what": "A short explanation of what the glossary method does and how its parts fit, for a first-time reader. It is not an instruction, and no skill or program reads it.",
+      "holds": [
+        "What the method does",
+        "How its parts fit together",
+        "Pointers to the docs that hold each rule"
+      ],
+      "readBy": [
+        "none: a page for people only"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/glossary/glossary-design.md lines 3 to 4"
+      ]
+    },
+    {
+      "name": "Method words (`method-words.md`)",
+      "path": ".claude/skills/_shared/glossary/method-words.md",
+      "what": "The only file where the method's own words are defined, such as page, section, kind and relationship. Every glossary skill, template and prompt uses these words with these meanings only.",
+      "holds": [
+        "The method's word list",
+        "One meaning for each word",
+        "Words not to use"
+      ],
+      "readBy": [
+        "`glossary-author`",
+        "`glossary-check`",
+        "`glossary-disposition`",
+        "`adversarial-check`",
+        "The glossary prompts"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/glossary/method-words.md line 3",
+        ".claude/skills/glossary-author/SKILL.md line 29",
+        ".claude/skills/adversarial-check/SKILL.md line 27"
+      ]
+    },
+    {
+      "name": "The three lenses and how they join",
+      "path": ".claude/skills/_shared/glossary/",
+      "what": "How the Glossary is built from the BRD and PRD, one section at a time, read three ways: what each section names, Ontology, what sits under what, Topology, and how things move, Choreography. `otc-methodology.md` sets the order and joins the lenses into the assembly draft.",
+      "holds": [
+        "`otc-methodology.md`: the order the lenses run in, and how sections are joined",
+        "`lens1-ontology.md`: finds candidate words and what each means. It also holds the keep rule and how to write a definition.",
+        "`lens2-topology.md`: places each candidate in a tree",
+        "`lens3-choreography.md`: finds the states and flow of each candidate"
+      ],
+      "readBy": [
+        "`glossary-author`",
+        "`glossary-check`: the keep rule in `lens1-ontology.md`",
+        "`build-glossary-records.cjs`: `lens1-ontology.md`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/glossary-author/SKILL.md lines 44 and 49",
+        ".claude/skills/glossary-check/SKILL.md line 24",
+        "tools/build-glossary-records.cjs line 244"
+      ],
+      "files": [
+        "`otc-methodology.md`",
+        "`lens1-ontology.md`",
+        "`lens2-topology.md`",
+        "`lens3-choreography.md`"
+      ]
+    },
+    {
+      "name": "The gate rules (`otc-run-rules.md`)",
+      "path": ".claude/skills/_shared/glossary/otc-run-rules.md",
+      "what": "The judgments that need every section in view: which candidates qualify, how a weak word is improved, how conflicts are classed, how a re-run is reconciled, and who decides at each gate.",
+      "holds": [
+        "Which candidates qualify",
+        "Improving a weak word",
+        "Classing conflicts",
+        "Reconciling a re-run",
+        "Who decides at Gate 1 and Gate 2"
+      ],
+      "readBy": [
+        "`glossary-author`",
+        "`glossary-check`",
+        "`glossary-disposition`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/glossary/otc-run-rules.md line 3",
+        ".claude/skills/glossary-author/SKILL.md line 50"
+      ]
+    },
+    {
+      "name": "Shapes and assembly of the Glossary pages",
+      "path": ".claude/skills/_shared/glossary/",
+      "what": "Where every glossary output lives and what shape it has, and how settled terms are written into the reader-facing pages so the same terms always give the same pages.",
+      "holds": [
+        "`output-formats.md`: the shape and home of every glossary output",
+        "`output-formats.md`: the deep-dives",
+        "`output-formats.md`: the gate log and the decision register",
+        "`output-formats.md`: the check findings and the ripple list",
+        "`glossary-assembly-principles.md`: the fixed layout of each of the seven glossary pages"
+      ],
+      "readBy": [
+        "`glossary-author`",
+        "`glossary-check`",
+        "`glossary-disposition`",
+        "`build-glossary-records.cjs`",
+        "`build-retired-words-tables.cjs`"
+      ],
+      "checkedBy": "none",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/glossary-author/SKILL.md lines 29 and 34",
+        "tools/build-glossary-records.cjs line 18",
+        "tools/build-retired-words-tables.cjs line 10"
+      ],
+      "files": [
+        "`output-formats.md`",
+        "`glossary-assembly-principles.md`"
+      ]
+    },
+    {
+      "name": "Glossary templates folder",
+      "path": ".claude/skills/_shared/glossary/templates/",
+      "what": "The blank pages, records and reviews the glossary method fills. Each file opens with a comment naming the rule that sets its shape.",
+      "holds": [
+        "`README.md`: the Glossary's own front page: not a folder readme",
+        "`terms-and-relationships.md`",
+        "`object-terms.md`",
+        "`role-terms.md`",
+        "`step-terms.md`",
+        "`states-and-values.md`",
+        "`decision-register.md`",
+        "`section-glossary.md`: one section's draft, in deep-dives",
+        "`section-decisions.md`: one section's decisions, in deep-dives",
+        "`glossary-assembly-draft.md`",
+        "`gate-log.md`: the only place a glossary decision is written",
+        "`check-findings.md`: drift found by a check",
+        "`change-ripple.md`: every line still using a changed word",
+        "`feature-fit.md`: the Feature Fit view"
+      ],
+      "filledBy": [
+        "`glossary-author`: `README.md`",
+        "`glossary-author`: `terms-and-relationships.md`",
+        "`glossary-author`: the four kind pages",
+        "`glossary-author`: `section-glossary.md`",
+        "`glossary-author`: `glossary-assembly-draft.md`",
+        "`glossary-author`: `gate-log.md`",
+        "`build-glossary-records.cjs`: `decision-register.md`, from the gate log",
+        "`build-glossary-records.cjs`: `section-decisions.md`, from the gate log",
+        "`glossary-check`: `check-findings.md`",
+        "`glossary-disposition`: `change-ripple.md`",
+        "`glossary-disposition`: new rows in `gate-log.md`",
+        "Nothing in the kit fills `feature-fit.md`"
+      ],
+      "checkedBy": "none. `check-simple-writing.cjs` runs on each page a skill changes.",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/glossary-author/SKILL.md lines 30 and 34",
+        ".claude/skills/glossary-check/SKILL.md line 39",
+        ".claude/skills/glossary-disposition/SKILL.md line 62",
+        "tools/build-glossary-records.cjs line 37",
+        ".claude/skills/_shared/glossary/templates/feature-fit.md line 1"
+      ]
+    },
+    {
+      "name": "Glossary prompts (Feature Fit)",
+      "path": ".claude/skills/_shared/glossary/prompts/",
+      "what": "A method for reading a feature against a finished Glossary and saying whether it fits, extends or is new. `change-impact-author` uses a word-for-word copy of parts of it to judge a change.",
+      "holds": [
+        "`README.md`: what the prompts are and what they need first",
+        "`feature-journey-analysis.md`: the Feature Fit method, sections 1 to 13",
+        "`examples/feature-fit-acme-booking.md`: a sample output for a made-up product",
+        "`examples/feature-fit-acme-parking.md`: a second sample output"
+      ],
+      "readBy": [
+        "`change-impact-author`: through its copy, `change-impact-author/references/feature-fit.md`, sections 5 to 8 and 10"
+      ],
+      "checkedBy": "none",
+      "changeOnly": true,
+      "evidence": [
+        ".claude/skills/change-impact-author/references/feature-fit.md line 3",
+        ".claude/skills/_shared/glossary/prompts/README.md line 3"
+      ]
+    }
+  ],
+  "examples": [
+    {
+      "name": "Worked examples folder",
+      "path": ".claude/skills/_shared/examples/",
+      "what": "Filled-in documents for the made-up Expense claims product, each under the same file name as its template. They show what a good document looks like at its gate.",
+      "holds": [
+        "`discovery-brief.md`: a Discovery brief at its gate, with seven decisions made",
+        "`brd.md`: the BRD that follows, with its first decision made",
+        "`prd.md`: the PRD that follows, with one decision made and one question open",
+        "`question-log.md`: the Question log while the BRD is at its gate"
+      ],
+      "readBy": [
+        "`discovery-author`: `discovery-brief.md`",
+        "`brd-author`: `brd.md`",
+        "`prd-author`: `prd.md`",
+        "No skill points to `question-log.md`",
+        "`foundation.test.cjs`: checks every example against its template",
+        "The requirements, features and EPICs, FRD, data model, stories, simple writing and change tests: they copy the examples as the start of the expense-claims project"
+      ],
+      "checkedBy": "`foundation.test.cjs`: same headings as the template, no placeholder left, and no Placeholders section",
+      "changeOnly": false,
+      "evidence": [
+        ".claude/skills/_shared/conventions.md, section 23",
+        ".claude/skills/discovery-author/SKILL.md line 23",
+        ".claude/skills/brd-author/SKILL.md line 23",
+        ".claude/skills/prd-author/SKILL.md line 24",
+        "tools/tests/foundation.test.cjs lines 403 to 418"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "`mcp-slice/`",
+      "path": "fixtures/mcp-slice/",
+      "what": "A small project folder holding one section of a real requirement, its Setup section, so the programs are tested on real material. It was written in an earlier way of working, and some gaps on purpose name no question.",
+      "holds": [
+        "`sources/mcp-requirements-v4.md`: the requirement file",
+        "`mcp-slice-prd.md`: six requirements",
+        "`mcp-slice-question-log.md`",
+        "`frd/feature-catalog.md`: six features",
+        "`frd/frd-team-and-roles.md`: an FRD in an older shape",
+        "`epics/register.md`",
+        "`epics/EPIC-003-source-and-team-setup/story-list.md`",
+        "Three Stories with no grooming or acceptance criteria"
+      ],
+      "usedBy": [
+        "`foundation.test.cjs`"
+      ],
+      "changeOnly": false,
+      "evidence": [
+        "fixtures/README.md, section mcp-slice",
+        "tools/tests/foundation.test.cjs lines 22 and 68"
+      ]
+    },
+    {
+      "name": "`expense-claims/`",
+      "path": "fixtures/expense-claims/",
+      "what": "The documents after the PRD for the made-up Expense claims product. The tests copy the worked examples and this folder into one project called expense-claims.",
+      "holds": [
+        "`glossary/`: the four kind pages",
+        "`glossary/data-models/`: the things file, `claims.md`, and the data model's decisions file",
+        "`frd/feature-catalog.md`: five features",
+        "`frd/frd-claim-approval.md`: the FRD for Claim approval, 12 rules",
+        "`epics/grouping.md`: the EPIC grouping",
+        "`epics/register.md`: the EPIC register",
+        "`epics/EPIC-002-claim-approval/`: the EPIC brief, the Story list and three ready Stories",
+        "`changes/001-finance-limit/impact-report.md`: a Change impact report waiting for a decision"
+      ],
+      "usedBy": [
+        "`requirements.test.cjs`",
+        "`data-model.test.cjs`",
+        "`features-and-epics.test.cjs`",
+        "`frd.test.cjs`",
+        "`stories.test.cjs`",
+        "`requirement-update.test.cjs`",
+        "`simple-writing.test.cjs`"
+      ],
+      "changeOnly": false,
+      "evidence": [
+        "fixtures/README.md, section expense-claims",
+        "tools/tests/data-model.test.cjs line 25",
+        "tools/tests/features-and-epics.test.cjs line 18",
+        "tools/tests/frd.test.cjs line 18",
+        "tools/tests/stories.test.cjs line 18",
+        "tools/tests/requirement-update.test.cjs line 21",
+        "tools/tests/requirements.test.cjs line 122",
+        "tools/tests/simple-writing.test.cjs line 257"
+      ]
+    },
+    {
+      "name": "`approved-glossary-method/`",
+      "path": "fixtures/approved-glossary-method/",
+      "what": "The glossary method's files exactly as they were approved, never edited. The tests compare the kit's own copies with them line by line, so every difference is one the kit's rules allow.",
+      "holds": [
+        "`.skills/_shared/glossary/`: the method files and templates as approved",
+        "`.skills/harvest/`: the method's original build skill",
+        "`.skills/check/`: the method's original check skill",
+        "`.skills/disposition/`: the method's original disposition skill",
+        "`glossary-methodology-prompts/`: Feature Fit and its adversarial check",
+        "`glossary-design.md`",
+        "`skill-orchestration.md`",
+        "`sweep-builder-brief.md`: kept so the set is whole. The kit has no copy",
+        "`sweep-reader-brief.md`: kept so the set is whole. The kit has no copy"
+      ],
+      "usedBy": [
+        "`glossary.test.cjs`",
+        "`requirement-update.test.cjs`: compares `adversarial-check.md`",
+        "`foundation.test.cjs`: renders its README"
+      ],
+      "changeOnly": false,
+      "evidence": [
+        "fixtures/approved-glossary-method/README.md lines 3 to 7",
+        "tools/tests/glossary.test.cjs line 18",
+        "tools/tests/requirement-update.test.cjs line 1111",
+        "tools/tests/foundation.test.cjs line 249"
+      ]
+    }
+  ]
+}
